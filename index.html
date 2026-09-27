@@ -118,6 +118,8 @@ button,select,input{font:inherit}
 .dlg-ajuda summary{cursor:pointer;font-weight:600;color:var(--ink)}
 .dlg-ajuda ol{margin-top:8px}
 .dlg-nota{font-size:12.5px;color:var(--muted)}
+.dlg-secao{display:flex;flex-direction:column;gap:12px}
+.dlg-link{align-self:flex-start;border:0;background:none;padding:0;color:var(--gold);font:inherit;font-size:13px;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
 .dlg ol{padding-left:20px;display:flex;flex-direction:column;gap:6px}
 .dlg a{color:var(--gold)}
 .dlg-motivo{padding:8px 12px;border-radius:8px;background:var(--gold-soft);font-weight:600}
@@ -373,17 +375,26 @@ body.arrastando .drop{display:flex}
   <form class="dlg-corpo" id="formEntrar">
     <h2 id="dlgTitulo">Entrar para editar</h2>
     <p class="dlg-motivo" id="dlgMotivo" hidden></p>
+    <p data-modo="admin">A senha tranca a chave do GitHub, que fica guardada no site. Quem souber a senha consegue editar; ninguém mais precisa de conta no GitHub.</p>
     <label class="dlg-campo">Seu nome<input id="dlgNome" autocomplete="name" maxlength="40" placeholder="Como vai aparecer no histórico"></label>
-    <label class="dlg-campo">Chave de acesso<input id="dlgToken" type="password" autocomplete="off" spellcheck="false"></label>
-    <details class="dlg-ajuda">
-      <summary>Como conseguir a chave?</summary>
-      <ol>
-        <li>O dono do repositório <b id="dlgRepo"></b> abre <a href="https://github.com/settings/personal-access-tokens/new?name=Informativo&amp;description=Editar+o+Informativo+do+Qu%C3%B3rum+(quorum-news)&amp;target_name=caiomourasud&amp;expires_in=366&amp;contents=write" target="_blank" rel="noopener">este link do GitHub</a>, que já vem com nome, validade e a permissão certa.</li>
-        <li>Em <i>Repository access</i>, escolhe <i>Only select repositories</i> → <i>quorum-news</i> e clica em <i>Generate token</i>.</li>
-        <li>Ele te passa a chave, e você cola aqui. É uma vez só por navegador.</li>
-      </ol>
-    </details>
-    <p class="dlg-nota">O nome e a chave ficam guardados só neste navegador. Para só ver o informativo, não precisa entrar.</p>
+    <label class="dlg-campo" data-modo="entrar">Senha do quórum<input id="dlgSenha" type="password" autocomplete="current-password" placeholder="Peça a quem cuida do informativo"></label>
+    <p class="dlg-nota" data-modo="entrar">Não precisa de conta no GitHub. Maiúsculas e acentos não fazem diferença na senha.</p>
+    <div class="dlg-secao" data-modo="admin">
+      <label class="dlg-campo">Chave do GitHub<input id="dlgChave" type="password" autocomplete="off" spellcheck="false"></label>
+      <details class="dlg-ajuda">
+        <summary>Como criar a chave?</summary>
+        <ol>
+          <li>Com a conta dona do repositório <b id="dlgRepo"></b>, abra <a href="https://github.com/settings/personal-access-tokens/new?name=Informativo&amp;description=Editar+o+Informativo+do+Qu%C3%B3rum+(quorum-news)&amp;target_name=caiomourasud&amp;expires_in=366&amp;contents=write" target="_blank" rel="noopener">este link do GitHub</a>. Ele já vem com nome, validade e a permissão certa.</li>
+          <li>Em <i>Repository access</i>, escolha <i>Only select repositories</i> → <i>quorum-news</i>.</li>
+          <li>Clique em <i>Generate token</i>, copie a chave e cole acima.</li>
+        </ol>
+      </details>
+      <label class="dlg-campo">Nova senha do quórum<input id="dlgNova" type="password" autocomplete="new-password" placeholder="Três ou quatro palavras"></label>
+      <label class="dlg-campo">Repita a senha<input id="dlgNova2" type="password" autocomplete="new-password"></label>
+      <p class="dlg-nota">Maiúsculas e acentos não fazem diferença. Para tirar o acesso de quem já entrou, crie uma chave nova no GitHub, apague a antiga e salve aqui com a chave nova e outra senha.</p>
+    </div>
+    <p class="dlg-nota" data-modo="perfil">Seu nome aparece no histórico ao lado do que você mudar. Ele fica guardado só neste navegador.</p>
+    <button type="button" class="dlg-link" id="dlgTrocarModo"></button>
     <p class="dlg-erro" id="dlgErro" hidden></p>
     <div class="dlg-acoes">
       <button type="button" class="btn" id="dlgSair">Sair deste navegador</button>
@@ -673,7 +684,7 @@ function atualizarStatus() {
   else if (!g) texto = 'Salvo neste navegador';
   else if (!lerToken()) texto = '';
   else if (nuvemAtiva) texto = 'Salvando…';
-  else if (erroNuvem === 'chave') texto = 'O GitHub recusou a chave — clique no seu nome';
+  else if (erroNuvem === 'chave') texto = 'Não consegui salvar: clique no seu nome para entrar de novo';
   else if (sujas.has(id)) texto = semConexao ? 'Sem conexão — guardado neste navegador' : 'Salvando…';
   else texto = salvoEm ? `Salvo às ${salvoEm.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}` : 'Tudo salvo';
   $('status').textContent = texto;
@@ -725,7 +736,8 @@ async function api(metodo, caminho, corpo = null, token = lerToken()) {
   return r.status === 204 ? null : r.json();
 }
 const lerArquivo = caminho => api('GET', `/contents/${caminho}?ref=${encodeURIComponent(github().ramo)}`);
-const gravarArquivo = (caminho, mensagem, base64, sha) => api('PUT', `/contents/${caminho}`, { message: mensagem, content: base64, branch: github().ramo, ...(sha ? { sha } : {}) });
+const gravarArquivo = (caminho, mensagem, base64, sha, token = lerToken()) =>
+  api('PUT', `/contents/${caminho}`, { message: mensagem, content: base64, branch: github().ramo, ...(sha ? { sha } : {}) }, token);
 
 function paraBase64(bytes) {
   let s = '';
@@ -922,57 +934,127 @@ async function checarNovidades() {
 }
 window.addEventListener('focus', checarNovidades);
 
-// ---------- entrar para editar (nome + chave de acesso) ----------
+// ---------- entrar para editar (nome + senha do quórum) ----------
+// A chave do GitHub fica no repositório (acesso.json, branch de dados) criptografada com a senha do quórum.
+// Quem sabe a senha a destranca aqui no navegador; ninguém além do administrador precisa de conta no GitHub.
 
-function abrirEntrar(motivo = '') {
-  const g = github();
-  if (!g) return;
-  fecharPainelEdicoes();
+const ITERACOES = 600000;
+const normalizarSenha = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+
+async function chaveDaSenha(senha, sal, iteracoes) {
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(normalizarSenha(senha)), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey({ name: 'PBKDF2', salt: sal, iterations: iteracoes, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+}
+async function trancar(token, senha) {
+  const sal = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+  const cifra = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, await chaveDaSenha(senha, sal, ITERACOES), new TextEncoder().encode(token));
+  return { versao: 1, iteracoes: ITERACOES, sal: paraBase64(sal), iv: paraBase64(iv), chave: paraBase64(new Uint8Array(cifra)) };
+}
+async function destrancar(acesso, senha) {
+  const chave = await chaveDaSenha(senha, deBase64(acesso.sal), acesso.iteracoes);
+  return new TextDecoder().decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: deBase64(acesso.iv) }, chave, deBase64(acesso.chave)));
+}
+async function lerAcesso() {
+  try {
+    const f = await lerArquivo('acesso.json');
+    return { sha: f.sha, dados: JSON.parse(new TextDecoder().decode(deBase64(f.content))) };
+  } catch (e) {
+    if (e.status === 404) return null;
+    throw e;
+  }
+}
+async function validarToken(token) {
+  const repo = await api('GET', '', null, token);
+  if (!repo.permissions?.push) throw Object.assign(new Error('sem permissão'), { status: 403 });
+}
+
+let modoEntrar = 'entrar'; // 'entrar' (nome + senha), 'admin' (criar ou trocar a senha), 'perfil' (já entrou)
+
+function mostrarModo(modo, motivo = '') {
   const logado = !!lerToken();
-  $('dlgTitulo').textContent = logado ? 'Sua identificação' : 'Entrar para editar';
+  modoEntrar = modo;
+  $('formEntrar').querySelectorAll('[data-modo]').forEach(el => { el.hidden = !el.dataset.modo.split(' ').includes(modo); });
+  $('dlgTitulo').textContent = { entrar: 'Entrar para editar', admin: 'Senha do quórum', perfil: 'Sua identificação' }[modo];
+  $('dlgSalvar').textContent = { entrar: 'Entrar', admin: 'Salvar senha', perfil: 'Salvar' }[modo];
+  $('dlgTrocarModo').textContent = modo === 'admin' ? '← Voltar' : modo === 'perfil' ? 'Criar ou trocar a senha do quórum' : 'Sou o administrador: criar ou trocar a senha';
+  $('dlgSair').hidden = modo !== 'perfil';
+  $('dlgChave').placeholder = logado ? 'Deixe em branco para usar a chave atual' : 'github_pat_…';
   $('dlgMotivo').textContent = motivo;
   $('dlgMotivo').hidden = !motivo;
-  $('dlgRepo').textContent = g.repositorio;
-  $('dlgNome').value = lerNome();
-  $('dlgToken').value = '';
-  $('dlgToken').placeholder = logado ? 'Já conectada. Cole outra só se quiser trocar' : 'github_pat_…';
-  $('dlgSair').hidden = !logado;
-  $('dlgSalvar').textContent = logado ? 'Salvar' : 'Entrar';
   $('dlgErro').hidden = true;
-  $('dlgEntrar').showModal();
-  (lerNome() && !logado ? $('dlgToken') : $('dlgNome')).focus();
+  const foco = modo === 'entrar' ? (lerNome() ? $('dlgSenha') : $('dlgNome'))
+    : modo === 'admin' ? (logado ? $('dlgNova') : $('dlgChave')) : $('dlgNome');
+  foco.focus();
 }
+function abrirEntrar(motivo = '') {
+  if (!github()) return;
+  fecharPainelEdicoes();
+  for (const id of ['dlgSenha', 'dlgChave', 'dlgNova', 'dlgNova2']) $(id).value = '';
+  $('dlgNome').value = lerNome();
+  $('dlgRepo').textContent = github().repositorio;
+  $('dlgEntrar').showModal();
+  if (lerToken() && erroNuvem === 'chave') mostrarModo('entrar', 'A senha do quórum mudou. Digite a senha nova para continuar editando.');
+  else mostrarModo(lerToken() ? 'perfil' : 'entrar', motivo);
+}
+$('dlgTrocarModo').onclick = () => mostrarModo(modoEntrar === 'admin' ? (lerToken() ? 'perfil' : 'entrar') : 'admin');
+
 function erroEntrar(texto) {
   $('dlgErro').textContent = texto;
   $('dlgErro').hidden = false;
 }
+const erroDoGithub = err => err.status === 401 ? 'O GitHub não reconheceu essa chave. Confira se ela foi copiada inteira.'
+  : err.status === 403 || err.status === 404 ? `Essa chave não tem permissão para gravar em ${github().repositorio}.`
+    : 'Não consegui falar com o GitHub. Verifique a internet.';
+
+function entrarCom(token, nome) {
+  localStorage.setItem(CHAVE_TOKEN, token);
+  localStorage.setItem(CHAVE_NOME, nome);
+  erroNuvem = '';
+}
+
 $('formEntrar').addEventListener('submit', async e => {
   e.preventDefault();
   const nome = $('dlgNome').value.trim().replace(/\s+/g, ' ');
-  const token = $('dlgToken').value.trim();
   if (!nome) return erroEntrar('Escreva o seu nome. Ele aparece no histórico ao lado do que você mudar.');
-  if (!token && !lerToken()) return erroEntrar('Cole a chave de acesso.');
-  $('dlgSalvar').disabled = true;
+  const botao = $('dlgSalvar'), rotulo = botao.textContent;
+  botao.disabled = true;
+  botao.textContent = 'Verificando…';
   try {
-    if (token) {
-      const repo = await api('GET', '', null, token);
-      if (!repo.permissions?.push) throw Object.assign(new Error('sem permissão'), { status: 403 });
-      localStorage.setItem(CHAVE_TOKEN, token);
-      erroNuvem = '';
+    if (modoEntrar === 'entrar') {
+      if (!$('dlgSenha').value.trim()) return erroEntrar('Digite a senha do quórum.');
+      const acesso = await lerAcesso();
+      if (!acesso) return erroEntrar('A senha do quórum ainda não foi criada. Quem cuida do informativo precisa criá-la em “Sou o administrador”.');
+      let token;
+      try { token = await destrancar(acesso.dados, $('dlgSenha').value); } catch (err) { return erroEntrar('Senha incorreta.'); }
+      try { await validarToken(token); } catch (err) {
+        return erroEntrar(err.status === 401 ? 'A senha está certa, mas a chave guardada com ela venceu ou foi apagada. Avise quem cuida do informativo.' : erroDoGithub(err));
+      }
+      entrarCom(token, nome);
+      toast(`Pronto, ${nome.split(' ')[0]}. Tudo o que você mudar é salvo sozinho.`);
+    } else if (modoEntrar === 'admin') {
+      const token = $('dlgChave').value.trim() || lerToken();
+      if (!token) return erroEntrar('Cole a chave do GitHub.');
+      if (normalizarSenha($('dlgNova').value).length < 8) return erroEntrar('Use uma senha com pelo menos 8 letras. Três ou quatro palavras é o ideal.');
+      if (normalizarSenha($('dlgNova').value) !== normalizarSenha($('dlgNova2').value)) return erroEntrar('As duas senhas não são iguais.');
+      try { await validarToken(token); } catch (err) { return erroEntrar(erroDoGithub(err)); }
+      const atual = await lerAcesso();
+      const trancada = await trancar(token, $('dlgNova').value);
+      await gravarArquivo('acesso.json', `Senha do quórum — ${nome}`, paraBase64(new TextEncoder().encode(JSON.stringify(trancada, null, 2) + '\n')), atual?.sha, token);
+      entrarCom(token, nome);
+      toast('Senha salva. Passe a senha para quem vai editar o informativo.');
+    } else {
+      localStorage.setItem(CHAVE_NOME, nome);
+      toast('Nome atualizado.');
     }
-    const entrou = !!token;
-    localStorage.setItem(CHAVE_NOME, nome);
     $('dlgEntrar').close();
     renderPagina();
     atualizarModo();
-    toast(entrou ? `Pronto, ${nome.split(' ')[0]}. Tudo o que você mudar é salvo sozinho.` : 'Nome atualizado.');
     if (sujas.has(idDe(state))) salvarNaNuvem();
   } catch (err) {
-    erroEntrar(err.status === 401 ? 'O GitHub não reconheceu essa chave. Confira se ela foi copiada inteira.'
-      : err.status === 403 || err.status === 404 ? `Essa chave não tem permissão para gravar em ${github().repositorio}.`
-        : 'Não consegui falar com o GitHub. Verifique a internet.');
+    erroEntrar(erroDoGithub(err));
   } finally {
-    $('dlgSalvar').disabled = false;
+    botao.disabled = false;
+    botao.textContent = rotulo;
   }
 });
 $('dlgCancelar').onclick = () => $('dlgEntrar').close();

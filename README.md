@@ -9,14 +9,17 @@ Quem abre o site vê o informativo e pode baixar o PNG ou o PDF. Para editar, cl
 
 ## Entrar para editar
 
-Na primeira vez, cada pessoa informa **o nome** (aparece no histórico ao lado do que ela mudar) e **a chave de acesso**. Os dois ficam guardados só naquele navegador. Para trocar o nome ou sair, clique no seu nome na barra de cima.
+Quem edita clica em **Entrar para editar** e digita **o nome** (aparece no histórico ao lado do que a pessoa mudar) e **a senha do quórum**. Ninguém precisa de conta no GitHub. Maiúsculas e acentos na senha não fazem diferença. Para trocar o nome ou sair, clique no seu nome na barra de cima.
 
-A chave existe porque o site é público: sem ela, qualquer pessoa poderia alterar o informativo. O dono do repositório cria uma chave para cada pessoa por [este link](https://github.com/settings/personal-access-tokens/new?name=Informativo&description=Editar+o+Informativo+do+Qu%C3%B3rum+(quorum-news)&target_name=caiomourasud&expires_in=366&contents=write), que já vem preenchido com nome, validade de 1 ano e a permissão. Falta só:
+### Criar a senha (só o administrador, uma vez)
 
-- **Repository access:** Only select repositories → `quorum-news`
-- **Generate token**, e copiar a chave (começa com `github_pat_`)
+1. Com a conta **caiomourasud**, abra [este link](https://github.com/settings/personal-access-tokens/new?name=Informativo&description=Editar+o+Informativo+do+Qu%C3%B3rum+(quorum-news)&target_name=caiomourasud&expires_in=366&contents=write). Ele já vem com nome, validade de 1 ano e a permissão certa. Em **Repository access**, escolha **Only select repositories** → `quorum-news` e clique em **Generate token**. Copie a chave (começa com `github_pat_`).
+2. No site, clique em **Entrar para editar → Sou o administrador: criar ou trocar a senha**, cole a chave e escolha a senha (três ou quatro palavras que o quórum lembre).
+3. Passe a senha para quem vai editar.
 
-Com uma chave por pessoa, dá para revogar a de alguém sem afetar as outras. Trate a chave como senha.
+O site guarda a chave no repositório **criptografada com a senha** (arquivo `acesso.json` no branch `dados`); só quem sabe a senha consegue usá-la, e ela só dá acesso a este repositório.
+
+**Se a senha vazar** ou alguém não deve mais editar: crie uma chave nova (mesmo link), apague a antiga em [github.com › Fine-grained tokens](https://github.com/settings/personal-access-tokens), e salve de novo em "Sou o administrador" com a chave nova e outra senha. Quem estava conectado passa a ver "clique no seu nome para entrar de novo" e precisa da senha nova. **Quando a chave vencer** (1 ano), faça o mesmo.
 
 ## Todo mês
 
@@ -47,4 +50,4 @@ No menu do mês, **Salvar backup de todas as edições** baixa um arquivo `.json
 - `assets/config.js`: o repositório e o branch onde as edições são salvas.
 - `assets/fontes.js`: as fontes (Alegreya e Alegreya Sans), embutidas.
 - `assets/imagem-padrao.js`: a imagem original, usada em "Original".
-- As edições ficam no branch **`dados`** (`edicoes/AAAA-MM.json` e `imagens/`). Cada salvamento é um commit lá, então o site no `main` não precisa ser reconstruído a cada mudança.
+- As edições ficam no branch **`dados`** (`edicoes/AAAA-MM.json`, `imagens/` e `acesso.json`). Cada salvamento é um commit lá, então o site no `main` não precisa ser reconstruído a cada mudança.
