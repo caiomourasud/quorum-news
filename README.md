@@ -5,7 +5,7 @@ Editor do informativo mensal. A página é editada no próprio informativo e exp
 - **Site:** https://caiomourasud.github.io/quorum-news/
 - **No computador:** abra o `index.html` no Chrome (mantenha a pasta `assets` junto).
 
-Quem abre o site vê o informativo e pode baixar o PNG ou o PDF. Para editar, clique em **Entrar para editar**.
+Quem abre o site vê o informativo e pode baixar o PNG ou o PDF. Para editar, clique no **lápis** (Entrar para editar). Os botões da barra são só ícones; parando o mouse em cima aparece o que cada um faz.
 
 **No celular, dá para instalar como app:** no iPhone, abra o site no Safari → botão Compartilhar → **Adicionar à Tela de Início**; no Android, no Chrome → menu ⋮ → **Instalar app**. No app, "Baixar imagem" abre o compartilhar (WhatsApp, Salvar em Fotos…). No iPhone, o app instalado guarda os dados à parte do Safari: é preciso entrar com nome e senha uma vez nele.
 
