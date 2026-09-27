@@ -48,6 +48,44 @@
       "texto": "<span style=\"font-size:14px\">Sessão de Domingo</span> <span style=\"font-size:14px\">da Conferência da Estaca Iguaçú</span>"
     }
   ],
+  "aniversariantes": [
+    {
+      "dia": "5",
+      "nome": "Carlos Alessandro Calado"
+    },
+    {
+      "dia": "8",
+      "nome": "Vinicius Carvalho chagas"
+    },
+    {
+      "dia": "11",
+      "nome": "Henrique Malfatti Pedro"
+    },
+    {
+      "dia": "17",
+      "nome": "Ricardo Ruchinski de Souza"
+    },
+    {
+      "dia": "20",
+      "nome": "Eloi Dzievulski"
+    },
+    {
+      "dia": "28",
+      "nome": "Marcio José Vieira Laureano"
+    },
+    {
+      "dia": "28",
+      "nome": "Alessandro Daniel Rosalez Marquez"
+    },
+    {
+      "dia": "30",
+      "nome": "Gabriel de Paula Skraba"
+    },
+    {
+      "dia": "31",
+      "nome": "José Dos Santos Mende"
+    }
+  ],
   "mensagem": {
     "texto": "Se obedecermos à voz do Salvador e guardarmos nossos convênios ﻿— mesmo que por meio de sacrifícios pequenos e silenciosos a cada dia ﻿— sentiremos o amor Dele mais profundamente.”",
     "autor": "Élder Alan R. Walker",
