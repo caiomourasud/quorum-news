@@ -7,6 +7,8 @@ Editor do informativo mensal. A página é editada no próprio informativo e exp
 
 Quem abre o site vê o informativo e pode baixar o PNG ou o PDF. Para editar, clique em **Entrar para editar**.
 
+**No celular, dá para instalar como app:** no iPhone, abra o site no Safari → botão Compartilhar → **Adicionar à Tela de Início**; no Android, no Chrome → menu ⋮ → **Instalar app**. No app, "Baixar imagem" abre o compartilhar (WhatsApp, Salvar em Fotos…). No iPhone, o app instalado guarda os dados à parte do Safari: é preciso entrar com nome e senha uma vez nele.
+
 ## Entrar para editar
 
 Quem edita clica em **Entrar para editar** e digita **o nome** (aparece no histórico ao lado do que a pessoa mudar) e **a senha do quórum**. Ninguém precisa de conta no GitHub. Maiúsculas e acentos na senha não fazem diferença. Para trocar o nome ou sair, clique no seu nome na barra de cima.
@@ -49,4 +51,5 @@ No menu do mês, **Salvar backup de todas as edições** baixa um arquivo `.json
 - `assets/config.js`: o repositório e o branch onde as edições são salvas.
 - `assets/fontes.js`: as fontes (Alegreya e Alegreya Sans), embutidas.
 - `assets/imagem-padrao.js`: a imagem original, usada em "Original".
+- `assets/icones/`, `manifest.webmanifest` e `sw.js`: ícone, instalação como app e modo sem internet.
 - As edições ficam no branch **`dados`** (`edicoes/AAAA-MM.json`, `imagens/` e `acesso.json`). Cada salvamento é um commit lá, então o site no `main` não precisa ser reconstruído a cada mudança.

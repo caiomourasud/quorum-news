@@ -2,7 +2,17 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Editor do informativo mensal do Quórum de Élderes.">
+<meta name="theme-color" content="#FFFDF9">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Informativo">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="icon" href="assets/icones/icone.svg" type="image/svg+xml">
+<link rel="icon" href="assets/icones/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/icones/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
 <title>Informativo do Quórum de Élderes</title>
 <script src="assets/fontes.js"></script>
 <script src="assets/imagem-padrao.js"></script>
@@ -76,9 +86,11 @@
 [hidden]{display:none!important}
 html,body{margin:0;height:100%}
 body{display:flex;flex-direction:column;background:var(--bg);color:var(--ink);font:14px/1.4 -apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif}
+html{-webkit-text-size-adjust:100%}
 button,select,input{font:inherit}
+button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 
-.bar{flex-shrink:0;min-height:56px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:10px 16px;background:var(--panel);border-bottom:1px solid var(--line)}
+.bar{flex-shrink:0;min-height:56px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:calc(10px + env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 10px max(16px,env(safe-area-inset-left));background:var(--panel);border-bottom:1px solid var(--line)}
 .bar-title{font-family:'Alegreya',Georgia,serif;font-weight:700;font-size:21px;white-space:nowrap}
 .bar-status{color:var(--muted);font-size:12.5px;white-space:nowrap}
 .bar-spacer{flex:1}
@@ -108,7 +120,7 @@ button,select,input{font:inherit}
 .ed-tag{margin-left:8px;font-size:11.5px;font-weight:500;color:var(--muted)}
 .ed-tag.alerta{color:var(--gold);font-weight:600}
 .btn.pendente::before{content:'';width:7px;height:7px;border-radius:50%;background:#B08A55}
-.dlg{border:0;padding:0;border-radius:14px;box-shadow:0 20px 50px rgba(30,43,60,.3);width:min(520px,calc(100% - 32px));color:var(--ink);background:var(--panel)}
+.dlg{border:0;padding:0;border-radius:14px;box-shadow:0 20px 50px rgba(30,43,60,.3);width:min(520px,calc(100% - 32px));max-height:calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom));overflow:auto;color:var(--ink);background:var(--panel)}
 .dlg::backdrop{background:rgba(30,43,60,.45)}
 .dlg-corpo{padding:22px 24px;display:flex;flex-direction:column;gap:12px;font-size:14px;line-height:1.5}
 .dlg h2{margin:0;font-family:'Alegreya',Georgia,serif;font-size:23px;line-height:1.1}
@@ -149,7 +161,7 @@ button,select,input{font:inherit}
 .cor-livre{width:30px;height:26px;padding:0;border:1px solid var(--line2);border-radius:6px;background:#fff;cursor:pointer}
 
 .corpo{display:flex;flex:1;min-height:0}
-.area{flex:1;min-width:0;overflow:auto;padding:0 24px 40px}
+.area{flex:1;min-width:0;overflow:auto;padding:0 max(24px,env(safe-area-inset-right)) calc(40px + env(safe-area-inset-bottom)) max(24px,env(safe-area-inset-left))}
 .hist{width:320px;flex-shrink:0;display:flex;flex-direction:column;min-height:0;background:var(--panel);border-left:1px solid var(--line)}
 .hist-topo{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;padding:16px 12px 10px 18px;border-bottom:1px solid var(--line)}
 .hist-topo h2{margin:0;font-family:'Alegreya',Georgia,serif;font-size:21px;line-height:1.1}
@@ -165,7 +177,7 @@ button,select,input{font:inherit}
 .hist-autor{color:var(--muted)}
 .hist-tag{flex-basis:100%;font-size:11.5px;font-weight:600;color:var(--gold)}
 .hist-vazio{padding:12px 10px;font-size:13px;color:var(--muted)}
-.hist-rodape{margin:0;padding:12px 18px 16px;border-top:1px solid var(--line);font-size:12px;line-height:1.45;color:var(--muted)}
+.hist-rodape{margin:0;padding:12px 18px calc(16px + env(safe-area-inset-bottom));border-top:1px solid var(--line);font-size:12px;line-height:1.45;color:var(--muted)}
 .previa-aviso{position:sticky;top:8px;z-index:5;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 10px;width:fit-content;max-width:100%;margin:0 auto 12px;padding:8px 10px 8px 16px;border-radius:12px;background:var(--ink);color:#F6F2EA;font-size:13.5px;box-shadow:0 8px 24px rgba(30,43,60,.25)}
 .previa-aviso .btn{background:transparent;border-color:rgba(246,242,234,.35);color:#F6F2EA}
 .previa-aviso .btn:hover{background:rgba(246,242,234,.12)}
@@ -186,7 +198,7 @@ button,select,input{font:inherit}
 .area-head{display:flex;align-items:center;justify-content:flex-end;min-height:48px;margin:0 auto}
 .stage{margin:0 auto;box-shadow:0 1px 2px rgba(30,43,60,.08),0 14px 36px rgba(30,43,60,.16)}
 #page{width:800px;height:1120px;transform-origin:0 0}
-.aviso{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);max-width:calc(100% - 32px);background:#FBEDE9;color:var(--danger);border:1px solid #EBC7BE;padding:9px 14px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:0 6px 20px rgba(30,43,60,.12);z-index:40}
+.aviso{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));transform:translateX(-50%);max-width:calc(100% - 32px);background:#FBEDE9;color:var(--danger);border:1px solid #EBC7BE;padding:9px 14px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:0 6px 20px rgba(30,43,60,.12);z-index:40}
 .fmt{position:fixed;top:0;left:0;z-index:45;display:flex;align-items:center;gap:2px;padding:4px 6px;background:#FFFDF9;border:1px solid var(--line2);border-radius:10px;box-shadow:0 8px 24px rgba(30,43,60,.18);color:var(--ink);font-size:13px}
 .fmt[hidden],.fmt-pop[hidden]{display:none}
 .fmt button{height:30px;min-width:30px;padding:0 6px;border:0;border-radius:6px;background:none;color:inherit;cursor:pointer;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
@@ -213,7 +225,7 @@ button,select,input{font:inherit}
 .fmt .fmt-ok{flex-direction:row;padding:0 10px;background:var(--ink);color:#F6F2EA;font-weight:600}
 .fmt .fmt-ok:hover{background:#2C3D54}
 .fmt .fmt-link button:not(.fmt-ok){flex-direction:row;padding:0 8px;font-weight:600}
-.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,8px);background:var(--ink);color:#F6F2EA;padding:10px 16px;border-radius:10px;font-size:13.5px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:60;max-width:calc(100% - 32px)}
+.toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));transform:translate(-50%,8px);background:var(--ink);color:#F6F2EA;padding:10px 16px;border-radius:10px;font-size:13.5px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:60;max-width:calc(100% - 32px)}
 .toast.on{opacity:1;transform:translate(-50%,0)}
 .drop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(30,43,60,.6);color:#fff;font-size:19px;font-weight:600;z-index:50;pointer-events:none;text-align:center;padding:24px}
 .drop span{border:2px dashed rgba(255,255,255,.7);border-radius:16px;padding:28px 36px;line-height:1.5}
@@ -246,6 +258,27 @@ body.arrastando .drop{display:flex}
   #page .img-ctl div{display:flex;gap:6px}
   #page .img-ctl button{pointer-events:auto;height:30px;padding:0 12px;border-radius:8px;border:0;background:rgba(30,43,60,.88);color:#F6F2EA;font-size:12.5px;font-weight:600;cursor:pointer}
   #page .img-ctl button:hover{background:#1E2B3C}
+}
+
+/* Celular: barra numa linha só (rola de lado), painéis sobem de baixo, campos sem zoom automático. */
+@media (max-width:760px){
+  .bar{flex-wrap:nowrap;overflow-x:auto;gap:8px;scrollbar-width:none}
+  .bar::-webkit-scrollbar{display:none}
+  .bar>*{flex-shrink:0}
+  .bar-title,.bar-spacer{display:none}
+  .ed-painel{position:fixed;left:max(8px,env(safe-area-inset-left));right:max(8px,env(safe-area-inset-right));width:auto}
+  .area{padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right))}
+  .hist{position:fixed;left:0;right:0;bottom:0;z-index:46;width:auto;height:min(78dvh,680px);border-left:0;border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -12px 32px rgba(30,43,60,.2);padding:0 env(safe-area-inset-right) 0 env(safe-area-inset-left)}
+  .fmt{flex-wrap:wrap;max-width:calc(100vw - 16px)}
+}
+/* Toque: sem hover, os botões de editar a página ficam sempre à mostra. */
+@media (hover:none){
+  #page .add,#page .img-ctl{opacity:1}
+  #page .rm{opacity:.75}
+}
+/* O iPhone dá zoom sozinho em campos com letra menor que 16 px. */
+@media (pointer:coarse){
+  .dlg-campo input,.fmt-tam,.fmt-link input,.msg-link,.msg-texto,.fmt-fonte{font-size:16px}
 }
 
 @page{size:800px 1120px;margin:0}
@@ -1985,6 +2018,8 @@ function atualizarEdicoes() {
 }
 
 function abrirPainelEdicoes() {
+  // No celular a barra rola de lado; o painel fica fixo logo abaixo dela.
+  $('edPainel').style.top = matchMedia('(max-width:760px)').matches ? `${document.querySelector('.bar').getBoundingClientRect().bottom + 6}px` : '';
   $('edPainel').hidden = false;
   $('edAtual').setAttribute('aria-expanded', 'true');
   checarNovidades();
@@ -2204,7 +2239,14 @@ $('btnPNG').onclick = async () => {
   try {
     const c = await paginaParaCanvas(2);
     const blob = await new Promise((ok, erro) => c.toBlob(b => (b ? ok(b) : erro(new Error('vazio'))), 'image/png'));
-    baixar(blob, nomeArquivo('png'));
+    const arquivo = new File([blob], nomeArquivo('png'), { type: 'image/png' });
+    if (matchMedia('(pointer:coarse)').matches && navigator.canShare?.({ files: [arquivo] })) {
+      try {
+        await navigator.share({ files: [arquivo], title: `Informativo de ${MESES[state.mes]}` });
+      } catch (e) {
+        if (e.name !== 'AbortError') baixar(blob, arquivo.name); // sem permissão para compartilhar: baixa
+      }
+    } else baixar(blob, arquivo.name);
   } catch (e) {
     console.error(e);
     toast('Não consegui gerar a imagem neste navegador. Tente no Chrome, ou use “PDF / Imprimir”.');
@@ -2282,6 +2324,7 @@ async function iniciar() {
   document.fonts.ready.then(checarTamanho);
 }
 iniciar();
+if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => { /* segue sem modo offline */ });
 </script>
 </body>
 </html>
