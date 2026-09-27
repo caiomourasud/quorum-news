@@ -1,0 +1,45 @@
+{
+  "mes": 9,
+  "ano": 2026,
+  "ala": "Ala Ecoville",
+  "sigla": "QE",
+  "subtitulo": "Informativo do",
+  "titulo": "Quórum de Élderes",
+  "lema": "“Sede um”",
+  "lemaRef": "D&amp;C 38:27",
+  "cor": "#8A6A3E",
+  "imagemX": 44.3,
+  "imagemY": 0,
+  "discursos": [
+    {
+      "dia": "18",
+      "texto": ""
+    },
+    {
+      "dia": "25",
+      "texto": ""
+    }
+  ],
+  "vemSegueMe": [
+    {
+      "dia": "18",
+      "texto": ""
+    },
+    {
+      "dia": "25",
+      "texto": ""
+    }
+  ],
+  "anuncios": [
+    {
+      "destaque": "17",
+      "texto": "Aos domingos começamos pelas aulas, seguidas da reunião sacramental. Contamos com a sua presença!"
+    }
+  ],
+  "mensagem": {
+    "texto": "Ansiamos por nosso casamento com fé e confiança porque conscientemente nos preparamos para os convênios que fazemos na Casa do Senhor.",
+    "autor": "Élder Neil L. Andersen",
+    "cargo": "do Quórum dos Doze Apóstolos"
+  },
+  "imagem": null
+}
