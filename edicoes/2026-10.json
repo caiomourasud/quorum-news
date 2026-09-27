@@ -32,7 +32,7 @@
   ],
   "anuncios": [
     {
-      "destaque": "3",
+      "destaque": "<span style=\"font-size:35px\">3</span>",
       "texto": "Sessão de Sábado da Conferência Geral"
     },
     {
@@ -41,7 +41,7 @@
     },
     {
       "destaque": "11",
-      "texto": "Conferência da Estaca Iguaçú"
+      "texto": "<span style=\"font-size:14px\">Sessão de Sábado da Conferência da Estaca Iguaçú</span>"
     }
   ],
   "mensagem": {
