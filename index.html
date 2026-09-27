@@ -90,7 +90,9 @@ button,select,input{font:inherit}
 .btn-icone svg{flex-shrink:0}
 .grupo{display:flex;gap:6px;align-items:center}
 .quem{padding:0 12px 0 5px}
-.quem-ini{width:24px;height:24px;border-radius:50%;background:var(--ink);color:#F6F2EA;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.quem-ini{width:24px;height:24px;flex-shrink:0}
+.quem-ini circle{fill:var(--ink)}
+.quem-ini text{fill:#F6F2EA;font-size:12px;font-weight:700}
 .btn-perigo{background:var(--danger);border-color:var(--danger);color:#fff}
 .btn-perigo:hover{background:#7F2F24}
 .ed-atual{min-width:156px;justify-content:space-between}
@@ -293,7 +295,7 @@ body.arrastando .drop{display:flex}
   <button class="btn" id="btnHistorico" aria-pressed="false" hidden><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>Histórico</button>
   <div class="sep" id="sepConta" hidden></div>
   <button class="btn" id="btnEntrar" hidden>Entrar para editar</button>
-  <button class="btn quem" id="btnQuem" hidden title="Seu nome e chave de acesso"><span class="quem-ini" id="quemIni"></span><span id="quemNome"></span></button>
+  <button class="btn quem" id="btnQuem" hidden title="Seu nome e chave de acesso"><svg class="quem-ini" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12"/><text id="quemIni" x="12" y="16.3" text-anchor="middle"></text></svg><span id="quemNome"></span></button>
   <div class="sep"></div>
   <button class="btn" id="btnPDF" title="Abre a impressão: escolha “Salvar como PDF”">PDF / Imprimir</button>
   <button class="btn btn-primary" id="btnPNG">Baixar imagem</button>
