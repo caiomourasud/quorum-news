@@ -1,0 +1,57 @@
+{
+  "mes": 8,
+  "ano": 2026,
+  "ala": "Ala Ecoville",
+  "sigla": "QE",
+  "subtitulo": "Informativo do",
+  "titulo": "Quórum de Élderes",
+  "lema": "“Sede um”",
+  "lemaRef": "D&amp;C 38:27",
+  "cor": "#8A6A3E",
+  "imagemX": 50,
+  "imagemY": 0,
+  "discursos": [
+    {
+      "dia": "13",
+      "texto": "<strong>Ministrar</strong> — “Que vos ameis uns aos outros, como eu vos amei a vós”"
+    },
+    {
+      "dia": "20",
+      "texto": "“Segue o profeta, não vais errar”"
+    },
+    {
+      "dia": "27",
+      "texto": "Jesus Cristo não é nosso fardo; Ele é nossa fonte de alívio"
+    }
+  ],
+  "vemSegueMe": [
+    {
+      "dia": "6",
+      "texto": "Tudo quanto tem fôlego louve ao Senhor"
+    },
+    {
+      "dia": "13",
+      "texto": "Ele endireitará as tuas veredas"
+    },
+    {
+      "dia": "20",
+      "texto": "Deus é a minha salvação"
+    },
+    {
+      "dia": "27",
+      "texto": "Uma obra maravilhosa e um assombro"
+    }
+  ],
+  "anuncios": [
+    {
+      "destaque": "17h",
+      "texto": "Aos domingos começamos pelas aulas, seguidas da reunião sacramental. Contamos com a sua presença!"
+    }
+  ],
+  "mensagem": {
+    "texto": "Ansiamos por nosso casamento com fé e confiança porque conscientemente nos preparamos para os convênios que fazemos na Casa do Senhor.",
+    "autor": "Élder Neil L. Andersen",
+    "cargo": "do Quórum dos Doze Apóstolos"
+  },
+  "imagem": null
+}

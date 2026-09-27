@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Informativo do Quórum de Élderes</title>
+<script src="assets/fontes.js"></script>
+<script src="assets/imagem-padrao.js"></script>
+<script src="assets/config.js"></script>
+<script>
+  // As fontes ficam num <style> da própria página para entrarem também na exportação em PNG.
+  (function () {
+    var s = document.createElement('style');
+    s.id = 'css-fontes';
+    s.textContent = window.FONTES_CSS || '';
+    document.head.appendChild(s);
+  })();
+</script>
+
+<!-- Estilo do informativo (o mesmo na tela, no PDF e no PNG). Formato fixo 5:7. -->
+<style id="css-pagina">
+.pg{width:800px;height:1120px;box-sizing:border-box;padding:36px 44px;background:#F6F2EA;display:flex;flex-direction:column;gap:18px;overflow:hidden;font-family:'Alegreya Sans',system-ui,sans-serif;color:#1E2B3C;-webkit-font-smoothing:antialiased}
+.pg *{box-sizing:border-box}
+.pg-top{display:flex;justify-content:space-between;align-items:center;height:40px;flex-shrink:0}
+.pg-brand{display:flex;align-items:center;gap:12px}
+.pg-mono{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--accent);display:flex;align-items:center;justify-content:center;padding-bottom:2px;font-family:'Alegreya',Georgia,serif;font-weight:700;font-size:15.5px;letter-spacing:.03em;color:#1E2B3C}
+.pg-ala{font-size:13px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#1E2B3C}
+.pg-date{font-size:13px;font-weight:500;letter-spacing:.13em;text-transform:uppercase;color:#5A6474}
+.pg-head{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;flex-shrink:0}
+.pg-kicker{font-family:'Alegreya',Georgia,serif;font-style:italic;font-weight:400;font-size:19px;line-height:1;color:#5A6474}
+.pg-title{margin:0;font-family:'Alegreya',Georgia,serif;font-weight:700;font-size:52px;line-height:1.05;letter-spacing:-.012em;color:#1E2B3C}
+.pg-motto{display:flex;align-items:center;gap:16px;width:100%;margin-top:8px}
+.pg-rule{flex-grow:1;height:1px;background:var(--accent)}
+.pg-motto-t{font-family:'Alegreya',Georgia,serif;font-style:italic;font-weight:500;font-size:17.5px;line-height:1.2;color:#1E2B3C}
+.pg-motto-ref{margin-left:.25em;font-style:normal;font-weight:400;color:#5A6474}
+.pg-motto-ref::before{content:'— '}
+.pg-main{flex-grow:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 316px;gap:18px}
+.pg-col{display:flex;flex-direction:column;gap:18px;min-height:0}
+.pg-card{padding:18px 22px;background:#FFFDF9;border:1px solid #E4DBCC;border-radius:14px;display:flex;flex-direction:column;gap:14px}
+.pg-card.cresce{flex-grow:1}
+.pg-h2row{position:relative;display:flex;align-items:center;gap:12px}
+.pg-h2{margin:0;font-family:'Alegreya',Georgia,serif;font-weight:700;font-size:21px;line-height:1;color:#1E2B3C}
+.pg-h2line{flex-grow:1;height:1px;background:#E4DBCC}
+.pg-list{display:flex;flex-direction:column;gap:12px}
+.pg-list.sm{gap:8px}
+.pg-item{position:relative;display:flex;gap:14px;align-items:baseline}
+.pg-num{width:34px;flex-shrink:0;font-family:'Alegreya',Georgia,serif;font-weight:700;font-size:25px;line-height:1;color:var(--accent)}
+.pg-txt{min-width:0;flex-grow:1;font-size:15.5px;line-height:1.38;color:#2A3544;overflow-wrap:anywhere}
+.pg-txt strong{font-weight:700;color:#1E2B3C}
+.pg-bday .pg-num{width:30px;font-size:21px}
+.pg-bday .pg-txt{line-height:1.3}
+.pg-imgbox{position:relative;flex:1 1 0;min-height:120px;border-radius:14px;overflow:hidden;background:#E4DBCC}
+.pg-img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;user-select:none}
+.pg-ann{position:relative;display:flex;gap:16px;align-items:center}
+.pg-ann-big{flex-shrink:0;font-family:'Alegreya',Georgia,serif;font-weight:800;font-size:42px;line-height:1;color:var(--accent)}
+.pg-msg{padding:24px 30px;background:#1E2B3C;border-radius:14px;display:flex;gap:18px;align-items:flex-start;flex-shrink:0}
+.pg-quote{flex-shrink:0;font-family:'Alegreya',Georgia,serif;font-weight:800;font-size:80px;line-height:.85;color:#D6BE92}
+.pg-msg-body{display:flex;flex-direction:column;gap:12px;min-width:0;flex-grow:1}
+.pg-msg-label{font-size:12px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#D6BE92}
+.pg-msg-text{font-family:'Alegreya',Georgia,serif;font-style:italic;font-weight:400;font-size:20px;line-height:1.4;color:#F6F2EA}
+.pg-msg-text strong{font-weight:700}
+.pg-msg-by{font-size:14px;line-height:1.3;color:#C9CFD8}
+.pg-msg-autor{font-weight:700;color:#F6F2EA}
+.pg-msg-cargo{margin-left:.3em}
+.pg-msg-cargo::before{content:'· '}
+.pg a{color:inherit;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:1.5px;text-underline-offset:2px}
+.pg-msg a{text-decoration-color:#D6BE92}
+.pg-motto-ref:empty,.pg-msg-cargo:empty,.pg-ann-big:empty{display:none}
+.pg-item:not(:has([data-f]:not(:empty))),.pg-ann:not(:has([data-f]:not(:empty))){display:none}
+</style>
+
+<!-- Estilo do editor (não entra no informativo exportado). -->
+<style>
+:root{--bg:#ECE6DA;--panel:#FFFDF9;--line:#E4DBCC;--line2:#D6CAB5;--ink:#1E2B3C;--muted:#5A6474;--gold:#8A6A3E;--gold-soft:#F3EADB;--danger:#9A3B2E}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font:14px/1.4 -apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif}
+button,select,input{font:inherit}
+
+.bar{min-height:56px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:10px 16px;background:var(--panel);border-bottom:1px solid var(--line)}
+.bar-title{font-family:'Alegreya',Georgia,serif;font-weight:700;font-size:21px;white-space:nowrap}
+.bar-status{color:var(--muted);font-size:12.5px;white-space:nowrap}
+.bar-spacer{flex:1}
+.sep{width:1px;height:24px;background:var(--line);margin:0 2px}
+.edicao{position:relative;display:flex;align-items:center;gap:2px}
+.btn-icone{width:32px;padding:0;justify-content:center;font-size:19px;line-height:1}
+.btn-icone:disabled{opacity:.35;cursor:default}
+.btn-icone:disabled:hover{background:var(--panel)}
+.ed-atual{min-width:156px;justify-content:space-between}
+.ed-atual svg{opacity:.55}
+.ed-painel{position:absolute;top:calc(100% + 6px);left:0;z-index:55;width:300px;padding:8px;background:var(--panel);border:1px solid var(--line2);border-radius:12px;box-shadow:0 12px 32px rgba(30,43,60,.18)}
+.ed-painel[hidden]{display:none}
+.ed-titulo{padding:6px 8px 4px;font-size:12px;font-weight:600;color:var(--muted)}
+.ed-lista{list-style:none;margin:0;padding:0;max-height:280px;overflow:auto}
+.ed-lista li{display:flex;align-items:center;gap:2px}
+.ed-item{flex:1;height:34px;padding:0 8px;border:0;border-radius:8px;background:none;color:var(--ink);font-size:13.5px;text-align:left;cursor:pointer}
+.ed-item:hover{background:var(--gold-soft)}
+.ed-item[aria-current="true"]{font-weight:700}
+.ed-tag{margin-left:8px;font-size:11.5px;font-weight:500;color:var(--muted)}
+.ed-tag.alerta{color:var(--gold);font-weight:600}
+.btn.pendente::before{content:'';width:7px;height:7px;border-radius:50%;background:#B08A55}
+.dlg{border:0;padding:0;border-radius:14px;box-shadow:0 20px 50px rgba(30,43,60,.3);width:min(520px,calc(100% - 32px));color:var(--ink);background:var(--panel)}
+.dlg::backdrop{background:rgba(30,43,60,.45)}
+.dlg-corpo{padding:22px 24px;display:flex;flex-direction:column;gap:12px;font-size:14px;line-height:1.5}
+.dlg h2{margin:0;font-family:'Alegreya',Georgia,serif;font-size:23px;line-height:1.1}
+.dlg p,.dlg ol{margin:0}
+.dlg ol{padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.dlg a{color:var(--gold)}
+.dlg-motivo{padding:8px 12px;border-radius:8px;background:var(--gold-soft);font-weight:600}
+.dlg-campo{display:flex;flex-direction:column;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted)}
+.dlg-campo input{height:38px;padding:0 10px;border:1px solid var(--line2);border-radius:8px;font:inherit;font-size:14px;font-weight:400;color:var(--ink);background:#fff}
+.dlg-campo input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(138,106,62,.18)}
+.dlg-erro{color:var(--danger);font-weight:600}
+.dlg-acoes{display:flex;gap:8px;align-items:center;margin-top:4px}
+.dlg-acoes .bar-spacer{flex:1}
+.ed-apagar{width:32px;height:32px;flex-shrink:0;border:0;border-radius:8px;background:none;color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.ed-apagar:hover{background:#F4E4E0;color:var(--danger)}
+.ed-sep{height:1px;background:var(--line);margin:8px 0}
+.ed-acao{display:flex;align-items:center;width:100%;height:34px;padding:0 8px;border:0;border-radius:8px;background:none;color:var(--ink);font-size:13.5px;font-weight:600;cursor:pointer;text-align:left}
+.ed-acao:hover{background:var(--gold-soft)}
+.ed-item:focus-visible,.ed-apagar:focus-visible,.ed-acao:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
+.ed-dica{margin:6px 8px 4px;font-size:12px;line-height:1.45;color:var(--muted)}
+.btn{height:34px;padding:0 12px;border-radius:8px;border:1px solid var(--line2);background:var(--panel);color:var(--ink);font-weight:600;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn:hover{background:var(--gold-soft)}
+.btn:focus-visible,.cor:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.btn-primary{background:var(--ink);border-color:var(--ink);color:#F6F2EA}
+.btn-primary:hover{background:#2C3D54}
+.btn:disabled{opacity:.6;cursor:progress}
+.btn-sm{height:28px;font-size:12.5px;padding:0 10px}
+.cores{display:flex;gap:7px;align-items:center}
+.cor{width:24px;height:24px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--line2);cursor:pointer;padding:0}
+.cor[aria-pressed="true"]{box-shadow:0 0 0 2px var(--ink)}
+.cor-livre{width:30px;height:26px;padding:0;border:1px solid var(--line2);border-radius:6px;background:#fff;cursor:pointer}
+
+.area{height:calc(100% - 56px);overflow:auto;padding:0 24px 40px}
+.area-head{display:flex;align-items:center;justify-content:flex-end;min-height:48px;margin:0 auto}
+.stage{margin:0 auto;box-shadow:0 1px 2px rgba(30,43,60,.08),0 14px 36px rgba(30,43,60,.16)}
+#page{width:800px;height:1120px;transform-origin:0 0}
+.aviso{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);max-width:calc(100% - 32px);background:#FBEDE9;color:var(--danger);border:1px solid #EBC7BE;padding:9px 14px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:0 6px 20px rgba(30,43,60,.12);z-index:40}
+.fmt{position:fixed;top:0;left:0;z-index:45;display:flex;align-items:center;gap:2px;padding:4px 6px;background:#FFFDF9;border:1px solid var(--line2);border-radius:10px;box-shadow:0 8px 24px rgba(30,43,60,.18);color:var(--ink);font-size:13px}
+.fmt[hidden],.fmt-pop[hidden]{display:none}
+.fmt button{height:30px;min-width:30px;padding:0 6px;border:0;border-radius:6px;background:none;color:inherit;cursor:pointer;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.fmt button:hover{background:#F0E8DA}
+.fmt button[aria-pressed="true"]{background:#E6D9C2}
+.fmt button:focus-visible,.fmt-fonte:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+.fmt-letra{font-family:'Alegreya',Georgia,serif;font-size:17px;line-height:1}
+.fmt-b{font-weight:800}
+.fmt-i{font-style:italic;font-weight:600}
+.fmt-u{font-weight:600;text-decoration:underline;text-underline-offset:2px}
+.fmt-barra{width:16px;height:3px;border-radius:1px;background:currentColor;box-shadow:inset 0 0 0 1px rgba(30,43,60,.15)}
+.fmt-sep{width:1px;height:20px;background:var(--line);margin:0 4px;flex-shrink:0}
+.fmt-fonte{height:30px;border:0;border-radius:6px;background:none;padding:0 4px;font-size:13px;color:inherit;cursor:pointer}
+.fmt-fonte:hover{background:#F0E8DA}
+.fmt-tam{width:40px;height:26px;text-align:center;border:1px solid var(--line2);border-radius:6px;background:#fff;font-size:13px;color:inherit;padding:0}
+.fmt-tam:focus,.fmt-link input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(138,106,62,.18)}
+.fmt-mais{font-size:18px;line-height:1}
+.fmt-pop{position:absolute;top:calc(100% + 6px);left:0;padding:8px;background:#FFFDF9;border:1px solid var(--line2);border-radius:10px;box-shadow:0 8px 24px rgba(30,43,60,.18)}
+.fmt-cores{display:grid;grid-template-columns:repeat(6,22px);gap:7px}
+.fmt .fmt-cores button{width:22px;height:22px;min-width:0;padding:0;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(30,43,60,.2)}
+.fmt .fmt-cores .fmt-nenhum{grid-column:1/-1;width:auto;height:28px;border-radius:6px;box-shadow:none;flex-direction:row;justify-content:flex-start;padding:0 6px;font-size:12.5px}
+.fmt-link{display:flex;gap:6px;align-items:center;width:340px}
+.fmt-link input{flex:1;min-width:0;height:30px;padding:0 8px;border:1px solid var(--line2);border-radius:6px;background:#fff;font-size:13px;color:inherit}
+.fmt .fmt-ok{flex-direction:row;padding:0 10px;background:var(--ink);color:#F6F2EA;font-weight:600}
+.fmt .fmt-ok:hover{background:#2C3D54}
+.fmt .fmt-link button:not(.fmt-ok){flex-direction:row;padding:0 8px;font-weight:600}
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,8px);background:var(--ink);color:#F6F2EA;padding:10px 16px;border-radius:10px;font-size:13.5px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:60;max-width:calc(100% - 32px)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.drop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(30,43,60,.6);color:#fff;font-size:19px;font-weight:600;z-index:50;pointer-events:none;text-align:center;padding:24px}
+.drop span{border:2px dashed rgba(255,255,255,.7);border-radius:16px;padding:28px 36px;line-height:1.5}
+body.arrastando .drop{display:flex}
+
+/* Edição direto na página. Sem o mouse em cima, a página fica igual à exportada. */
+@media screen{
+  #page [contenteditable]{outline:none;border-radius:3px;cursor:text}
+  #page [contenteditable]:hover{outline:1px dashed rgba(138,106,62,.75);outline-offset:3px}
+  #page [contenteditable]:focus{outline:2px solid #B08A55;outline-offset:3px}
+  #page:not(.medindo) :is(.pg-top,.pg-head,.pg-card,.pg-msg):hover [contenteditable]:empty::after,
+  #page:not(.medindo) [contenteditable]:focus:empty::after{content:attr(data-ph);opacity:.38}
+  #page:not(.medindo) :is(.pg-head,.pg-msg):is(:hover,:focus-within) :is(.pg-motto-ref,.pg-msg-cargo):empty{display:inline}
+  #page:not(.medindo) .pg-card:is(:hover,:focus-within) .pg-ann-big:empty{display:block}
+  #page:not(.medindo) .pg-card:is(:hover,:focus-within) :is(.pg-item,.pg-ann),#page:not(.medindo) .novo{display:flex}
+  #page .pg-date{cursor:pointer}
+  #page .pg-imgbox{cursor:grab;touch-action:none}
+  #page .pg-imgbox.puxando{cursor:grabbing}
+  #page .ctl{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;transition:opacity .15s}
+  #page .rm{position:absolute;left:-21px;top:1px;width:18px;height:18px;border-radius:50%;border:0;padding:0;background:#E9DFD0;color:#5A6474;font-size:13px;line-height:18px;cursor:pointer;opacity:0}
+  #page .pg-item:hover>.rm,#page .pg-ann:hover>.rm,#page .pg-item:focus-within>.rm,#page .pg-ann:focus-within>.rm{opacity:1}
+  #page .rm:hover{background:var(--danger);color:#fff}
+  #page .add{position:absolute;right:0;top:50%;transform:translateY(-50%);height:24px;padding:0 10px;border-radius:12px;border:1px solid #D6CAB5;background:#FFFDF9;color:#8A6A3E;font-size:12px;font-weight:600;cursor:pointer;opacity:0}
+  #page .pg-card:hover .add,#page .pg-card:focus-within .add{opacity:1}
+  #page .add:hover{background:#F3EADB}
+  #page .img-ctl{position:absolute;inset:12px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;pointer-events:none;opacity:0}
+  #page .pg-imgbox:hover .img-ctl,#page .pg-imgbox.puxando .img-ctl{opacity:1}
+  #page .img-ctl span{padding:5px 10px;border-radius:12px;background:rgba(30,43,60,.72);color:#F6F2EA;font-size:12px;font-weight:600}
+  #page .img-ctl div{display:flex;gap:6px}
+  #page .img-ctl button{pointer-events:auto;height:30px;padding:0 12px;border-radius:8px;border:0;background:rgba(30,43,60,.88);color:#F6F2EA;font-size:12.5px;font-weight:600;cursor:pointer}
+  #page .img-ctl button:hover{background:#1E2B3C}
+}
+
+@page{size:800px 1120px;margin:0}
+@media print{
+  html,body{height:auto;background:#F6F2EA}
+  .bar,.area-head,.aviso,.toast,.drop,.ctl,.fmt{display:none!important}
+  .area{height:auto;overflow:visible;padding:0}
+  .stage{width:auto!important;height:auto!important;box-shadow:none}
+  #page{transform:none!important}
+  .pg{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="bar-title">Informativo</div>
+  <div class="edicao" id="edicao">
+    <button class="btn btn-icone" id="edAnterior" title="Edição anterior" aria-label="Edição anterior">‹</button>
+    <button class="btn ed-atual" id="edAtual" aria-haspopup="true" aria-expanded="false" title="Ver todas as edições"><span id="edNome"></span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+    <button class="btn btn-icone" id="edProxima" title="Próxima edição" aria-label="Próxima edição">›</button>
+    <div class="ed-painel" id="edPainel" hidden>
+      <div class="ed-titulo">Edições salvas</div>
+      <ul class="ed-lista" id="edLista"></ul>
+      <div class="ed-sep"></div>
+      <button class="ed-acao" id="btnDescartar" hidden>Descartar alterações e voltar à versão publicada</button>
+      <button class="ed-acao" id="btnConexao" hidden>Conexão com o GitHub…</button>
+      <div class="ed-sep" id="sepGithub" hidden></div>
+      <button class="ed-acao" id="btnBackup">Salvar backup de todas as edições</button>
+      <button class="ed-acao" id="btnRestaurar">Restaurar backup…</button>
+      <p class="ed-dica" id="edDica">Tudo fica salvo neste navegador. De vez em quando, salve um backup e guarde o arquivo junto com os PDFs.</p>
+    </div>
+  </div>
+  <div class="bar-status" id="status">Salvo neste navegador</div>
+  <div class="bar-spacer"></div>
+  <div class="cores" id="cores" role="group" aria-label="Cor de destaque">
+    <input class="cor-livre" id="corLivre" type="color" title="Outra cor" aria-label="Escolher outra cor">
+  </div>
+  <div class="sep"></div>
+  <button class="btn" id="btnNovoMes" title="Cria a edição do mês seguinte à mais recente">Novo mês</button>
+  <div class="sep"></div>
+  <button class="btn" id="btnPublicar" hidden title="Publica esta edição no GitHub para todos verem. Os aniversariantes não são publicados.">Publicar</button>
+  <button class="btn" id="btnPDF" title="Abre a impressão: escolha “Salvar como PDF”">PDF / Imprimir</button>
+  <button class="btn btn-primary" id="btnPNG">Baixar imagem</button>
+</header>
+
+<main class="area" id="area">
+  <div class="area-head" id="areaHead">
+    <button class="btn btn-sm" id="btnZoom"></button>
+  </div>
+  <div class="stage" id="stage"><div id="page"><div class="pg" id="pg"></div></div></div>
+</main>
+
+<div class="aviso" id="aviso" hidden>O conteúdo passou do tamanho da página. Encurte algum texto ou remova um item.</div>
+<input type="file" id="arquivoImagem" accept="image/*" hidden>
+<input type="file" id="arquivoEdicao" accept=".json,application/json" hidden>
+<div class="drop"><span>Solte aqui<br><small>imagem troca a foto · arquivo .json abre uma edição salva</small></span></div>
+<div class="fmt" id="fmt" role="toolbar" aria-label="Formatação do texto" hidden>
+  <select class="fmt-fonte" id="fmtFonte" aria-label="Fonte" title="Fonte">
+    <option value="Alegreya">Alegreya</option>
+    <option value="Alegreya Sans">Alegreya Sans</option>
+  </select>
+  <span class="fmt-sep"></span>
+  <button type="button" class="fmt-mais" data-cmd="menor" title="Diminuir tamanho" aria-label="Diminuir tamanho">−</button>
+  <input class="fmt-tam" id="fmtTam" inputmode="decimal" autocomplete="off" aria-label="Tamanho da fonte" title="Tamanho da fonte (Enter aplica)">
+  <button type="button" class="fmt-mais" data-cmd="maior" title="Aumentar tamanho" aria-label="Aumentar tamanho">+</button>
+  <span class="fmt-sep"></span>
+  <button type="button" data-cmd="bold" aria-pressed="false" title="Negrito (⌘B)" aria-label="Negrito"><span class="fmt-letra fmt-b">B</span></button>
+  <button type="button" data-cmd="italic" aria-pressed="false" title="Itálico (⌘I)" aria-label="Itálico"><span class="fmt-letra fmt-i">I</span></button>
+  <button type="button" data-cmd="underline" aria-pressed="false" title="Sublinhado (⌘U)" aria-label="Sublinhado"><span class="fmt-letra fmt-u">U</span></button>
+  <span class="fmt-sep"></span>
+  <button type="button" data-pop="cor" title="Cor do texto" aria-label="Cor do texto"><span class="fmt-letra">A</span><span class="fmt-barra" id="fmtCorBarra"></span></button>
+  <button type="button" data-pop="fundo" title="Cor de destaque" aria-label="Cor de destaque">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 11-6 6v3h9l3-3"/><path d="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4"/></svg>
+    <span class="fmt-barra" id="fmtFundoBarra"></span>
+  </button>
+  <span class="fmt-sep"></span>
+  <button type="button" data-pop="link" aria-pressed="false" title="Link (⌘K)" aria-label="Link">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+  </button>
+  <button type="button" data-cmd="limpar" title="Limpar formatação" aria-label="Limpar formatação">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7V4h16v3"/><path d="M5 20h6"/><path d="M13 4 8 20"/><path d="m15 15 5 5"/><path d="m20 15-5 5"/></svg>
+  </button>
+  <div class="fmt-pop" data-painel="cor" hidden></div>
+  <div class="fmt-pop" data-painel="fundo" hidden></div>
+  <div class="fmt-pop fmt-link" data-painel="link" hidden>
+    <input id="fmtLink" type="url" autocomplete="off" placeholder="Cole o link (https://…)" aria-label="Endereço do link">
+    <button type="button" class="fmt-ok" data-cmd="link-ok">Aplicar</button>
+    <button type="button" data-cmd="link-rm" id="fmtLinkRm">Remover</button>
+  </div>
+</div>
+<dialog class="dlg" id="dlgGithub" aria-labelledby="dlgTitulo">
+  <form class="dlg-corpo" id="formGithub">
+    <h2 id="dlgTitulo">Conexão com o GitHub</h2>
+    <p class="dlg-motivo" id="dlgMotivo" hidden></p>
+    <p>Para publicar, este navegador precisa de uma chave de acesso ao repositório <b id="dlgRepo"></b>. Só quem publica precisa dela; para ver as edições, não.</p>
+    <ol>
+      <li>O dono do repositório cria a chave em <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com › Fine-grained tokens</a>. Em <i>Repository access</i>, escolha só este repositório; em <i>Permissions › Contents</i>, marque <i>Read and write</i>.</li>
+      <li>Cole a chave abaixo. Ela fica guardada só neste navegador.</li>
+    </ol>
+    <label class="dlg-campo">Chave de acesso<input id="dlgToken" type="password" autocomplete="off" spellcheck="false"></label>
+    <p class="dlg-erro" id="dlgErro" hidden></p>
+    <div class="dlg-acoes">
+      <button type="button" class="btn" id="dlgDesconectar">Desconectar este navegador</button>
+      <span class="bar-spacer"></span>
+      <button type="button" class="btn" id="dlgCancelar">Cancelar</button>
+      <button type="submit" class="btn btn-primary" id="dlgSalvar">Conectar</button>
+    </div>
+  </form>
+</dialog>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const MESES = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+const CORES = [['#8A6A3E', 'Dourado'], ['#2F5D8A', 'Azul'], ['#6B4E71', 'Ameixa'], ['#3E6B5A', 'Verde']];
+const CHAVE = 'informativo-qe:v1'; // versão antiga (uma edição só); migrada ao abrir
+const CHAVE_IMG = 'informativo-qe:v1:imagem';
+const CHAVE_ABERTA = 'informativo-qe:aberta';
+const CHAVE_ZOOM = 'informativo-qe:zoom';
+const LARGURA = 800, ALTURA = 1120; // 5:7
+
+// Os textos guardam HTML limpo (ver lerRico); só os dias e a sigla são texto puro.
+const PADRAO = {
+  mes: 8, ano: 2026,
+  ala: 'Ala Ecoville', sigla: 'QE',
+  subtitulo: 'Informativo do', titulo: 'Quórum de Élderes',
+  lema: '“Sede um”', lemaRef: 'D&C 38:27',
+  cor: '#8A6A3E',
+  imagem: null, // null = imagem original (assets/imagem-padrao.js)
+  imagemX: 50, imagemY: 0,
+  discursos: [
+    { dia: '13', texto: '<strong>Ministrar</strong> — “Que vos ameis uns aos outros, como eu vos amei a vós”' },
+    { dia: '20', texto: '“Segue o profeta, não vais errar”' },
+    { dia: '27', texto: 'Jesus Cristo não é nosso fardo; Ele é nossa fonte de alívio' },
+  ],
+  vemSegueMe: [
+    { dia: '6', texto: 'Tudo quanto tem fôlego louve ao Senhor' },
+    { dia: '13', texto: 'Ele endireitará as tuas veredas' },
+    { dia: '20', texto: 'Deus é a minha salvação' },
+    { dia: '27', texto: 'Uma obra maravilhosa e um assombro' },
+  ],
+  anuncios: [
+    { destaque: '17h', texto: 'Aos domingos começamos pelas aulas, seguidas da reunião sacramental. Contamos com a sua presença!' },
+  ],
+  aniversariantes: [], // nunca são publicados (dados pessoais): ficam só no navegador de quem edita
+  mensagem: {
+    texto: 'Ansiamos por nosso casamento com fé e confiança porque conscientemente nos preparamos para os convênios que fazemos na Casa do Senhor.',
+    autor: 'Élder Neil L. Andersen',
+    cargo: 'do Quórum dos Doze Apóstolos',
+  },
+};
+
+const LISTAS = {
+  discursos: { novo: { dia: '', texto: '' }, campo: 'texto' },
+  vemSegueMe: { novo: { dia: '', texto: '' }, campo: 'texto' },
+  anuncios: { novo: { destaque: '', texto: '' }, campo: 'texto' },
+  aniversariantes: { novo: { dia: '', nome: '' }, campo: 'nome' },
+};
+
+// ---------- utilidades ----------
+
+const $ = id => document.getElementById(id);
+const copia = o => JSON.parse(JSON.stringify(o));
+const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const aspas = s => String(s ?? '').replace(/(^|[\s(\[{—–-])"/g, '$1“').replace(/"/g, '”');
+const getPath = (o, p) => p.split('.').reduce((t, k) => (t == null ? t : t[k]), o);
+function setPath(o, p, v) {
+  const ks = p.split('.');
+  let t = o;
+  for (let i = 0; i < ks.length - 1; i++) t = t[ks[i]];
+  t[ks[ks.length - 1]] = v;
+}
+
+// Formatação guardada nos textos: negrito, itálico, sublinhado, cor, destaque, tamanho, fonte e link.
+// Tudo é relido do DOM e reescrito num HTML limpo, então nada além disso entra no informativo.
+const COR_OK = /^(#[0-9a-f]{3,8}|rgba?\([\d\s.,%]+\))$/i;
+const LINK_OK = /^(https?:|mailto:|tel:)/i;
+const FONTES = { 'Alegreya': "'Alegreya',Georgia,serif", 'Alegreya Sans': "'Alegreya Sans',system-ui,sans-serif" };
+const MARCA_COR = '#010203', MARCA_FUNDO = '#010204'; // cores provisórias usadas para voltar ao padrão
+const MARCA_COR_RGB = 'rgb(1, 2, 3)', MARCA_FUNDO_RGB = 'rgb(1, 2, 4)';
+
+function formatoDe(el, pai) {
+  const f = { ...pai }, s = el.style, n = el.nodeName;
+  if (n === 'B' || n === 'STRONG') f.b = true;
+  if (n === 'I' || n === 'EM') f.i = true;
+  if (n === 'U') f.u = true;
+  if (n === 'A' && LINK_OK.test(el.getAttribute('href') || '')) f.href = el.getAttribute('href');
+  if (n === 'FONT' && COR_OK.test(el.getAttribute('color') || '')) f.cor = el.getAttribute('color');
+  if (!s) return f;
+  if (/^(bold|[6-9]00)$/.test(s.fontWeight)) f.b = true;
+  else if (/^(normal|[1-5]00)$/.test(s.fontWeight)) f.b = false;
+  if (s.fontStyle === 'italic') f.i = true;
+  else if (s.fontStyle === 'normal') f.i = false;
+  if (/underline/.test(s.textDecorationLine || s.textDecoration || '')) f.u = true;
+  if (s.color === MARCA_COR_RGB) delete f.cor;
+  else if (COR_OK.test(s.color)) f.cor = s.color;
+  if (s.backgroundColor === MARCA_FUNDO_RGB) delete f.fundo;
+  else if (COR_OK.test(s.backgroundColor) && s.backgroundColor !== 'rgba(0, 0, 0, 0)') f.fundo = s.backgroundColor;
+  if (/^\d+(\.\d+)?px$/.test(s.fontSize)) {
+    const px = parseFloat(s.fontSize);
+    if (px >= 6 && px <= 160) f.tam = Math.round(px * 10) / 10;
+  }
+  const fonte = (s.fontFamily || '').split(',')[0].replace(/["']/g, '').trim();
+  if (FONTES[fonte]) f.fonte = fonte;
+  return f;
+}
+
+function tagsDe(f) {
+  const css = [];
+  if (f.b === false) css.push('font-weight:400');
+  if (f.i === false) css.push('font-style:normal');
+  if (f.cor) css.push(`color:${f.cor}`);
+  if (f.fundo) css.push(`background-color:${f.fundo}`);
+  if (f.tam) css.push(`font-size:${f.tam}px`);
+  if (f.fonte) css.push(`font-family:${FONTES[f.fonte]}`);
+  const abre = [], fecha = [];
+  const envolver = (a, z) => { abre.push(a); fecha.unshift(z); };
+  if (f.href) envolver(`<a href="${esc(f.href)}">`, '</a>');
+  if (f.b) envolver('<strong>', '</strong>');
+  if (f.i) envolver('<em>', '</em>');
+  if (f.u) envolver('<u>', '</u>');
+  if (css.length) envolver(`<span style="${css.join(';')}">`, '</span>'); // por último, para a cor valer também no negrito
+  return [abre.join(''), fecha.join('')];
+}
+
+function lerRico(raiz) {
+  const partes = [];
+  const andar = (no, f) => {
+    for (const c of no.childNodes) {
+      if (c.nodeType === Node.TEXT_NODE) partes.push({ t: c.nodeValue.replace(/ /g, ' '), f });
+      else if (c.nodeName === 'BR') partes.push({ t: '\n', f });
+      else if (c.nodeType === Node.ELEMENT_NODE && !c.classList.contains('ctl') && !/^(SCRIPT|STYLE|TEMPLATE)$/.test(c.nodeName)) {
+        if (/^(DIV|P)$/.test(c.nodeName) && partes.length) partes.push({ t: '\n', f });
+        andar(c, formatoDe(c, f));
+      }
+    }
+  };
+  andar(raiz, {});
+  while (partes.length && !partes[0].t.trim()) partes.shift();
+  while (partes.length && !partes[partes.length - 1].t.trim()) partes.pop();
+  if (!partes.length) return '';
+  partes[0].t = partes[0].t.replace(/^\s+/, '');
+  partes[partes.length - 1].t = partes[partes.length - 1].t.replace(/\s+$/, '');
+
+  const chave = f => JSON.stringify([f.b, f.i, f.u, f.cor, f.fundo, f.tam, f.fonte, f.href]);
+  let html = '', grupo = null, texto = '';
+  const fechar = () => {
+    if (grupo) { const [a, z] = tagsDe(grupo); html += a + esc(texto) + z; }
+    grupo = null;
+    texto = '';
+  };
+  for (const p of partes) {
+    if (p.t === '\n') { fechar(); html += '<br>'; }
+    else if (grupo && chave(grupo) === chave(p.f)) texto += p.t;
+    else { fechar(); grupo = p.f; texto = p.t; }
+  }
+  fechar();
+  return html;
+}
+const parseHtml = html => new DOMParser().parseFromString(`<body>${String(html ?? '')}</body>`, 'text/html').body;
+const limparRico = html => lerRico(parseHtml(html));
+const textoDe = html => parseHtml(html).textContent;
+
+// ---------- dados ----------
+
+function normalizar(s) {
+  s = s && typeof s === 'object' ? s : {};
+  const d = copia(PADRAO);
+  const out = { ...d, ...s, mensagem: { ...d.mensagem, ...(s.mensagem || {}) } };
+  delete out.id;
+  delete out._base;
+  for (const k of Object.keys(LISTAS)) out[k] = Array.isArray(out[k]) ? out[k].map(it => ({ ...LISTAS[k].novo, ...it })) : d[k];
+  for (const k of ['mes', 'ano', 'imagemX', 'imagemY']) out[k] = Number(out[k]) || 0;
+  out.mes = Math.min(11, Math.max(0, out.mes));
+  for (const k of ['ala', 'subtitulo', 'titulo', 'lema', 'lemaRef']) out[k] = limparRico(out[k]);
+  for (const k of Object.keys(LISTAS)) {
+    out[k].forEach(it => {
+      for (const c of Object.keys(LISTAS[k].novo)) it[c] = c === 'dia' ? String(it.dia ?? '') : limparRico(it[c]);
+    });
+  }
+  for (const c of ['texto', 'autor', 'cargo']) out.mensagem[c] = limparRico(out.mensagem[c]);
+  out.sigla = String(out.sigla ?? '');
+  if (!/^#[0-9a-f]{6}$/i.test(out.cor)) out.cor = PADRAO.cor;
+  if (typeof out.imagem !== 'string' || !out.imagem.startsWith('data:image/')) out.imagem = null;
+  return out;
+}
+
+// ---------- edições: uma por mês ----------
+// Cada edição fica salva neste navegador (IndexedDB). Com o GitHub configurado (assets/config.js ou site no
+// github.io), as edições também são publicadas no repositório, em edicoes/AAAA-MM.json, e todos veem a mesma
+// versão. Os aniversariantes nunca são publicados: ficam só no navegador de quem edita.
+
+const idDe = s => `${s.ano}-${String(s.mes + 1).padStart(2, '0')}`;
+const nomeDe = id => { const [a, m] = id.split('-').map(Number); return `${MESES[m - 1]} · ${a}`; };
+const plural = (n, um, varios) => `${n} ${n === 1 ? um : varios}`;
+
+const banco = (() => {
+  let conexao = null;
+  const abrir = () => conexao || (conexao = new Promise((ok, erro) => {
+    const r = indexedDB.open('informativo-qe', 1);
+    r.onupgradeneeded = () => r.result.createObjectStore('edicoes', { keyPath: 'id' });
+    r.onsuccess = () => ok(r.result);
+    r.onerror = () => erro(r.error);
+  }));
+  const usar = async (modo, fn) => {
+    const db = await abrir();
+    return new Promise((ok, erro) => {
+      const tx = db.transaction('edicoes', modo);
+      const req = fn(tx.objectStore('edicoes'));
+      tx.oncomplete = () => ok(req.result);
+      tx.onerror = tx.onabort = () => erro(tx.error);
+    });
+  };
+  return {
+    ler: id => usar('readonly', s => s.get(id)),
+    todas: () => usar('readonly', s => s.getAll()),
+    salvar: ed => usar('readwrite', s => s.put(ed)),
+    apagar: id => usar('readwrite', s => s.delete(id)),
+  };
+})();
+
+let state = normalizar({});
+let edicoes = [];          // ids conhecidos (deste navegador e do GitHub), em ordem cronológica
+const remotas = new Map(); // id -> sha do arquivo publicado no GitHub
+const bases = {};          // id -> última versão publicada que este navegador conhece: { sha, json, imagem, caminhoImagem }
+const sujas = new Set();   // ids com alterações ainda não publicadas
+let timerSalvar = null, salvando = Promise.resolve(), erroLocal = false, publicando = false, semConexao = false;
+
+// O que é publicado: tudo menos os aniversariantes; a imagem vai como arquivo à parte.
+const semImagem = s => { const { imagem, aniversariantes, ...resto } = s; return resto; };
+const impressao = img => (img ? `${img.length}:${img.slice(-64)}` : null);
+const estaSuja = s => { const b = bases[idDe(s)]; return !b || b.json !== JSON.stringify(semImagem(s)) || b.imagem !== impressao(s.imagem); };
+
+function agendarSalvar() {
+  clearTimeout(timerSalvar);
+  timerSalvar = setTimeout(salvarAgora, 300);
+}
+function salvarAgora() {
+  clearTimeout(timerSalvar);
+  const id = idDe(state);
+  const ed = { ...state, id, _base: bases[id] || null };
+  if (estaSuja(state)) sujas.add(id);
+  else sujas.delete(id);
+  salvando = salvando.then(() => banco.salvar(ed)).then(() => {
+    erroLocal = false;
+    if (!edicoes.includes(id)) edicoes = [...edicoes, id].sort();
+  }, () => { erroLocal = true; }).then(() => { atualizarEdicoes(); atualizarStatus(); });
+  atualizarStatus();
+  return salvando;
+}
+window.addEventListener('pagehide', salvarAgora);
+document.addEventListener('visibilitychange', () => { if (document.hidden) salvarAgora(); });
+
+function lembrarAberta() {
+  try { localStorage.setItem(CHAVE_ABERTA, idDe(state)); } catch (e) { /* ok */ }
+}
+
+function atualizarStatus() {
+  const id = idDe(state), g = github();
+  let texto;
+  if (erroLocal) texto = 'Não consegui salvar no navegador — use “Salvar backup”';
+  else if (!g) texto = 'Salvo neste navegador';
+  else if (publicando) texto = 'Publicando…';
+  else if (!sujas.has(id)) texto = remotas.get(id) === bases[id]?.sha || !remotas.has(id) ? 'Publicado' : 'Há uma versão mais nova publicada';
+  else if (!remotas.has(id)) texto = 'Ainda não publicada';
+  else texto = remotas.get(id) === bases[id]?.sha ? 'Alterações não publicadas' : 'Alterações não publicadas · há outra versão publicada';
+  if (g && semConexao && !publicando) texto += ' · sem conexão com o GitHub';
+  $('status').textContent = texto;
+  const btn = $('btnPublicar');
+  btn.hidden = !g;
+  btn.disabled = publicando;
+  btn.classList.toggle('pendente', !!g && sujas.has(id));
+}
+
+// A versão anterior guardava uma edição só no localStorage: ela vira a edição do mês dela.
+async function migrarVersaoAntiga() {
+  let s = null, img = null;
+  try {
+    s = JSON.parse(localStorage.getItem(CHAVE));
+    img = localStorage.getItem(CHAVE_IMG);
+  } catch (e) { return; }
+  if (!s || typeof s !== 'object') return;
+  const ed = normalizar({ ...s, imagem: img });
+  if (!(await banco.ler(idDe(ed)))) await banco.salvar({ ...ed, id: idDe(ed), _base: null });
+  try {
+    localStorage.setItem(CHAVE_ABERTA, idDe(ed));
+    localStorage.removeItem(CHAVE);
+    localStorage.removeItem(CHAVE_IMG);
+  } catch (e) { /* ok */ }
+}
+
+// ---------- GitHub ----------
+
+const CHAVE_TOKEN = 'informativo-qe:token-github';
+
+function github() {
+  const c = window.CONFIG_GITHUB || {};
+  let repositorio = String(c.repositorio || '').trim();
+  if (!repositorio && location.hostname.endsWith('.github.io')) {
+    const dono = location.hostname.split('.')[0];
+    const pasta = location.pathname.split('/').filter(Boolean)[0];
+    repositorio = `${dono}/${pasta && !pasta.includes('.') ? pasta : location.hostname}`;
+  }
+  return /^[\w.-]+\/[\w.-]+$/.test(repositorio) ? { repositorio, ramo: c.ramo || 'main' } : null;
+}
+const lerToken = () => { try { return localStorage.getItem(CHAVE_TOKEN) || ''; } catch (e) { return ''; } };
+
+async function api(metodo, caminho, corpo = null, token = lerToken()) {
+  const headers = { Accept: 'application/vnd.github+json' };
+  if (token) headers.Authorization = `Bearer ${token}`;
+  if (corpo) headers['Content-Type'] = 'application/json';
+  const r = await fetch(`https://api.github.com/repos/${github().repositorio}${caminho}`, {
+    method: metodo, headers, body: corpo ? JSON.stringify(corpo) : undefined, cache: 'no-store',
+  });
+  if (r.status === 401 && metodo === 'GET' && token && token === lerToken()) return api(metodo, caminho, corpo, ''); // chave vencida: lê sem ela
+  if (!r.ok) { const e = new Error(`GitHub respondeu ${r.status}`); e.status = r.status; throw e; }
+  return r.status === 204 ? null : r.json();
+}
+const lerArquivo = caminho => api('GET', `/contents/${caminho}?ref=${encodeURIComponent(github().ramo)}`);
+const gravarArquivo = (caminho, mensagem, base64, sha) => api('PUT', `/contents/${caminho}`, { message: mensagem, content: base64, branch: github().ramo, ...(sha ? { sha } : {}) });
+
+function paraBase64(bytes) {
+  let s = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  return btoa(s);
+}
+const deBase64 = b64 => Uint8Array.from(atob(b64.replace(/\s/g, '')), c => c.charCodeAt(0));
+
+async function atualizarRemotas() {
+  if (!github()) return;
+  try {
+    const lista = await lerArquivo('edicoes');
+    remotas.clear();
+    for (const f of lista) { const m = /^(\d{4}-\d{2})\.json$/.exec(f.name); if (m) remotas.set(m[1], f.sha); }
+    semConexao = false;
+  } catch (e) {
+    if (e.status === 404) { remotas.clear(); semConexao = false; } // ainda não há edições publicadas
+    else semConexao = true;
+  }
+  edicoes = [...new Set([...edicoes, ...remotas.keys()])].sort();
+  atualizarEdicoes();
+  atualizarStatus();
+}
+
+async function baixarImagemPublicada(caminho) {
+  const tipo = caminho.endsWith('.png') ? 'image/png' : 'image/jpeg';
+  const f = await lerArquivo(caminho);
+  if (f.content) return `data:${tipo};base64,${f.content.replace(/\s/g, '')}`;
+  const r = await fetch(f.download_url); // arquivos acima de 1 MB vêm sem conteúdo pela API
+  const blob = await r.blob();
+  return new Promise((ok, erro) => { const fr = new FileReader(); fr.onload = () => ok(fr.result); fr.onerror = erro; fr.readAsDataURL(blob); });
+}
+
+// Traz a versão publicada, mantendo os aniversariantes que este navegador tiver.
+async function trazerPublicada(id, aniversariantes = []) {
+  const f = await lerArquivo(`edicoes/${id}.json`);
+  const dados = JSON.parse(new TextDecoder().decode(deBase64(f.content)));
+  const caminhoImagem = typeof dados.imagem === 'string' && /^imagens\/[\w.-]+$/.test(dados.imagem) ? dados.imagem : null;
+  const imagem = caminhoImagem ? await baixarImagemPublicada(caminhoImagem) : null;
+  const estado = normalizar({ ...dados, imagem, aniversariantes });
+  bases[id] = { sha: f.sha, json: JSON.stringify(semImagem(estado)), imagem: impressao(estado.imagem), caminhoImagem };
+  remotas.set(id, f.sha);
+  sujas.delete(id);
+  await banco.salvar({ ...estado, id, _base: bases[id] });
+  return estado;
+}
+
+// Abre a versão deste navegador; busca a publicada se ela for mais nova e não houver alterações locais.
+async function carregarEdicao(id) {
+  const reg = await banco.ler(id).catch(() => null);
+  if (reg?._base) bases[id] = reg._base;
+  const local = reg ? normalizar(reg) : null;
+  if (local && estaSuja(local)) sujas.add(id);
+  else sujas.delete(id);
+  if (github() && remotas.has(id) && (!local || (!sujas.has(id) && remotas.get(id) !== bases[id]?.sha))) {
+    try {
+      return await trazerPublicada(id, local?.aniversariantes);
+    } catch (e) {
+      semConexao = true;
+      if (!local) throw e;
+    }
+  }
+  if (!local) throw new Error('edição não encontrada');
+  return local;
+}
+
+async function publicarImagem(dataUrl) {
+  const [cabecalho, b64] = dataUrl.split(',');
+  const bytes = deBase64(b64);
+  const hash = crypto.subtle
+    ? [...new Uint8Array(await crypto.subtle.digest('SHA-256', bytes))].slice(0, 10).map(b => b.toString(16).padStart(2, '0')).join('')
+    : String(Date.now());
+  const caminho = `imagens/${hash}.${cabecalho.includes('png') ? 'png' : 'jpg'}`;
+  try {
+    await lerArquivo(caminho);
+  } catch (e) {
+    if (e.status !== 404) throw e;
+    await gravarArquivo(caminho, 'Imagem do informativo', b64);
+  }
+  return caminho;
+}
+
+async function publicar() {
+  if (!github() || publicando) return;
+  if (!lerToken()) return abrirConexao('Para publicar, conecte este navegador ao GitHub.');
+  await salvarAgora();
+  const s = copia(state), id = idDe(s), base = bases[id];
+  publicando = true;
+  atualizarStatus();
+  try {
+    const caminhoImagem = !s.imagem ? null : base?.imagem === impressao(s.imagem) && base.caminhoImagem ? base.caminhoImagem : await publicarImagem(s.imagem);
+    const conteudo = paraBase64(new TextEncoder().encode(JSON.stringify({ ...semImagem(s), imagem: caminhoImagem }, null, 2) + '\n'));
+    const caminho = `edicoes/${id}.json`, mensagem = `Informativo de ${nomeDe(id)}`;
+    let r;
+    try {
+      r = await gravarArquivo(caminho, mensagem, conteudo, base?.sha);
+    } catch (e) {
+      if (e.status !== 409 && e.status !== 422) throw e;
+      // Alguém publicou esta edição depois da versão que este navegador conhece.
+      const atual = await lerArquivo(caminho).catch(() => null);
+      if (!confirm(`Outra pessoa publicou ${nomeDe(id)} depois que você abriu esta edição.\n\nPublicar mesmo assim substitui a versão dela pela sua. Continuar?`)) return;
+      r = await gravarArquivo(caminho, mensagem, conteudo, atual?.sha);
+    }
+    bases[id] = { sha: r.content.sha, json: JSON.stringify(semImagem(s)), imagem: impressao(s.imagem), caminhoImagem };
+    remotas.set(id, r.content.sha);
+    semConexao = false;
+    toast('Publicado. Quem abrir o site já vê esta versão.');
+  } catch (e) {
+    toast(e.status === 401 || e.status === 403 || e.status === 404
+      ? 'O GitHub recusou a chave de acesso. Confira em “Conexão com o GitHub”, no menu das edições.'
+      : 'Não consegui publicar. Verifique a internet e tente de novo.');
+  } finally {
+    publicando = false;
+    if (idDe(state) === id) await salvarAgora();
+    atualizarEdicoes();
+    atualizarStatus();
+  }
+}
+$('btnPublicar').onclick = publicar;
+
+// Ao voltar para a aba, traz o que outra pessoa tiver publicado (se não houver alterações locais).
+let ultimaChecagem = 0;
+async function checarNovidades() {
+  if (!github() || Date.now() - ultimaChecagem < 30000) return;
+  ultimaChecagem = Date.now();
+  await atualizarRemotas();
+  const id = idDe(state);
+  if (!sujas.has(id) && remotas.has(id) && remotas.get(id) !== bases[id]?.sha && !pgEl.contains(document.activeElement)) {
+    try {
+      state = await trazerPublicada(id, state.aniversariantes);
+      renderPagina();
+      toast(`${nomeDe(id)} foi atualizada com a versão publicada.`);
+    } catch (e) { /* tenta de novo na próxima vez */ }
+  }
+  atualizarEdicoes();
+  atualizarStatus();
+}
+window.addEventListener('focus', checarNovidades);
+
+function abrirConexao(motivo = '') {
+  const g = github();
+  if (!g) return;
+  fecharPainelEdicoes();
+  $('dlgRepo').textContent = g.repositorio;
+  $('dlgMotivo').textContent = motivo;
+  $('dlgMotivo').hidden = !motivo;
+  $('dlgErro').hidden = true;
+  $('dlgToken').value = '';
+  $('dlgToken').placeholder = lerToken() ? 'Já conectado. Cole outra chave para trocar' : 'github_pat_…';
+  $('dlgDesconectar').hidden = !lerToken();
+  $('dlgGithub').showModal();
+  $('dlgToken').focus();
+}
+$('formGithub').addEventListener('submit', async e => {
+  e.preventDefault();
+  const token = $('dlgToken').value.trim();
+  if (!token) { if (lerToken()) $('dlgGithub').close(); return; }
+  $('dlgSalvar').disabled = true;
+  try {
+    const repo = await api('GET', '', null, token);
+    if (!repo.permissions?.push) throw Object.assign(new Error('sem permissão'), { status: 403 });
+    localStorage.setItem(CHAVE_TOKEN, token);
+    $('dlgGithub').close();
+    toast('Conectado ao GitHub. Agora dá para publicar.');
+    atualizarStatus();
+  } catch (err) {
+    $('dlgErro').textContent = err.status === 401 ? 'O GitHub não reconheceu essa chave. Confira se ela foi copiada inteira.'
+      : err.status === 403 || err.status === 404 ? `Essa chave não tem permissão para gravar em ${github().repositorio}.`
+        : 'Não consegui falar com o GitHub. Verifique a internet.';
+    $('dlgErro').hidden = false;
+  } finally {
+    $('dlgSalvar').disabled = false;
+  }
+});
+$('dlgCancelar').onclick = () => $('dlgGithub').close();
+$('dlgDesconectar').onclick = () => {
+  try { localStorage.removeItem(CHAVE_TOKEN); } catch (e) { /* ok */ }
+  $('dlgGithub').close();
+  toast('Este navegador foi desconectado do GitHub.');
+};
+
+// ---------- página ----------
+
+const pgEl = $('pg');
+const imgEl = new Image();
+imgEl.className = 'pg-img';
+imgEl.alt = '';
+imgEl.draggable = false;
+
+// Um trecho editável da página. tipo: 'rico' (tem barra de formatação), 'multi' (aceita várias linhas)
+// e 'nome' (sem corretor ortográfico).
+function campo(tag, cls, path, ph, tipo = 'rico') {
+  const v = getPath(state, path) ?? '';
+  const rico = tipo.includes('rico');
+  return `<${tag} class="${cls}" data-f="${path}" data-ph="${esc(ph)}"${rico ? ' data-rico' : ''}${tipo.includes('multi') ? ' data-multi' : ''}` +
+    ` contenteditable="true" spellcheck="${rico && !tipo.includes('nome')}">${rico ? v : esc(v)}</${tag}>`;
+}
+
+function card(titulo, nome, corpo, rotulo, cresce = false) {
+  return `<div class="pg-card${cresce ? ' cresce' : ''}"><div class="pg-h2row"><h2 class="pg-h2">${titulo}</h2><div class="pg-h2line"></div>` +
+    `<button type="button" class="ctl add" data-acao="add" data-lista="${nome}" tabindex="-1">+ ${rotulo}</button></div>${corpo}</div>`;
+}
+
+const remover = (nome, i) => `<button type="button" class="ctl rm" data-acao="rm" data-lista="${nome}" data-i="${i}" title="Remover" tabindex="-1">×</button>`;
+
+function itens(nome, ph, extra = '') {
+  const cfg = LISTAS[nome];
+  return `<div class="pg-list${extra ? ' sm' : ''}">${state[nome].map((_, i) =>
+    `<div class="pg-item ${extra}">${remover(nome, i)}${campo('div', 'pg-num', `${nome}.${i}.dia`, '00', 'simples')}` +
+    `${campo('div', 'pg-txt', `${nome}.${i}.${cfg.campo}`, ph, cfg.campo === 'nome' ? 'rico nome' : 'rico')}</div>`
+  ).join('')}</div>`;
+}
+
+function htmlPagina() {
+  const anuncios = `<div class="pg-list">${state.anuncios.map((_, i) =>
+    `<div class="pg-ann">${remover('anuncios', i)}${campo('div', 'pg-ann-big', `anuncios.${i}.destaque`, '17h')}` +
+    `${campo('div', 'pg-txt', `anuncios.${i}.texto`, 'Texto do anúncio', 'rico multi')}</div>`
+  ).join('')}</div>`;
+  return `
+    <div class="pg-top">
+      <div class="pg-brand">${campo('div', 'pg-mono', 'sigla', 'QE', 'simples')}${campo('div', 'pg-ala', 'ala', 'Nome da ala', 'rico nome')}</div>
+      <div class="pg-date" data-acao="mes" title="Ver as edições">${MESES[state.mes]} · ${esc(state.ano)}</div>
+    </div>
+    <div class="pg-head">
+      ${campo('div', 'pg-kicker', 'subtitulo', 'Informativo do')}
+      ${campo('h1', 'pg-title', 'titulo', 'Título')}
+      <div class="pg-motto"><div class="pg-rule"></div><div class="pg-motto-t">${campo('span', '', 'lema', 'Lema')}${campo('span', 'pg-motto-ref', 'lemaRef', 'Referência')}</div><div class="pg-rule"></div></div>
+    </div>
+    <div class="pg-main">
+      <div class="pg-col">
+        ${card('Discursos', 'discursos', itens('discursos', 'Tema do discurso'), 'discurso', true)}
+        ${card('Vem, e Segue-me', 'vemSegueMe', itens('vemSegueMe', 'Título da lição'), 'lição', true)}
+        ${card('Anúncios', 'anuncios', anuncios, 'anúncio')}
+      </div>
+      <div class="pg-col">
+        <div class="pg-imgbox">
+          <div class="ctl img-ctl"><span>Arraste para enquadrar</span><div>
+            <button type="button" data-acao="trocar">Trocar imagem</button><button type="button" data-acao="original">Original</button>
+          </div></div>
+        </div>
+        ${card('Aniversariantes', 'aniversariantes', itens('aniversariantes', 'Nome', 'pg-bday'), 'nome')}
+      </div>
+    </div>
+    <div class="pg-msg">
+      <div class="pg-quote">“</div>
+      <div class="pg-msg-body">
+        <div class="pg-msg-label">Mensagem</div>
+        ${campo('div', 'pg-msg-text', 'mensagem.texto', 'Citação do mês', 'rico multi')}
+        <div class="pg-msg-by">${campo('span', 'pg-msg-autor', 'mensagem.autor', 'Autor', 'rico nome')}${campo('span', 'pg-msg-cargo', 'mensagem.cargo', 'Chamado')}</div>
+      </div>
+    </div>`;
+}
+
+function renderPagina() {
+  pgEl.style.setProperty('--accent', state.cor);
+  pgEl.innerHTML = htmlPagina();
+  const src = state.imagem || window.IMAGEM_PADRAO || '';
+  if (imgEl.getAttribute('src') !== src) imgEl.src = src;
+  imgEl.style.objectPosition = `${state.imagemX}% ${state.imagemY}%`;
+  pgEl.querySelector('.pg-imgbox').prepend(imgEl);
+  $('edNome').textContent = nomeDe(idDe(state));
+  marcarCor();
+  checarTamanho();
+  agendarSalvar();
+}
+
+// Mede sem os campos vazios que o hover revela, ou seja, do jeito que a página será exportada.
+function checarTamanho() {
+  $('page').classList.add('medindo');
+  const estourou = [pgEl, ...pgEl.querySelectorAll('.pg-main, .pg-col')].some(el => el.scrollHeight > el.clientHeight + 1);
+  $('page').classList.remove('medindo');
+  $('aviso').hidden = !estourou;
+}
+
+// ---------- edição no próprio informativo ----------
+
+function textoAntesDoCursor(el) {
+  const sel = getSelection();
+  if (!sel.rangeCount) return '';
+  const r = document.createRange();
+  r.selectNodeContents(el);
+  r.setEnd(sel.getRangeAt(0).startContainer, sel.getRangeAt(0).startOffset);
+  return r.toString();
+}
+
+const editavel = e => e.target.closest?.('[contenteditable]');
+
+function registrar(el) {
+  if (el.textContent === '') el.innerHTML = '';
+  const v = 'rico' in el.dataset ? lerRico(el) : el.textContent.replace(/\s+/g, ' ').trim();
+  setPath(state, el.dataset.f, v);
+  checarTamanho();
+  agendarSalvar();
+}
+pgEl.addEventListener('input', e => { const el = editavel(e); if (el) registrar(el); });
+
+// Ao sair do campo, redesenha com o conteúdo limpo (tira formatação estranha que o navegador possa ter posto).
+function finalizarCampo(el, destino) {
+  if (el === campoAtivo) esconderFmt();
+  const novo = el.closest('.novo');
+  if (novo && !novo.contains(destino)) novo.classList.remove('novo');
+  const v = getPath(state, el.dataset.f) ?? '';
+  el.innerHTML = 'rico' in el.dataset ? v : esc(v);
+  checarTamanho();
+}
+pgEl.addEventListener('focusout', e => {
+  const el = editavel(e);
+  if (!el) return;
+  if (el === campoAtivo && fmtBar.contains(e.relatedTarget)) return; // foi para a barra (tamanho, fonte, link)
+  finalizarCampo(el, e.relatedTarget);
+});
+
+pgEl.addEventListener('beforeinput', e => {
+  const el = editavel(e);
+  if (!el) return;
+  const t = e.inputType;
+  if ((t.startsWith('format') || t === 'insertLink') && !('rico' in el.dataset)) return e.preventDefault();
+  if (t === 'insertFromDrop') return e.preventDefault();
+  if (t === 'insertText' && e.data?.includes('"')) {
+    e.preventDefault();
+    const antes = textoAntesDoCursor(el).slice(-1);
+    document.execCommand('insertText', false, aspas(antes + e.data).slice(antes.length));
+  }
+});
+
+pgEl.addEventListener('keydown', e => {
+  const el = editavel(e);
+  if (!el) return;
+  if (e.key === 'Escape') return el.blur();
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k' && el === campoAtivo) {
+    e.preventDefault();
+    return abrirPainel('link');
+  }
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    if ('multi' in el.dataset && !(e.metaKey || e.ctrlKey)) document.execCommand('insertLineBreak');
+    else el.blur();
+  }
+});
+
+pgEl.addEventListener('paste', e => {
+  const el = editavel(e);
+  if (!el || [...e.clipboardData.files].some(f => f.type.startsWith('image/'))) return;
+  e.preventDefault();
+  let t = e.clipboardData.getData('text/plain');
+  if (!('multi' in el.dataset)) t = t.replace(/\s*\n\s*/g, ' ');
+  document.execCommand('insertText', false, aspas(t));
+});
+
+// ---------- barra de formatação (acima do texto em edição) ----------
+
+const fmtBar = $('fmt');
+let campoAtivo = null, selSalva = null;
+
+const CORES_TEXTO = [
+  ['#1E2B3C', 'Azul-marinho'], ['#5A6474', 'Cinza'], ['#C9CFD8', 'Cinza claro'], ['#FFFFFF', 'Branco'], ['#000000', 'Preto'], ['#8A6A3E', 'Dourado'],
+  ['#D6BE92', 'Areia'], ['#2F5D8A', 'Azul'], ['#6B4E71', 'Ameixa'], ['#3E6B5A', 'Verde'], ['#B4632A', 'Laranja'], ['#9A3B2E', 'Vermelho'],
+];
+const CORES_FUNDO = [['#F6E7B4', 'Amarelo'], ['#F3DCC4', 'Pêssego'], ['#F2D9D4', 'Rosa'], ['#E5DCEC', 'Lilás'], ['#DCE7F1', 'Azul'], ['#DCEADF', 'Verde']];
+const paleta = (cmd, cores, vazio) => `<div class="fmt-cores"><button type="button" class="fmt-nenhum" data-cmd="${cmd}" data-valor="">${vazio}</button>` +
+  cores.map(([c, n]) => `<button type="button" data-cmd="${cmd}" data-valor="${c}" style="background:${c}" title="${n}" aria-label="${n}"></button>`).join('') + '</div>';
+fmtBar.querySelector('[data-painel="cor"]').innerHTML = paleta('cor', CORES_TEXTO, 'Cor padrão');
+fmtBar.querySelector('[data-painel="fundo"]').innerHTML = paleta('fundo', CORES_FUNDO, 'Sem destaque');
+
+function posicionarFmt() {
+  if (!campoAtivo) return;
+  const r = campoAtivo.getBoundingClientRect();
+  const w = fmtBar.offsetWidth, h = fmtBar.offsetHeight;
+  let top = r.top - h - 10;
+  if (top < $('area').getBoundingClientRect().top + 4) top = r.bottom + 10;
+  const left = Math.min(Math.max(8, r.left - 6), innerWidth - w - 8);
+  fmtBar.style.transform = `translate(${Math.round(left)}px, ${Math.round(top)}px)`;
+}
+
+// O trecho que a barra vai formatar: a seleção atual, ou a última feita no campo (quando o foco está na barra).
+function intervalo() {
+  const sel = getSelection();
+  if (sel.rangeCount && campoAtivo.contains(sel.anchorNode)) return sel.getRangeAt(0);
+  return selSalva && campoAtivo.contains(selSalva.startContainer) ? selSalva : null;
+}
+function noDaSelecao() {
+  const r = intervalo();
+  let n = r ? r.startContainer : campoAtivo;
+  if (r && n.nodeType === Node.ELEMENT_NODE && n.childNodes[r.startOffset]) n = n.childNodes[r.startOffset];
+  if (n.nodeType !== Node.ELEMENT_NODE) n = n.parentElement;
+  return campoAtivo.contains(n) ? n : campoAtivo;
+}
+function prepararSelecao(tudoSeVazio) {
+  const el = campoAtivo, sel = getSelection(), r = intervalo();
+  if (document.activeElement !== el) el.focus({ preventScroll: true });
+  if (r) { sel.removeAllRanges(); sel.addRange(r); }
+  if (tudoSeVazio && sel.isCollapsed) {
+    const tudo = document.createRange();
+    tudo.selectNodeContents(el);
+    sel.removeAllRanges();
+    sel.addRange(tudo);
+  }
+}
+const linkAtual = () => { const a = noDaSelecao().closest('a'); return a && campoAtivo.contains(a) ? a : null; };
+
+function marcarFmt() {
+  if (!campoAtivo) return;
+  const cs = getComputedStyle(noDaSelecao());
+  if (document.activeElement === campoAtivo) {
+    for (const c of ['bold', 'italic', 'underline']) fmtBar.querySelector(`[data-cmd="${c}"]`).setAttribute('aria-pressed', String(document.queryCommandState(c)));
+  }
+  if (document.activeElement !== $('fmtTam')) $('fmtTam').value = Math.round(parseFloat(cs.fontSize));
+  const fonte = cs.fontFamily.split(',')[0].replace(/["']/g, '').trim();
+  $('fmtFonte').value = FONTES[fonte] ? fonte : 'Alegreya Sans';
+  $('fmtCorBarra').style.background = cs.color;
+  $('fmtFundoBarra').style.background = cs.backgroundColor === 'rgba(0, 0, 0, 0)' ? 'transparent' : cs.backgroundColor;
+  fmtBar.querySelector('[data-pop="link"]').setAttribute('aria-pressed', String(!!linkAtual()));
+}
+
+function fecharPaineis() {
+  fmtBar.querySelectorAll('[data-painel]').forEach(p => { p.hidden = true; });
+}
+function abrirPainel(nome) {
+  const painel = fmtBar.querySelector(`[data-painel="${nome}"]`), botao = fmtBar.querySelector(`[data-pop="${nome}"]`);
+  const estavaAberto = !painel.hidden;
+  fecharPaineis();
+  if (estavaAberto) return;
+  painel.hidden = false;
+  painel.style.left = Math.max(0, Math.min(botao.offsetLeft, fmtBar.offsetWidth - painel.offsetWidth)) + 'px';
+  if (nome === 'link') {
+    const a = linkAtual();
+    $('fmtLink').value = a ? a.getAttribute('href') : '';
+    $('fmtLinkRm').hidden = !a;
+    $('fmtLink').focus();
+    $('fmtLink').select();
+  }
+}
+function esconderFmt() {
+  campoAtivo = null;
+  selSalva = null;
+  fecharPaineis();
+  fmtBar.hidden = true;
+}
+
+function aplicarTamanho(px) {
+  px = Math.round(Math.min(120, Math.max(8, Number(String(px).replace(',', '.')) || 0)));
+  prepararSelecao(true);
+  // fontSize só aceita os tamanhos antigos 1–7; o 7 serve de marca e vira o tamanho em px logo depois.
+  document.execCommand('styleWithCSS', false, false);
+  document.execCommand('fontSize', false, '7');
+  const novos = [...campoAtivo.querySelectorAll('font[size="7"]')].map(f => {
+    const s = document.createElement('span');
+    s.style.fontSize = px + 'px';
+    s.append(...f.childNodes);
+    s.querySelectorAll('[style]').forEach(n => { n.style.fontSize = ''; });
+    f.replaceWith(s);
+    return s;
+  });
+  if (novos.length) {
+    const r = document.createRange();
+    r.setStartBefore(novos[0]);
+    r.setEndAfter(novos[novos.length - 1]);
+    getSelection().removeAllRanges();
+    getSelection().addRange(r);
+  }
+}
+
+function aplicarCor(comando, valor, marca, marcaRgb, prop) {
+  prepararSelecao(true);
+  document.execCommand('styleWithCSS', false, true);
+  document.execCommand(comando, false, valor || marca);
+  if (!valor) campoAtivo.querySelectorAll('[style]').forEach(n => { if (n.style[prop] === marcaRgb) n.style[prop] = ''; });
+}
+
+function aplicarLink() {
+  let url = $('fmtLink').value.trim();
+  if (!url) return removerLink();
+  if (!/^[a-z][a-z0-9+.-]*:/i.test(url)) url = (/^[^\s@/]+@[^\s@]+\.[^\s@]+$/.test(url) ? 'mailto:' : 'https://') + url;
+  if (!LINK_OK.test(url)) return toast('Use um link que comece com https://');
+  prepararSelecao(false);
+  const a = linkAtual();
+  if (a && getSelection().isCollapsed) return a.setAttribute('href', url);
+  prepararSelecao(true); // sem texto selecionado, o link vale para o campo inteiro
+  document.execCommand('createLink', false, url);
+}
+function removerLink() {
+  prepararSelecao(false);
+  const a = linkAtual(), sel = getSelection();
+  if (a && sel.isCollapsed) {
+    const r = document.createRange();
+    r.selectNodeContents(a);
+    sel.removeAllRanges();
+    sel.addRange(r);
+  }
+  document.execCommand('unlink');
+}
+
+function executar(cmd, valor) {
+  const el = campoAtivo;
+  if (!el) return;
+  switch (cmd) {
+    case 'bold': case 'italic': case 'underline':
+      prepararSelecao(false);
+      document.execCommand('styleWithCSS', false, false);
+      document.execCommand(cmd);
+      break;
+    case 'menor': case 'maior':
+      aplicarTamanho(parseFloat(getComputedStyle(noDaSelecao()).fontSize) + (cmd === 'maior' ? 1 : -1));
+      break;
+    case 'tamanho': aplicarTamanho(valor); break;
+    case 'fonte':
+      prepararSelecao(true);
+      document.execCommand('styleWithCSS', false, true);
+      document.execCommand('fontName', false, valor);
+      break;
+    case 'cor': aplicarCor('foreColor', valor, MARCA_COR, MARCA_COR_RGB, 'color'); break;
+    case 'fundo': aplicarCor('hiliteColor', valor, MARCA_FUNDO, MARCA_FUNDO_RGB, 'backgroundColor'); break;
+    case 'limpar':
+      prepararSelecao(true);
+      document.execCommand('removeFormat');
+      break;
+    case 'link-ok': aplicarLink(); break;
+    case 'link-rm': removerLink(); break;
+  }
+  if (campoAtivo !== el) return;
+  fecharPaineis();
+  registrar(el);
+  marcarFmt();
+  posicionarFmt();
+}
+
+pgEl.addEventListener('focusin', e => {
+  const el = editavel(e);
+  if (!el || !('rico' in el.dataset)) return;
+  if (el !== campoAtivo) { campoAtivo = el; selSalva = null; fecharPaineis(); }
+  fmtBar.hidden = false;
+  posicionarFmt();
+  marcarFmt();
+});
+fmtBar.addEventListener('focusout', e => {
+  if (campoAtivo && !fmtBar.contains(e.relatedTarget) && e.relatedTarget !== campoAtivo) finalizarCampo(campoAtivo, e.relatedTarget);
+});
+// Clicar nos botões não tira o cursor nem a seleção do texto.
+fmtBar.addEventListener('pointerdown', e => { if (!e.target.closest('input, select')) e.preventDefault(); });
+fmtBar.addEventListener('click', e => {
+  const pop = e.target.closest('[data-pop]');
+  if (pop) return abrirPainel(pop.dataset.pop);
+  const b = e.target.closest('[data-cmd]');
+  if (b) executar(b.dataset.cmd, b.dataset.valor);
+});
+$('fmtFonte').addEventListener('change', e => executar('fonte', e.target.value));
+$('fmtTam').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); executar('tamanho', e.target.value); }
+  else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') { e.preventDefault(); executar(e.key === 'ArrowUp' ? 'maior' : 'menor'); }
+  else if (e.key === 'Escape') { prepararSelecao(false); marcarFmt(); }
+});
+$('fmtLink').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); executar('link-ok'); }
+  else if (e.key === 'Escape') { fecharPaineis(); prepararSelecao(false); }
+});
+document.addEventListener('selectionchange', () => {
+  if (!campoAtivo) return;
+  const sel = getSelection();
+  if (sel.rangeCount && campoAtivo.contains(sel.anchorNode)) selSalva = sel.getRangeAt(0).cloneRange();
+  marcarFmt();
+});
+$('area').addEventListener('scroll', posicionarFmt, { passive: true });
+window.addEventListener('resize', posicionarFmt);
+
+function domingos(ano, mes) {
+  const out = [];
+  for (let d = new Date(ano, mes, 1); d.getMonth() === mes; d.setDate(d.getDate() + 1)) {
+    if (d.getDay() === 0) out.push(d.getDate());
+  }
+  return out;
+}
+
+function proximoDomingo(nome) {
+  const ultimo = Math.max(0, ...state[nome].map(it => parseInt(it.dia, 10)).filter(n => !isNaN(n)));
+  const d = domingos(state.ano, state.mes).find(n => n > ultimo);
+  return d ? String(d) : '';
+}
+
+pgEl.addEventListener('click', e => {
+  const b = e.target.closest('[data-acao]');
+  if (!b) return;
+  const nome = b.dataset.lista;
+  switch (b.dataset.acao) {
+    case 'add': {
+      const novo = { ...LISTAS[nome].novo };
+      if (nome === 'discursos' || nome === 'vemSegueMe') novo.dia = proximoDomingo(nome);
+      state[nome].push(novo);
+      renderPagina();
+      const i = state[nome].length - 1;
+      const foco = novo.dia || nome === 'anuncios' ? LISTAS[nome].campo : 'dia';
+      const alvo = pgEl.querySelector(`[data-f="${nome}.${i}.${foco}"]`);
+      alvo.parentElement.classList.add('novo'); // item vazio fica visível enquanto é preenchido
+      alvo.focus();
+      break;
+    }
+    case 'rm':
+      state[nome].splice(Number(b.dataset.i), 1);
+      renderPagina();
+      break;
+    case 'trocar':
+      $('arquivoImagem').click();
+      break;
+    case 'original':
+      state.imagem = null;
+      state.imagemX = 50;
+      state.imagemY = 0;
+      renderPagina();
+      break;
+    case 'mes':
+      abrirPainelEdicoes();
+      break;
+  }
+});
+
+// Arrastar a foto muda o enquadramento (object-position).
+let puxando = null;
+pgEl.addEventListener('pointerdown', e => {
+  const box = e.target.closest('.pg-imgbox');
+  if (!box || e.button !== 0 || e.target.closest('button')) return;
+  e.preventDefault();
+  box.setPointerCapture(e.pointerId);
+  const bw = box.offsetWidth, bh = box.offsetHeight;
+  const nw = imgEl.naturalWidth || bw, nh = imgEl.naturalHeight || bh;
+  const k = Math.max(bw / nw, bh / nh);
+  puxando = {
+    id: e.pointerId, box, x: e.clientX, y: e.clientY, X: state.imagemX, Y: state.imagemY,
+    escala: box.getBoundingClientRect().width / bw, sobraX: nw * k - bw, sobraY: nh * k - bh,
+  };
+  box.classList.add('puxando');
+});
+pgEl.addEventListener('pointermove', e => {
+  const p = puxando;
+  if (!p || e.pointerId !== p.id) return;
+  const lim = v => Math.round(Math.min(100, Math.max(0, v)) * 10) / 10;
+  if (p.sobraX > 1) state.imagemX = lim(p.X - (e.clientX - p.x) / p.escala / p.sobraX * 100);
+  if (p.sobraY > 1) state.imagemY = lim(p.Y - (e.clientY - p.y) / p.escala / p.sobraY * 100);
+  imgEl.style.objectPosition = `${state.imagemX}% ${state.imagemY}%`;
+});
+function soltar() {
+  if (!puxando) return;
+  puxando.box.classList.remove('puxando');
+  puxando = null;
+  agendarSalvar();
+}
+pgEl.addEventListener('pointerup', soltar);
+pgEl.addEventListener('pointercancel', soltar);
+
+// ---------- imagem ----------
+
+function carregarImg(src) {
+  return new Promise((ok, erro) => {
+    const img = new Image();
+    img.onload = () => ok(img);
+    img.onerror = erro;
+    img.src = src;
+  });
+}
+
+async function lerImagem(arquivo) {
+  if (!arquivo || !arquivo.type.startsWith('image/')) return toast('Esse arquivo não é uma imagem.');
+  const url = URL.createObjectURL(arquivo);
+  try {
+    const img = await carregarImg(url);
+    // Reduz fotos grandes para caber no armazenamento do navegador sem perder qualidade na exportação.
+    const k = Math.min(1, 1600 / Math.max(img.naturalWidth, img.naturalHeight));
+    const c = document.createElement('canvas');
+    c.width = Math.round(img.naturalWidth * k);
+    c.height = Math.round(img.naturalHeight * k);
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#F6F2EA';
+    ctx.fillRect(0, 0, c.width, c.height);
+    ctx.drawImage(img, 0, 0, c.width, c.height);
+    state.imagem = c.toDataURL('image/jpeg', 0.9);
+    state.imagemX = 50;
+    state.imagemY = 50;
+    renderPagina();
+    toast('Imagem trocada. Arraste a foto para ajustar o enquadramento.');
+  } catch (e) {
+    toast('Não consegui abrir essa imagem. Tente um arquivo JPG ou PNG.');
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
+$('arquivoImagem').onchange = e => { lerImagem(e.target.files[0]); e.target.value = ''; };
+
+document.addEventListener('paste', e => {
+  const arq = [...(e.clipboardData?.files || [])].find(f => f.type.startsWith('image/'));
+  if (arq) { e.preventDefault(); lerImagem(arq); }
+});
+
+const temArquivo = e => [...(e.dataTransfer?.types || [])].includes('Files');
+let arrastos = 0;
+window.addEventListener('dragenter', e => { if (temArquivo(e)) { arrastos++; document.body.classList.add('arrastando'); } });
+window.addEventListener('dragleave', e => { if (temArquivo(e) && --arrastos <= 0) { arrastos = 0; document.body.classList.remove('arrastando'); } });
+window.addEventListener('dragover', e => { if (temArquivo(e)) e.preventDefault(); });
+window.addEventListener('drop', e => {
+  if (!temArquivo(e)) return;
+  e.preventDefault();
+  arrastos = 0;
+  document.body.classList.remove('arrastando');
+  const arq = e.dataTransfer.files[0];
+  if (!arq) return;
+  if (/\.json$/i.test(arq.name)) restaurarBackup(arq);
+  else lerImagem(arq);
+});
+
+// ---------- barra: mês, cor, arquivos e exportação ----------
+
+
+$('cores').insertAdjacentHTML('afterbegin', CORES.map(([c, nome]) =>
+  `<button type="button" class="cor" data-cor="${c}" style="background:${c}" title="${nome}" aria-label="${nome}"></button>`).join(''));
+function marcarCor() {
+  document.querySelectorAll('[data-cor]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.cor.toLowerCase() === state.cor.toLowerCase())));
+  $('corLivre').value = /^#[0-9a-f]{6}$/i.test(state.cor) ? state.cor : '#8A6A3E';
+}
+function mudarCor(c) {
+  state.cor = c;
+  pgEl.style.setProperty('--accent', c);
+  marcarCor();
+  agendarSalvar();
+}
+$('cores').addEventListener('click', e => { const b = e.target.closest('[data-cor]'); if (b) mudarCor(b.dataset.cor); });
+$('corLivre').oninput = e => mudarCor(e.target.value);
+
+// Cria o mês seguinte à edição mais recente, copiando dela o que se repete.
+$('btnNovoMes').onclick = async () => {
+  await salvarAgora();
+  const ultimo = edicoes[edicoes.length - 1] || idDe(state);
+  let base = state;
+  if (ultimo !== idDe(state)) {
+    try { base = await carregarEdicao(ultimo); } catch (e) { return toast('Não consegui abrir a edição mais recente. Verifique a internet.'); }
+  }
+  const mes = (base.mes + 1) % 12, ano = base.ano + (base.mes === 11 ? 1 : 0);
+  const ok = confirm(`Criar a edição de ${MESES[mes]} · ${ano}?\n\n` +
+    `Ela começa como cópia de ${MESES[base.mes]} · ${base.ano}, com os domingos do mês preenchidos. ` +
+    'Discursos, Vem, e Segue-me e Aniversariantes começam vazios; anúncios, mensagem e imagem continuam.\n\n' +
+    `${MESES[base.mes]} · ${base.ano} continua salva no menu das edições.`);
+  if (!ok) return;
+  const novo = copia(base);
+  const dom = domingos(ano, mes).map(String);
+  novo.mes = mes;
+  novo.ano = ano;
+  // O 1º domingo costuma ser a reunião de jejum e testemunho, sem discursos.
+  novo.discursos = dom.slice(1).map(dia => ({ dia, texto: '' }));
+  novo.vemSegueMe = dom.map(dia => ({ dia, texto: '' }));
+  novo.aniversariantes = [{ dia: '', nome: '' }];
+  state = normalizar(novo);
+  await salvarAgora();
+  lembrarAberta();
+  renderPagina();
+  toast(`Edição de ${MESES[mes]} · ${ano} criada.${github() ? ' Publique quando estiver pronta.' : ''}`);
+};
+
+const ICONE_LIXO = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="m19 6-1 14H6L5 6"/></svg>';
+
+function atualizarEdicoes() {
+  const atual = idDe(state), g = github();
+  const lista = edicoes.includes(atual) ? edicoes : [...edicoes, atual].sort();
+  const i = lista.indexOf(atual);
+  $('edNome').textContent = nomeDe(atual);
+  $('edAnterior').disabled = i <= 0;
+  $('edProxima').disabled = i >= lista.length - 1;
+  $('edLista').innerHTML = [...lista].reverse().map(id => {
+    const tags = [];
+    if (id === atual) tags.push('<span class="ed-tag">aberta</span>');
+    if (g && sujas.has(id)) tags.push(`<span class="ed-tag alerta">${remotas.has(id) ? 'com alterações' : 'não publicada'}</span>`);
+    return `<li><button type="button" class="ed-item" data-abrir="${id}"${id === atual ? ' aria-current="true"' : ''}>${nomeDe(id)}${tags.join('')}</button>` +
+      (lista.length > 1 ? `<button type="button" class="ed-apagar" data-apagar="${id}" title="Excluir ${nomeDe(id)}" aria-label="Excluir ${nomeDe(id)}">${ICONE_LIXO}</button>` : '') +
+      '</li>';
+  }).join('');
+  $('btnDescartar').hidden = !(g && sujas.has(atual) && remotas.has(atual));
+  $('btnConexao').hidden = !g;
+  $('sepGithub').hidden = !g;
+  $('edDica').textContent = g
+    ? 'Publicar grava a edição no GitHub, e quem abrir o site vê essa versão. Os aniversariantes ficam só neste navegador.'
+    : 'Tudo fica salvo neste navegador. De vez em quando, salve um backup e guarde o arquivo junto com os PDFs.';
+}
+
+function abrirPainelEdicoes() {
+  $('edPainel').hidden = false;
+  $('edAtual').setAttribute('aria-expanded', 'true');
+  checarNovidades();
+}
+function fecharPainelEdicoes() {
+  $('edPainel').hidden = true;
+  $('edAtual').setAttribute('aria-expanded', 'false');
+}
+$('edAtual').onclick = () => ($('edPainel').hidden ? abrirPainelEdicoes() : fecharPainelEdicoes());
+document.addEventListener('pointerdown', e => { if (!$('edPainel').hidden && !$('edicao').contains(e.target)) fecharPainelEdicoes(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('edPainel').hidden) fecharPainelEdicoes(); });
+$('btnConexao').onclick = () => abrirConexao();
+
+async function abrirEdicaoId(id) {
+  fecharPainelEdicoes();
+  if (id === idDe(state)) return;
+  await salvarAgora();
+  try {
+    state = await carregarEdicao(id);
+  } catch (e) {
+    return toast('Não consegui abrir essa edição. Verifique a internet.');
+  }
+  lembrarAberta();
+  renderPagina();
+  atualizarEdicoes();
+  atualizarStatus();
+}
+$('edAnterior').onclick = () => { const i = edicoes.indexOf(idDe(state)); if (i > 0) abrirEdicaoId(edicoes[i - 1]); };
+$('edProxima').onclick = () => { const i = edicoes.indexOf(idDe(state)); if (i >= 0 && i < edicoes.length - 1) abrirEdicaoId(edicoes[i + 1]); };
+
+async function excluirEdicao(id) {
+  if (edicoes.length <= 1) return;
+  const publicada = github() && remotas.has(id);
+  if (publicada && !lerToken()) return abrirConexao('Para excluir uma edição publicada, conecte este navegador ao GitHub.');
+  if (!confirm(`Excluir a edição de ${nomeDe(id)}?\n\n` + (publicada
+    ? 'Ela será apagada deste navegador e do GitHub (o histórico do repositório ainda guarda uma cópia).'
+    : 'Isso não pode ser desfeito. Se quiser guardar antes, cancele e use “Salvar backup”.'))) return;
+  clearTimeout(timerSalvar);
+  await salvando;
+  if (publicada) {
+    try {
+      await api('DELETE', `/contents/edicoes/${id}.json`, { message: `Remove o informativo de ${nomeDe(id)}`, sha: remotas.get(id), branch: github().ramo });
+    } catch (e) {
+      return toast('Não consegui excluir no GitHub. Tente de novo.');
+    }
+    remotas.delete(id);
+  }
+  await banco.apagar(id);
+  delete bases[id];
+  sujas.delete(id);
+  edicoes = edicoes.filter(x => x !== id);
+  if (id === idDe(state)) {
+    try { state = await carregarEdicao(edicoes[edicoes.length - 1]); } catch (e) { state = normalizar({}); }
+    lembrarAberta();
+    renderPagina();
+  }
+  atualizarEdicoes();
+  atualizarStatus();
+  toast(`Edição de ${nomeDe(id)} excluída.`);
+}
+$('edLista').addEventListener('click', e => {
+  const abrir = e.target.closest('[data-abrir]');
+  if (abrir) return abrirEdicaoId(abrir.dataset.abrir);
+  const apagar = e.target.closest('[data-apagar]');
+  if (apagar) excluirEdicao(apagar.dataset.apagar);
+});
+
+$('btnDescartar').onclick = async () => {
+  const id = idDe(state);
+  fecharPainelEdicoes();
+  if (!confirm(`Descartar as alterações não publicadas de ${nomeDe(id)} e voltar para a versão publicada?`)) return;
+  clearTimeout(timerSalvar);
+  await salvando;
+  try {
+    state = await trazerPublicada(id, state.aniversariantes);
+  } catch (e) {
+    return toast('Não consegui buscar a versão publicada. Verifique a internet.');
+  }
+  renderPagina();
+  atualizarEdicoes();
+  atualizarStatus();
+  toast('Voltou para a versão publicada.');
+};
+
+const nomeArquivo = ext => `informativo-${state.ano}-${String(state.mes + 1).padStart(2, '0')}.${ext}`;
+
+function baixar(blob, nome) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = nome;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+}
+
+$('btnBackup').onclick = async () => {
+  fecharPainelEdicoes();
+  await salvarAgora();
+  try {
+    const todas = (await banco.todas()).sort((a, b) => a.id.localeCompare(b.id));
+    const dados = { app: 'informativo-qe', versao: 2, salvoEm: new Date().toISOString(), edicoes: todas };
+    baixar(new Blob([JSON.stringify(dados, null, 2)], { type: 'application/json' }), `informativo-backup-${new Date().toISOString().slice(0, 10)}.json`);
+    toast(`Backup com ${plural(todas.length, 'edição', 'edições')} salvo.`);
+  } catch (e) {
+    toast('Não consegui gerar o backup.');
+  }
+};
+document.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's') {
+    e.preventDefault();
+    salvarAgora();
+    toast(github() ? 'Já fica salvo neste navegador. Para todos verem, clique em “Publicar”.' : 'Já fica salvo automaticamente. Para ter um arquivo, use “Salvar backup” no menu das edições.');
+  }
+});
+
+// Aceita o backup completo e também o arquivo de uma edição só (da versão anterior).
+async function restaurarBackup(arquivo) {
+  let dados = null;
+  try { dados = JSON.parse(await arquivo.text()); } catch (e) { /* inválido */ }
+  const lista = Array.isArray(dados?.edicoes) ? dados.edicoes : dados && typeof dados === 'object' && 'mes' in dados ? [dados] : [];
+  const novas = lista.filter(ed => ed && typeof ed === 'object' && 'mes' in ed).map(ed => {
+    const n = normalizar(ed);
+    const base = ed._base && typeof ed._base === 'object' ? ed._base : null;
+    return { ...n, id: idDe(n), _base: base };
+  });
+  if (!novas.length) return toast('Esse arquivo não é um backup do informativo.');
+  const repetidas = novas.filter(ed => edicoes.includes(ed.id));
+  if (repetidas.length && !confirm(`O arquivo tem ${plural(novas.length, 'edição', 'edições')}. ` +
+    `${repetidas.length === 1 ? 'Esta já existe aqui e vai ser substituída' : 'Estas já existem aqui e vão ser substituídas'}: ` +
+    `${repetidas.map(ed => nomeDe(ed.id)).join(', ')}.\n\nContinuar?`)) return;
+  await salvarAgora();
+  try {
+    for (const ed of novas) {
+      await banco.salvar(ed);
+      if (ed._base) bases[ed.id] = ed._base;
+      else delete bases[ed.id];
+    }
+    edicoes = [...new Set([...edicoes, ...novas.map(ed => ed.id)])].sort();
+    const atual = idDe(state);
+    state = await carregarEdicao(novas.some(ed => ed.id === atual) ? atual : novas[novas.length - 1].id);
+  } catch (e) {
+    return toast('Não consegui restaurar o backup.');
+  }
+  lembrarAberta();
+  renderPagina();
+  atualizarEdicoes();
+  atualizarStatus();
+  toast(`${plural(novas.length, 'edição restaurada', 'edições restauradas')}.`);
+}
+$('btnRestaurar').onclick = () => { fecharPainelEdicoes(); $('arquivoEdicao').click(); };
+$('arquivoEdicao').onchange = e => { if (e.target.files[0]) restaurarBackup(e.target.files[0]); e.target.value = ''; };
+
+// PNG: copia a página sem os controles de edição, desenha num SVG (com fontes e imagem embutidas) e depois num canvas.
+async function paginaParaCanvas(escala) {
+  await document.fonts.ready;
+  const copiaPg = pgEl.cloneNode(true);
+  copiaPg.querySelectorAll('.ctl').forEach(n => n.remove());
+  copiaPg.querySelectorAll('[contenteditable]').forEach(n => { n.removeAttribute('contenteditable'); n.removeAttribute('spellcheck'); });
+  const xhtml = new XMLSerializer().serializeToString(copiaPg);
+  const css = (window.FONTES_CSS || '') + $('css-pagina').textContent;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${LARGURA * escala}" height="${ALTURA * escala}" viewBox="0 0 ${LARGURA} ${ALTURA}">` +
+    `<foreignObject x="0" y="0" width="${LARGURA}" height="${ALTURA}"><div xmlns="http://www.w3.org/1999/xhtml"><style><![CDATA[${css}]]></style>${xhtml}</div></foreignObject></svg>`;
+  const url = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  const desenhar = async () => {
+    const img = await carregarImg(url);
+    const c = document.createElement('canvas');
+    c.width = LARGURA * escala;
+    c.height = ALTURA * escala;
+    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+    return c;
+  };
+  await desenhar(); // 1ª passada "aquece" fontes e imagem (o Safari às vezes as ignora na primeira)
+  return desenhar();
+}
+
+$('btnPNG').onclick = async () => {
+  const btn = $('btnPNG');
+  document.activeElement?.blur();
+  btn.disabled = true;
+  btn.textContent = 'Gerando…';
+  try {
+    const c = await paginaParaCanvas(2);
+    const blob = await new Promise((ok, erro) => c.toBlob(b => (b ? ok(b) : erro(new Error('vazio'))), 'image/png'));
+    baixar(blob, nomeArquivo('png'));
+  } catch (e) {
+    console.error(e);
+    toast('Não consegui gerar a imagem neste navegador. Tente no Chrome, ou use “PDF / Imprimir”.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Baixar imagem';
+  }
+};
+
+// O título da aba vira o nome sugerido do PDF.
+let tituloOriginal = document.title;
+window.addEventListener('beforeprint', () => {
+  document.activeElement?.blur();
+  tituloOriginal = document.title;
+  document.title = `Informativo ${textoDe(state.titulo)} - ${MESES[state.mes]} ${state.ano}`;
+});
+window.addEventListener('afterprint', () => { document.title = tituloOriginal; });
+$('btnPDF').onclick = () => window.print();
+
+// ---------- zoom da prévia ----------
+
+const area = $('area'), stage = $('stage'), pageBox = $('page');
+let zoom = 'normal';
+try { zoom = localStorage.getItem(CHAVE_ZOOM) || 'normal'; } catch (e) { /* ok */ }
+
+function ajustarEscala() {
+  const w = area.clientWidth - 48, h = area.clientHeight - $('areaHead').offsetHeight - 40;
+  const s = Math.max(0.3, Math.min(1, w / LARGURA, zoom === 'inteira' ? h / ALTURA : 1));
+  stage.style.width = LARGURA * s + 'px';
+  stage.style.height = ALTURA * s + 'px';
+  pageBox.style.transform = `scale(${s})`;
+  $('areaHead').style.maxWidth = LARGURA * s + 'px';
+  $('btnZoom').textContent = zoom === 'inteira' ? 'Tamanho real' : 'Ver página inteira';
+}
+$('btnZoom').onclick = () => {
+  zoom = zoom === 'inteira' ? 'normal' : 'inteira';
+  try { localStorage.setItem(CHAVE_ZOOM, zoom); } catch (e) { /* ok */ }
+  ajustarEscala();
+};
+new ResizeObserver(ajustarEscala).observe(area);
+
+let timerToast = null;
+function toast(msg) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.classList.add('on');
+  clearTimeout(timerToast);
+  timerToast = setTimeout(() => t.classList.remove('on'), 3200);
+}
+
+async function iniciar() {
+  try {
+    await migrarVersaoAntiga();
+    for (const reg of await banco.todas()) {
+      if (reg._base) bases[reg.id] = reg._base;
+      if (estaSuja(normalizar(reg))) sujas.add(reg.id);
+      edicoes.push(reg.id);
+    }
+    edicoes.sort();
+  } catch (e) {
+    toast('Não consegui acessar o armazenamento do navegador. Use “Salvar backup” para não perder o trabalho.');
+  }
+  await atualizarRemotas();
+  ultimaChecagem = Date.now();
+  let aberta = null;
+  try { aberta = localStorage.getItem(CHAVE_ABERTA); } catch (e) { /* ok */ }
+  const id = edicoes.includes(aberta) ? aberta : edicoes[edicoes.length - 1];
+  if (id) {
+    try { state = await carregarEdicao(id); } catch (e) { toast('Não consegui abrir a edição mais recente. Verifique a internet.'); }
+  }
+  lembrarAberta();
+  renderPagina();
+  atualizarEdicoes();
+  atualizarStatus();
+  ajustarEscala();
+  document.fonts.ready.then(checarTamanho);
+}
+iniciar();
+</script>
+</body>
+</html>
