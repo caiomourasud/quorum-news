@@ -8,8 +8,8 @@
   "lema": "“Sede um”",
   "lemaRef": "D&amp;C 38:27",
   "cor": "#8A6A3E",
-  "imagemX": 44.3,
-  "imagemY": 0,
+  "imagemX": 86.7,
+  "imagemY": 50,
   "discursos": [
     {
       "dia": "18",
@@ -45,5 +45,5 @@
     "autor": "Élder Neil L. Andersen",
     "cargo": "do Quórum dos Doze Apóstolos"
   },
-  "imagem": null
+  "imagem": "imagens/12d39b974d6273338d9c.jpg"
 }
