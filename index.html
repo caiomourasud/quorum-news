@@ -2152,21 +2152,48 @@ async function paginaParaCanvas(escala) {
   const copiaPg = pgEl.cloneNode(true);
   copiaPg.querySelectorAll('.ctl').forEach(n => n.remove());
   copiaPg.querySelectorAll('[contenteditable]').forEach(n => { n.removeAttribute('contenteditable'); n.removeAttribute('spellcheck'); });
+  // A foto vai direto para o canvas (o WebKit nem sempre desenha um <img> que está dentro do SVG).
+  copiaPg.querySelector('.pg-img')?.remove();
+  copiaPg.querySelector('.pg-imgbox')?.style.setProperty('background', 'transparent');
   const xhtml = new XMLSerializer().serializeToString(copiaPg);
   const css = (window.FONTES_CSS || '') + $('css-pagina').textContent;
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${LARGURA * escala}" height="${ALTURA * escala}" viewBox="0 0 ${LARGURA} ${ALTURA}">` +
-    `<foreignObject x="0" y="0" width="${LARGURA}" height="${ALTURA}"><div xmlns="http://www.w3.org/1999/xhtml"><style><![CDATA[${css}]]></style>${xhtml}</div></foreignObject></svg>`;
+  // Sem viewBox: o WebKit não aplica a escala do SVG aos elementos posicionados e os desenha pela metade.
+  // O zoom do CSS amplia o próprio layout, que já sai calculado no tamanho final.
+  const w = LARGURA * escala, h = ALTURA * escala;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}">` +
+    `<foreignObject x="0" y="0" width="${w}" height="${h}"><div xmlns="http://www.w3.org/1999/xhtml" style="zoom:${escala}">` +
+    `<style><![CDATA[${css}.pg-h2row,.pg-item,.pg-ann{position:static}]]></style>${xhtml}</div></foreignObject></svg>`;
   const url = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
   const desenhar = async () => {
     const img = await carregarImg(url);
     const c = document.createElement('canvas');
-    c.width = LARGURA * escala;
-    c.height = ALTURA * escala;
-    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+    c.width = w;
+    c.height = h;
+    const ctx = c.getContext('2d');
+    ctx.drawImage(img, 0, 0, w, h);
+    desenharFoto(ctx, escala);
     return c;
   };
-  await desenhar(); // 1ª passada "aquece" fontes e imagem (o Safari às vezes as ignora na primeira)
+  await desenhar(); // 1ª passada "aquece" as fontes (o Safari às vezes as ignora na primeira)
   return desenhar();
+}
+
+// Desenha a foto no lugar do quadro, com o mesmo recorte (object-fit: cover) e os cantos arredondados.
+function desenharFoto(ctx, escala) {
+  const caixa = pgEl.querySelector('.pg-imgbox');
+  if (!caixa || !imgEl.naturalWidth) return;
+  const p = pgEl.getBoundingClientRect(), r = caixa.getBoundingClientRect(), s = p.width / LARGURA;
+  const x = (r.left - p.left) / s, y = (r.top - p.top) / s, bw = r.width / s, bh = r.height / s;
+  const k = Math.max(bw / imgEl.naturalWidth, bh / imgEl.naturalHeight);
+  const dw = imgEl.naturalWidth * k, dh = imgEl.naturalHeight * k;
+  ctx.save();
+  ctx.scale(escala, escala);
+  ctx.beginPath();
+  if (ctx.roundRect) ctx.roundRect(x, y, bw, bh, 14);
+  else ctx.rect(x, y, bw, bh);
+  ctx.clip();
+  ctx.drawImage(imgEl, x + (bw - dw) * state.imagemX / 100, y + (bh - dh) * state.imagemY / 100, dw, dh);
+  ctx.restore();
 }
 
 $('btnPNG').onclick = async () => {
