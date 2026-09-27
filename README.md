@@ -11,11 +11,10 @@ Quem abre o site vê o informativo e pode baixar o PNG ou o PDF. Para editar, cl
 
 Na primeira vez, cada pessoa informa **o nome** (aparece no histórico ao lado do que ela mudar) e **a chave de acesso**. Os dois ficam guardados só naquele navegador. Para trocar o nome ou sair, clique no seu nome na barra de cima.
 
-A chave existe porque o site é público: sem ela, qualquer pessoa poderia alterar o informativo. O dono do repositório cria uma chave para cada pessoa em [github.com › Fine-grained tokens](https://github.com/settings/personal-access-tokens/new):
+A chave existe porque o site é público: sem ela, qualquer pessoa poderia alterar o informativo. O dono do repositório cria uma chave para cada pessoa por [este link](https://github.com/settings/personal-access-tokens/new?name=Informativo&description=Editar+o+Informativo+do+Qu%C3%B3rum+(quorum-news)&target_name=caiomourasud&expires_in=366&contents=write), que já vem preenchido com nome, validade de 1 ano e a permissão. Falta só:
 
 - **Repository access:** Only select repositories → `quorum-news`
-- **Permissions → Contents:** Read and write
-- **Expiration:** a data que preferir (quando vencer, é só criar outra)
+- **Generate token**, e copiar a chave (começa com `github_pat_`)
 
 Com uma chave por pessoa, dá para revogar a de alguém sem afetar as outras. Trate a chave como senha.
 
