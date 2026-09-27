@@ -22,8 +22,8 @@
 .pg{width:800px;height:1120px;box-sizing:border-box;padding:36px 44px;background:#F6F2EA;display:flex;flex-direction:column;gap:18px;overflow:hidden;font-family:'Alegreya Sans',system-ui,sans-serif;color:#1E2B3C;-webkit-font-smoothing:antialiased}
 .pg *{box-sizing:border-box}
 .pg-top{display:flex;justify-content:space-between;align-items:center;height:40px;flex-shrink:0}
-.pg-brand{display:flex;align-items:center;gap:12px}
-.pg-mono{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--accent);display:flex;align-items:center;justify-content:center;padding-bottom:2px;font-family:'Alegreya',Georgia,serif;font-weight:700;font-size:15.5px;letter-spacing:.03em;color:#1E2B3C}
+.pg-brand{display:flex;align-items:center;gap:10px}
+.pg-icone{display:block;width:30px;height:30px;flex-shrink:0;color:var(--accent)}
 .pg-ala{font-size:13px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#1E2B3C}
 .pg-date{font-size:13px;font-weight:500;letter-spacing:.13em;text-transform:uppercase;color:#5A6474}
 .pg-head{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;flex-shrink:0}
@@ -73,19 +73,26 @@
 <style>
 :root{--bg:#ECE6DA;--panel:#FFFDF9;--line:#E4DBCC;--line2:#D6CAB5;--ink:#1E2B3C;--muted:#5A6474;--gold:#8A6A3E;--gold-soft:#F3EADB;--danger:#9A3B2E}
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html,body{margin:0;height:100%}
-body{background:var(--bg);color:var(--ink);font:14px/1.4 -apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif}
+body{display:flex;flex-direction:column;background:var(--bg);color:var(--ink);font:14px/1.4 -apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif}
 button,select,input{font:inherit}
 
-.bar{min-height:56px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:10px 16px;background:var(--panel);border-bottom:1px solid var(--line)}
+.bar{flex-shrink:0;min-height:56px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:10px 16px;background:var(--panel);border-bottom:1px solid var(--line)}
 .bar-title{font-family:'Alegreya',Georgia,serif;font-weight:700;font-size:21px;white-space:nowrap}
 .bar-status{color:var(--muted);font-size:12.5px;white-space:nowrap}
 .bar-spacer{flex:1}
 .sep{width:1px;height:24px;background:var(--line);margin:0 2px}
 .edicao{position:relative;display:flex;align-items:center;gap:2px}
 .btn-icone{width:32px;padding:0;justify-content:center;font-size:19px;line-height:1}
-.btn-icone:disabled{opacity:.35;cursor:default}
-.btn-icone:disabled:hover{background:var(--panel)}
+.btn.btn-icone:disabled{opacity:.35}
+.btn.btn-icone:disabled:hover{background:var(--panel)}
+.btn-icone svg{flex-shrink:0}
+.grupo{display:flex;gap:6px;align-items:center}
+.quem{padding:0 12px 0 5px}
+.quem-ini{width:24px;height:24px;border-radius:50%;background:var(--ink);color:#F6F2EA;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.btn-perigo{background:var(--danger);border-color:var(--danger);color:#fff}
+.btn-perigo:hover{background:#7F2F24}
 .ed-atual{min-width:156px;justify-content:space-between}
 .ed-atual svg{opacity:.55}
 .ed-painel{position:absolute;top:calc(100% + 6px);left:0;z-index:55;width:300px;padding:8px;background:var(--panel);border:1px solid var(--line2);border-radius:12px;box-shadow:0 12px 32px rgba(30,43,60,.18)}
@@ -104,6 +111,11 @@ button,select,input{font:inherit}
 .dlg-corpo{padding:22px 24px;display:flex;flex-direction:column;gap:12px;font-size:14px;line-height:1.5}
 .dlg h2{margin:0;font-family:'Alegreya',Georgia,serif;font-size:23px;line-height:1.1}
 .dlg p,.dlg ol{margin:0}
+.dlg-texto{white-space:pre-line}
+.dlg-ajuda{font-size:13px;color:var(--muted)}
+.dlg-ajuda summary{cursor:pointer;font-weight:600;color:var(--ink)}
+.dlg-ajuda ol{margin-top:8px}
+.dlg-nota{font-size:12.5px;color:var(--muted)}
 .dlg ol{padding-left:20px;display:flex;flex-direction:column;gap:6px}
 .dlg a{color:var(--gold)}
 .dlg-motivo{padding:8px 12px;border-radius:8px;background:var(--gold-soft);font-weight:600}
@@ -125,14 +137,48 @@ button,select,input{font:inherit}
 .btn:focus-visible,.cor:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .btn-primary{background:var(--ink);border-color:var(--ink);color:#F6F2EA}
 .btn-primary:hover{background:#2C3D54}
-.btn:disabled{opacity:.6;cursor:progress}
+.btn:disabled{opacity:.6;cursor:default}
 .btn-sm{height:28px;font-size:12.5px;padding:0 10px}
 .cores{display:flex;gap:7px;align-items:center}
 .cor{width:24px;height:24px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--line2);cursor:pointer;padding:0}
 .cor[aria-pressed="true"]{box-shadow:0 0 0 2px var(--ink)}
 .cor-livre{width:30px;height:26px;padding:0;border:1px solid var(--line2);border-radius:6px;background:#fff;cursor:pointer}
 
-.area{height:calc(100% - 56px);overflow:auto;padding:0 24px 40px}
+.corpo{display:flex;flex:1;min-height:0}
+.area{flex:1;min-width:0;overflow:auto;padding:0 24px 40px}
+.hist{width:320px;flex-shrink:0;display:flex;flex-direction:column;min-height:0;background:var(--panel);border-left:1px solid var(--line)}
+.hist-topo{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;padding:16px 12px 10px 18px;border-bottom:1px solid var(--line)}
+.hist-topo h2{margin:0;font-family:'Alegreya',Georgia,serif;font-size:21px;line-height:1.1}
+.hist-sub{margin:2px 0 0;font-size:12.5px;color:var(--muted)}
+.hist-lista{list-style:none;margin:0;padding:8px;overflow:auto;flex:1}
+.hist-dia{padding:12px 10px 4px;font-size:11.5px;font-weight:700;color:var(--muted)}
+.hist-dia::first-letter{text-transform:uppercase}
+.hist-item{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px;width:100%;padding:8px 10px;border:0;border-radius:8px;background:none;color:var(--ink);text-align:left;cursor:pointer;font-size:13.5px}
+.hist-item:hover{background:var(--gold-soft)}
+.hist-item[aria-current]{background:#E6D9C2}
+.hist-item:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
+.hist-hora{font-weight:700;font-variant-numeric:tabular-nums}
+.hist-autor{color:var(--muted)}
+.hist-tag{flex-basis:100%;font-size:11.5px;font-weight:600;color:var(--gold)}
+.hist-vazio{padding:12px 10px;font-size:13px;color:var(--muted)}
+.hist-rodape{margin:0;padding:12px 18px 16px;border-top:1px solid var(--line);font-size:12px;line-height:1.45;color:var(--muted)}
+.previa-aviso{position:sticky;top:8px;z-index:5;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 10px;width:fit-content;max-width:100%;margin:0 auto 12px;padding:8px 10px 8px 16px;border-radius:12px;background:var(--ink);color:#F6F2EA;font-size:13.5px;box-shadow:0 8px 24px rgba(30,43,60,.25)}
+.previa-aviso .btn{background:transparent;border-color:rgba(246,242,234,.35);color:#F6F2EA}
+.previa-aviso .btn:hover{background:rgba(246,242,234,.12)}
+.previa-aviso .btn-claro{background:#F6F2EA;border-color:#F6F2EA;color:var(--ink)}
+.previa-aviso .btn-claro:hover{background:#fff}
+.msg-dom{padding:12px 10px 16px;border-bottom:1px solid var(--line)}
+.msg-dom:last-child{border-bottom:0}
+.msg-dom h3{margin:0;font-size:14px;display:flex;align-items:center;gap:8px}
+.msg-prox{font-size:11px;font-weight:700;color:#fff;background:var(--gold);border-radius:10px;padding:2px 8px}
+.msg-bloco{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.msg-rotulo{font-size:12px;font-weight:600;color:var(--muted)}
+.msg-texto{width:100%;padding:8px 10px;border:1px solid var(--line2);border-radius:8px;background:#fff;color:var(--ink);font:inherit;font-size:13px;line-height:1.45;resize:vertical}
+.msg-texto:focus,.msg-link:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(138,106,62,.18)}
+.msg-falta{display:flex;flex-direction:column;gap:6px;padding:8px 10px;border-radius:8px;background:var(--gold-soft);font-size:12.5px}
+.msg-link{height:32px;padding:0 8px;border:1px solid var(--line2);border-radius:6px;background:#fff;color:var(--ink);font:inherit;font-size:13px}
+.msg-acoes{display:flex;gap:6px;flex-wrap:wrap}
+.msg-juntas{margin-top:12px}
 .area-head{display:flex;align-items:center;justify-content:flex-end;min-height:48px;margin:0 auto}
 .stage{margin:0 auto;box-shadow:0 1px 2px rgba(30,43,60,.08),0 14px 36px rgba(30,43,60,.16)}
 #page{width:800px;height:1120px;transform-origin:0 0}
@@ -174,13 +220,13 @@ body.arrastando .drop{display:flex}
   #page [contenteditable]{outline:none;border-radius:3px;cursor:text}
   #page [contenteditable]:hover{outline:1px dashed rgba(138,106,62,.75);outline-offset:3px}
   #page [contenteditable]:focus{outline:2px solid #B08A55;outline-offset:3px}
-  #page:not(.medindo) :is(.pg-top,.pg-head,.pg-card,.pg-msg):hover [contenteditable]:empty::after,
-  #page:not(.medindo) [contenteditable]:focus:empty::after{content:attr(data-ph);opacity:.38}
-  #page:not(.medindo) :is(.pg-head,.pg-msg):is(:hover,:focus-within) :is(.pg-motto-ref,.pg-msg-cargo):empty{display:inline}
-  #page:not(.medindo) .pg-card:is(:hover,:focus-within) .pg-ann-big:empty{display:block}
-  #page:not(.medindo) .pg-card:is(:hover,:focus-within) :is(.pg-item,.pg-ann),#page:not(.medindo) .novo{display:flex}
+  #page:not(.medindo):not(.leitura) :is(.pg-top,.pg-head,.pg-card,.pg-msg):hover [contenteditable]:empty::after,
+  #page:not(.medindo):not(.leitura) [contenteditable]:focus:empty::after{content:attr(data-ph);opacity:.38}
+  #page:not(.medindo):not(.leitura) :is(.pg-head,.pg-msg):is(:hover,:focus-within) :is(.pg-motto-ref,.pg-msg-cargo):empty{display:inline}
+  #page:not(.medindo):not(.leitura) .pg-card:is(:hover,:focus-within) .pg-ann-big:empty{display:block}
+  #page:not(.medindo):not(.leitura) .pg-card:is(:hover,:focus-within) :is(.pg-item,.pg-ann),#page:not(.medindo):not(.leitura) .novo{display:flex}
   #page .pg-date{cursor:pointer}
-  #page .pg-imgbox{cursor:grab;touch-action:none}
+  #page:not(.leitura) .pg-imgbox{cursor:grab;touch-action:none}
   #page .pg-imgbox.puxando{cursor:grabbing}
   #page .ctl{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;transition:opacity .15s}
   #page .rm{position:absolute;left:-21px;top:1px;width:18px;height:18px;border-radius:50%;border:0;padding:0;background:#E9DFD0;color:#5A6474;font-size:13px;line-height:18px;cursor:pointer;opacity:0}
@@ -200,7 +246,9 @@ body.arrastando .drop{display:flex}
 @page{size:800px 1120px;margin:0}
 @media print{
   html,body{height:auto;background:#F6F2EA}
-  .bar,.area-head,.aviso,.toast,.drop,.ctl,.fmt{display:none!important}
+  body{display:block}
+  .bar,.area-head,.aviso,.toast,.drop,.ctl,.fmt,.hist,.previa-aviso{display:none!important}
+  .corpo{display:block}
   .area{height:auto;overflow:visible;padding:0}
   .stage{width:auto!important;height:auto!important;box-shadow:none}
   #page{transform:none!important}
@@ -221,33 +269,65 @@ body.arrastando .drop{display:flex}
       <div class="ed-titulo">Edições salvas</div>
       <ul class="ed-lista" id="edLista"></ul>
       <div class="ed-sep"></div>
-      <button class="ed-acao" id="btnDescartar" hidden>Descartar alterações e voltar à versão publicada</button>
-      <button class="ed-acao" id="btnConexao" hidden>Conexão com o GitHub…</button>
-      <div class="ed-sep" id="sepGithub" hidden></div>
-      <button class="ed-acao" id="btnBackup">Salvar backup de todas as edições</button>
-      <button class="ed-acao" id="btnRestaurar">Restaurar backup…</button>
-      <p class="ed-dica" id="edDica">Tudo fica salvo neste navegador. De vez em quando, salve um backup e guarde o arquivo junto com os PDFs.</p>
+      <div id="edAcoes">
+        <button class="ed-acao" id="btnDescartar" hidden>Descartar alterações não salvas</button>
+        <button class="ed-acao" id="btnBackup">Salvar backup de todas as edições</button>
+        <button class="ed-acao" id="btnRestaurar">Restaurar backup…</button>
+      </div>
+      <p class="ed-dica" id="edDica"></p>
     </div>
   </div>
-  <div class="bar-status" id="status">Salvo neste navegador</div>
+  <div class="bar-status" id="status" role="status"></div>
   <div class="bar-spacer"></div>
-  <div class="cores" id="cores" role="group" aria-label="Cor de destaque">
-    <input class="cor-livre" id="corLivre" type="color" title="Outra cor" aria-label="Escolher outra cor">
+  <div class="grupo" id="grupoEdicao">
+    <button class="btn btn-icone" id="btnDesfazer" title="Desfazer (⌘Z)" aria-label="Desfazer" disabled><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg></button>
+    <button class="btn btn-icone" id="btnRefazer" title="Refazer (⌘⇧Z)" aria-label="Refazer" disabled><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 14 5-5-5-5"/><path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13"/></svg></button>
+    <div class="sep"></div>
+    <div class="cores" id="cores" role="group" aria-label="Cor de destaque">
+      <input class="cor-livre" id="corLivre" type="color" title="Outra cor" aria-label="Escolher outra cor">
+    </div>
+    <div class="sep"></div>
+    <button class="btn" id="btnNovoMes" title="Cria a edição do mês seguinte à mais recente">Novo mês</button>
+    <button class="btn" id="btnMensagens" aria-pressed="false" title="Textos prontos para o WhatsApp"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.8 7L4 20l1.1-4.6A8 8 0 1 1 21 12Z"/></svg>Mensagens</button>
   </div>
+  <button class="btn" id="btnHistorico" aria-pressed="false" hidden><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>Histórico</button>
+  <div class="sep" id="sepConta" hidden></div>
+  <button class="btn" id="btnEntrar" hidden>Entrar para editar</button>
+  <button class="btn quem" id="btnQuem" hidden title="Seu nome e chave de acesso"><span class="quem-ini" id="quemIni"></span><span id="quemNome"></span></button>
   <div class="sep"></div>
-  <button class="btn" id="btnNovoMes" title="Cria a edição do mês seguinte à mais recente">Novo mês</button>
-  <div class="sep"></div>
-  <button class="btn" id="btnPublicar" hidden title="Publica esta edição no GitHub para todos verem. Os aniversariantes não são publicados.">Publicar</button>
   <button class="btn" id="btnPDF" title="Abre a impressão: escolha “Salvar como PDF”">PDF / Imprimir</button>
   <button class="btn btn-primary" id="btnPNG">Baixar imagem</button>
 </header>
 
+<div class="corpo">
 <main class="area" id="area">
   <div class="area-head" id="areaHead">
     <button class="btn btn-sm" id="btnZoom"></button>
   </div>
+  <div class="previa-aviso" id="previaAviso" hidden>
+    <span id="previaTexto"></span>
+    <button class="btn btn-sm btn-claro" id="btnRestaurarVersao">Restaurar esta versão</button>
+    <button class="btn btn-sm" id="btnSairPrevia">Voltar para a atual</button>
+  </div>
   <div class="stage" id="stage"><div id="page"><div class="pg" id="pg"></div></div></div>
 </main>
+<aside class="hist" id="hist" hidden aria-labelledby="histTitulo">
+  <div class="hist-topo">
+    <div><h2 id="histTitulo">Histórico</h2><p class="hist-sub" id="histSub"></p></div>
+    <button class="btn btn-icone" id="histFechar" title="Fechar o histórico" aria-label="Fechar o histórico">×</button>
+  </div>
+  <ol class="hist-lista" id="histLista"></ol>
+  <p class="hist-rodape">Cada salvamento automático vira uma versão aqui. Clique numa versão para ver como estava. Para desfazer só as últimas mudanças, use ⌘Z.</p>
+</aside>
+<aside class="hist" id="msgs" hidden aria-labelledby="msgsTitulo">
+  <div class="hist-topo">
+    <div><h2 id="msgsTitulo">Mensagens</h2><p class="hist-sub" id="msgsSub"></p></div>
+    <button class="btn btn-icone" id="msgsFechar" title="Fechar as mensagens" aria-label="Fechar as mensagens">×</button>
+  </div>
+  <div class="hist-lista" id="msgsLista"></div>
+  <p class="hist-rodape">Textos prontos para o WhatsApp, com a data e o link de cada domingo. O link vem da lição e do discurso no informativo.</p>
+</aside>
+</div>
 
 <div class="aviso" id="aviso" hidden>O conteúdo passou do tamanho da página. Encurte algum texto ou remova um item.</div>
 <input type="file" id="arquivoImagem" accept="image/*" hidden>
@@ -287,23 +367,35 @@ body.arrastando .drop{display:flex}
     <button type="button" data-cmd="link-rm" id="fmtLinkRm">Remover</button>
   </div>
 </div>
-<dialog class="dlg" id="dlgGithub" aria-labelledby="dlgTitulo">
-  <form class="dlg-corpo" id="formGithub">
-    <h2 id="dlgTitulo">Conexão com o GitHub</h2>
+<dialog class="dlg" id="dlgEntrar" aria-labelledby="dlgTitulo">
+  <form class="dlg-corpo" id="formEntrar">
+    <h2 id="dlgTitulo">Entrar para editar</h2>
     <p class="dlg-motivo" id="dlgMotivo" hidden></p>
-    <p>Para publicar, este navegador precisa de uma chave de acesso ao repositório <b id="dlgRepo"></b>. Só quem publica precisa dela; para ver as edições, não.</p>
-    <ol>
-      <li>O dono do repositório cria a chave em <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com › Fine-grained tokens</a>. Em <i>Repository access</i>, escolha só este repositório; em <i>Permissions › Contents</i>, marque <i>Read and write</i>.</li>
-      <li>Cole a chave abaixo. Ela fica guardada só neste navegador.</li>
-    </ol>
+    <label class="dlg-campo">Seu nome<input id="dlgNome" autocomplete="name" maxlength="40" placeholder="Como vai aparecer no histórico"></label>
     <label class="dlg-campo">Chave de acesso<input id="dlgToken" type="password" autocomplete="off" spellcheck="false"></label>
+    <details class="dlg-ajuda">
+      <summary>Como conseguir a chave?</summary>
+      <ol>
+        <li>O dono do repositório <b id="dlgRepo"></b> cria a chave em <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com › Fine-grained tokens</a>.</li>
+        <li>Em <i>Repository access</i>, escolhe só este repositório; em <i>Permissions › Contents</i>, marca <i>Read and write</i>.</li>
+        <li>Ele te passa a chave, e você cola aqui. É uma vez só por navegador.</li>
+      </ol>
+    </details>
+    <p class="dlg-nota">O nome e a chave ficam guardados só neste navegador. Para só ver o informativo, não precisa entrar.</p>
     <p class="dlg-erro" id="dlgErro" hidden></p>
     <div class="dlg-acoes">
-      <button type="button" class="btn" id="dlgDesconectar">Desconectar este navegador</button>
+      <button type="button" class="btn" id="dlgSair">Sair deste navegador</button>
       <span class="bar-spacer"></span>
       <button type="button" class="btn" id="dlgCancelar">Cancelar</button>
-      <button type="submit" class="btn btn-primary" id="dlgSalvar">Conectar</button>
+      <button type="submit" class="btn btn-primary" id="dlgSalvar">Entrar</button>
     </div>
+  </form>
+</dialog>
+<dialog class="dlg" id="dlgPergunta" aria-labelledby="pergTitulo">
+  <form class="dlg-corpo" method="dialog">
+    <h2 id="pergTitulo"></h2>
+    <p class="dlg-texto" id="pergTexto"></p>
+    <div class="dlg-acoes" id="pergBotoes"></div>
   </form>
 </dialog>
 <div class="toast" id="toast" role="status"></div>
@@ -315,6 +407,7 @@ const CHAVE = 'informativo-qe:v1'; // versão antiga (uma edição só); migrada
 const CHAVE_IMG = 'informativo-qe:v1:imagem';
 const CHAVE_ABERTA = 'informativo-qe:aberta';
 const CHAVE_ZOOM = 'informativo-qe:zoom';
+const CHAVE_NOME = 'informativo-qe:nome';
 const LARGURA = 800, ALTURA = 1120; // 5:7
 
 // Os textos guardam HTML limpo (ver lerRico); só os dias e a sigla são texto puro.
@@ -373,6 +466,13 @@ function setPath(o, p, v) {
 // Tudo é relido do DOM e reescrito num HTML limpo, então nada além disso entra no informativo.
 const COR_OK = /^(#[0-9a-f]{3,8}|rgba?\([\d\s.,%]+\))$/i;
 const LINK_OK = /^(https?:|mailto:|tel:)/i;
+// Completa o https:// (ou mailto:) e devolve '' se o endereço não for aceito.
+function normalizarLink(url) {
+  url = String(url || '').trim();
+  if (!url) return '';
+  if (!/^[a-z][a-z0-9+.-]*:/i.test(url)) url = (/^[^\s@/]+@[^\s@]+\.[^\s@]+$/.test(url) ? 'mailto:' : 'https://') + url;
+  return LINK_OK.test(url) ? url : '';
+}
 const FONTES = { 'Alegreya': "'Alegreya',Georgia,serif", 'Alegreya Sans': "'Alegreya Sans',system-ui,sans-serif" };
 const MARCA_COR = '#010203', MARCA_FUNDO = '#010204'; // cores provisórias usadas para voltar ao padrão
 const MARCA_COR_RGB = 'rgb(1, 2, 3)', MARCA_FUNDO_RGB = 'rgb(1, 2, 4)';
@@ -518,11 +618,12 @@ const banco = (() => {
 })();
 
 let state = normalizar({});
+let soPadrao = false;       // true enquanto a página mostra só o exemplo (nenhuma edição salva ainda) sem mudanças
 let edicoes = [];          // ids conhecidos (deste navegador e do GitHub), em ordem cronológica
 const remotas = new Map(); // id -> sha do arquivo publicado no GitHub
 const bases = {};          // id -> última versão publicada que este navegador conhece: { sha, json, imagem, caminhoImagem }
 const sujas = new Set();   // ids com alterações ainda não publicadas
-let timerSalvar = null, salvando = Promise.resolve(), erroLocal = false, publicando = false, semConexao = false;
+let timerSalvar = null, salvando = Promise.resolve(), erroLocal = false, semConexao = false;
 
 // O que é publicado: tudo menos os aniversariantes; a imagem vai como arquivo à parte.
 const semImagem = s => { const { imagem, aniversariantes, ...resto } = s; return resto; };
@@ -530,11 +631,15 @@ const impressao = img => (img ? `${img.length}:${img.slice(-64)}` : null);
 const estaSuja = s => { const b = bases[idDe(s)]; return !b || b.json !== JSON.stringify(semImagem(s)) || b.imagem !== impressao(s.imagem); };
 
 function agendarSalvar() {
+  if (previa) return;
   clearTimeout(timerSalvar);
   timerSalvar = setTimeout(salvarAgora, 300);
+  atualizarMensagens();
 }
-function salvarAgora() {
+// Grava neste navegador e, se houver mudança ainda não enviada, agenda o salvamento no GitHub.
+function salvarAgora({ nuvem = true } = {}) {
   clearTimeout(timerSalvar);
+  if (previa || soPadrao) return salvando;
   const id = idDe(state);
   const ed = { ...state, id, _base: bases[id] || null };
   if (estaSuja(state)) sujas.add(id);
@@ -543,11 +648,16 @@ function salvarAgora() {
     erroLocal = false;
     if (!edicoes.includes(id)) edicoes = [...edicoes, id].sort();
   }, () => { erroLocal = true; }).then(() => { atualizarEdicoes(); atualizarStatus(); });
+  if (nuvem && sujas.has(id)) agendarNuvem();
   atualizarStatus();
   return salvando;
 }
-window.addEventListener('pagehide', salvarAgora);
-document.addEventListener('visibilitychange', () => { if (document.hidden) salvarAgora(); });
+function salvarTudoAgora() {
+  salvarAgora({ nuvem: false });
+  salvarNaNuvem();
+}
+window.addEventListener('pagehide', salvarTudoAgora);
+document.addEventListener('visibilitychange', () => { if (document.hidden) salvarTudoAgora(); });
 
 function lembrarAberta() {
   try { localStorage.setItem(CHAVE_ABERTA, idDe(state)); } catch (e) { /* ok */ }
@@ -555,19 +665,16 @@ function lembrarAberta() {
 
 function atualizarStatus() {
   const id = idDe(state), g = github();
-  let texto;
-  if (erroLocal) texto = 'Não consegui salvar no navegador — use “Salvar backup”';
+  let texto = '';
+  if (previa) texto = 'Vendo uma versão antiga';
+  else if (erroLocal) texto = 'Não consegui salvar no navegador — use “Salvar backup”';
   else if (!g) texto = 'Salvo neste navegador';
-  else if (publicando) texto = 'Publicando…';
-  else if (!sujas.has(id)) texto = remotas.get(id) === bases[id]?.sha || !remotas.has(id) ? 'Publicado' : 'Há uma versão mais nova publicada';
-  else if (!remotas.has(id)) texto = 'Ainda não publicada';
-  else texto = remotas.get(id) === bases[id]?.sha ? 'Alterações não publicadas' : 'Alterações não publicadas · há outra versão publicada';
-  if (g && semConexao && !publicando) texto += ' · sem conexão com o GitHub';
+  else if (!lerToken()) texto = '';
+  else if (nuvemAtiva) texto = 'Salvando…';
+  else if (erroNuvem === 'chave') texto = 'O GitHub recusou a chave — clique no seu nome';
+  else if (sujas.has(id)) texto = semConexao ? 'Sem conexão — guardado neste navegador' : 'Salvando…';
+  else texto = salvoEm ? `Salvo às ${salvoEm.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}` : 'Tudo salvo';
   $('status').textContent = texto;
-  const btn = $('btnPublicar');
-  btn.hidden = !g;
-  btn.disabled = publicando;
-  btn.classList.toggle('pendente', !!g && sujas.has(id));
 }
 
 // A versão anterior guardava uma edição só no localStorage: ela vira a edição do mês dela.
@@ -607,8 +714,9 @@ async function api(metodo, caminho, corpo = null, token = lerToken()) {
   const headers = { Accept: 'application/vnd.github+json' };
   if (token) headers.Authorization = `Bearer ${token}`;
   if (corpo) headers['Content-Type'] = 'application/json';
+  const texto = corpo ? JSON.stringify(corpo) : undefined;
   const r = await fetch(`https://api.github.com/repos/${github().repositorio}${caminho}`, {
-    method: metodo, headers, body: corpo ? JSON.stringify(corpo) : undefined, cache: 'no-store',
+    method: metodo, headers, body: texto, cache: 'no-store', keepalive: !!texto && texto.length < 60000, // termina mesmo se a aba fechar
   });
   if (r.status === 401 && metodo === 'GET' && token && token === lerToken()) return api(metodo, caminho, corpo, ''); // chave vencida: lê sem ela
   if (!r.ok) { const e = new Error(`GitHub respondeu ${r.status}`); e.status = r.status; throw e; }
@@ -660,6 +768,7 @@ async function trazerPublicada(id, aniversariantes = []) {
   remotas.set(id, f.sha);
   sujas.delete(id);
   await banco.salvar({ ...estado, id, _base: bases[id] });
+  soPadrao = false;
   return estado;
 }
 
@@ -670,7 +779,8 @@ async function carregarEdicao(id) {
   const local = reg ? normalizar(reg) : null;
   if (local && estaSuja(local)) sujas.add(id);
   else sujas.delete(id);
-  if (github() && remotas.has(id) && (!local || (!sujas.has(id) && remotas.get(id) !== bases[id]?.sha))) {
+  // Quem não entrou não tem rascunho: a cópia local é só um cache da versão do GitHub.
+  if (github() && remotas.has(id) && (!local || ((!sujas.has(id) || !lerToken()) && remotas.get(id) !== bases[id]?.sha))) {
     try {
       return await trazerPublicada(id, local?.aniversariantes);
     } catch (e) {
@@ -679,6 +789,7 @@ async function carregarEdicao(id) {
     }
   }
   if (!local) throw new Error('edição não encontrada');
+  soPadrao = false;
   return local;
 }
 
@@ -698,56 +809,110 @@ async function publicarImagem(dataUrl) {
   return caminho;
 }
 
-async function publicar() {
-  if (!github() || publicando) return;
-  if (!lerToken()) return abrirConexao('Para publicar, conecte este navegador ao GitHub.');
-  await salvarAgora();
-  const s = copia(state), id = idDe(s), base = bases[id];
-  publicando = true;
+// ---------- salvamento automático no GitHub ----------
+
+const lerNome = () => { try { return localStorage.getItem(CHAVE_NOME) || ''; } catch (e) { return ''; } };
+// Sem GitHub configurado, edita-se só neste navegador; com GitHub, é preciso entrar (nome + chave).
+const editando = () => (!github() || !!lerToken()) && !previa;
+
+let timerNuvem = null, esperaDesde = 0, nuvem = Promise.resolve(), nuvemAtiva = 0, erroNuvem = '', salvoEm = null, motivoSalvamento = '';
+
+function agendarNuvem(ms = 4000) {
+  if (!github() || !lerToken() || previa) return;
+  if (!timerNuvem) esperaDesde = Date.now();
+  clearTimeout(timerNuvem);
+  // Salva alguns segundos depois da última mudança; digitando sem parar, salva pelo menos a cada 30 s.
+  timerNuvem = setTimeout(salvarNaNuvem, Math.max(300, Math.min(ms, esperaDesde + 30000 - Date.now())));
+}
+
+function salvarNaNuvem() {
+  clearTimeout(timerNuvem);
+  timerNuvem = null;
+  if (!github() || !lerToken() || previa) return nuvem;
+  const s = copia(state), motivo = motivoSalvamento;
+  motivoSalvamento = '';
+  nuvem = nuvem.then(() => enviarEdicao(s, motivo));
+  return nuvem;
+}
+
+async function enviarEdicao(s, motivo) {
+  const id = idDe(s), base = bases[id];
+  if (!estaSuja(s)) return; // essa versão já está no GitHub
+  nuvemAtiva++;
   atualizarStatus();
   try {
     const caminhoImagem = !s.imagem ? null : base?.imagem === impressao(s.imagem) && base.caminhoImagem ? base.caminhoImagem : await publicarImagem(s.imagem);
     const conteudo = paraBase64(new TextEncoder().encode(JSON.stringify({ ...semImagem(s), imagem: caminhoImagem }, null, 2) + '\n'));
-    const caminho = `edicoes/${id}.json`, mensagem = `Informativo de ${nomeDe(id)}`;
+    const caminho = `edicoes/${id}.json`;
+    const mensagem = `${nomeDe(id)} — ${lerNome() || 'sem nome'}${motivo ? ` (${motivo})` : ''}`;
     let r;
     try {
       r = await gravarArquivo(caminho, mensagem, conteudo, base?.sha);
     } catch (e) {
       if (e.status !== 409 && e.status !== 422) throw e;
-      // Alguém publicou esta edição depois da versão que este navegador conhece.
+      // Alguém salvou esta edição depois da versão que este navegador conhece.
       const atual = await lerArquivo(caminho).catch(() => null);
-      if (!confirm(`Outra pessoa publicou ${nomeDe(id)} depois que você abriu esta edição.\n\nPublicar mesmo assim substitui a versão dela pela sua. Continuar?`)) return;
+      let igual = false;
+      try {
+        const d = JSON.parse(new TextDecoder().decode(deBase64(atual.content)));
+        igual = JSON.stringify(semImagem(normalizar(d))) === JSON.stringify(semImagem(s)) && (d.imagem || null) === caminhoImagem;
+      } catch (err) { /* sem versão legível: trata como diferente */ }
+      if (igual) r = { content: { sha: atual.sha } };
+      else {
+      const escolha = await perguntar({
+        titulo: 'Outra pessoa também editou',
+        texto: `${nomeDe(id)} foi salva por outra pessoa enquanto você editava.\n\nQual versão deve ficar valendo?`,
+        botoes: [{ rotulo: 'Ver a versão dela', valor: 'dela' }, { rotulo: 'Manter a minha', valor: 'minha', primario: true }],
+      });
+      if (escolha === 'dela') return await adotarVersaoRemota(id, s.aniversariantes);
+      if (escolha !== 'minha') return; // fechou sem escolher: continua guardado só aqui e pergunta de novo depois
       r = await gravarArquivo(caminho, mensagem, conteudo, atual?.sha);
+      }
     }
     bases[id] = { sha: r.content.sha, json: JSON.stringify(semImagem(s)), imagem: impressao(s.imagem), caminhoImagem };
     remotas.set(id, r.content.sha);
+    erroNuvem = '';
     semConexao = false;
-    toast('Publicado. Quem abrir o site já vê esta versão.');
+    salvoEm = new Date();
+    if (!$('hist').hidden) carregarHistorico();
   } catch (e) {
-    toast(e.status === 401 || e.status === 403 || e.status === 404
-      ? 'O GitHub recusou a chave de acesso. Confira em “Conexão com o GitHub”, no menu das edições.'
-      : 'Não consegui publicar. Verifique a internet e tente de novo.');
+    erroNuvem = e.status === 401 || e.status === 403 || e.status === 404 ? 'chave' : 'rede';
+    if (erroNuvem === 'rede') {
+      semConexao = true;
+      setTimeout(() => { if (sujas.has(idDe(state))) salvarNaNuvem(); }, 20000);
+    }
   } finally {
-    publicando = false;
-    if (idDe(state) === id) await salvarAgora();
+    nuvemAtiva--;
+    if (idDe(state) === id && !previa) await salvarAgora({ nuvem: false });
     atualizarEdicoes();
     atualizarStatus();
   }
 }
-$('btnPublicar').onclick = publicar;
 
-// Ao voltar para a aba, traz o que outra pessoa tiver publicado (se não houver alterações locais).
+// Troca pela versão que outra pessoa salvou; a sua fica no ⌘Z.
+async function adotarVersaoRemota(id, aniversariantes) {
+  const nova = await trazerPublicada(id, aniversariantes);
+  if (idDe(state) !== id || previa) return;
+  marcarDesfazer();
+  state = nova;
+  renderPagina();
+  toast('Agora você está vendo a versão da outra pessoa. Para voltar à sua, use ⌘Z.');
+}
+
+// Ao voltar para a aba, traz o que outra pessoa tiver salvo (se não houver mudanças suas por salvar).
 let ultimaChecagem = 0;
 async function checarNovidades() {
-  if (!github() || Date.now() - ultimaChecagem < 30000) return;
+  if (!github() || previa || Date.now() - ultimaChecagem < 30000) return;
   ultimaChecagem = Date.now();
   await atualizarRemotas();
   const id = idDe(state);
-  if (!sujas.has(id) && remotas.has(id) && remotas.get(id) !== bases[id]?.sha && !pgEl.contains(document.activeElement)) {
+  if (!previa && !sujas.has(id) && !nuvemAtiva && remotas.has(id) && remotas.get(id) !== bases[id]?.sha && !pgEl.contains(document.activeElement)) {
     try {
       state = await trazerPublicada(id, state.aniversariantes);
+      zerarDesfazer();
       renderPagina();
-      toast(`${nomeDe(id)} foi atualizada com a versão publicada.`);
+      if (!$('hist').hidden) carregarHistorico();
+      toast(`${nomeDe(id)} foi atualizada com o que outra pessoa salvou.`);
     } catch (e) { /* tenta de novo na próxima vez */ }
   }
   atualizarEdicoes();
@@ -755,47 +920,367 @@ async function checarNovidades() {
 }
 window.addEventListener('focus', checarNovidades);
 
-function abrirConexao(motivo = '') {
+// ---------- entrar para editar (nome + chave de acesso) ----------
+
+function abrirEntrar(motivo = '') {
   const g = github();
   if (!g) return;
   fecharPainelEdicoes();
-  $('dlgRepo').textContent = g.repositorio;
+  const logado = !!lerToken();
+  $('dlgTitulo').textContent = logado ? 'Sua identificação' : 'Entrar para editar';
   $('dlgMotivo').textContent = motivo;
   $('dlgMotivo').hidden = !motivo;
-  $('dlgErro').hidden = true;
+  $('dlgRepo').textContent = g.repositorio;
+  $('dlgNome').value = lerNome();
   $('dlgToken').value = '';
-  $('dlgToken').placeholder = lerToken() ? 'Já conectado. Cole outra chave para trocar' : 'github_pat_…';
-  $('dlgDesconectar').hidden = !lerToken();
-  $('dlgGithub').showModal();
-  $('dlgToken').focus();
+  $('dlgToken').placeholder = logado ? 'Já conectada. Cole outra só se quiser trocar' : 'github_pat_…';
+  $('dlgSair').hidden = !logado;
+  $('dlgSalvar').textContent = logado ? 'Salvar' : 'Entrar';
+  $('dlgErro').hidden = true;
+  $('dlgEntrar').showModal();
+  (lerNome() && !logado ? $('dlgToken') : $('dlgNome')).focus();
 }
-$('formGithub').addEventListener('submit', async e => {
+function erroEntrar(texto) {
+  $('dlgErro').textContent = texto;
+  $('dlgErro').hidden = false;
+}
+$('formEntrar').addEventListener('submit', async e => {
   e.preventDefault();
+  const nome = $('dlgNome').value.trim().replace(/\s+/g, ' ');
   const token = $('dlgToken').value.trim();
-  if (!token) { if (lerToken()) $('dlgGithub').close(); return; }
+  if (!nome) return erroEntrar('Escreva o seu nome. Ele aparece no histórico ao lado do que você mudar.');
+  if (!token && !lerToken()) return erroEntrar('Cole a chave de acesso.');
   $('dlgSalvar').disabled = true;
   try {
-    const repo = await api('GET', '', null, token);
-    if (!repo.permissions?.push) throw Object.assign(new Error('sem permissão'), { status: 403 });
-    localStorage.setItem(CHAVE_TOKEN, token);
-    $('dlgGithub').close();
-    toast('Conectado ao GitHub. Agora dá para publicar.');
-    atualizarStatus();
+    if (token) {
+      const repo = await api('GET', '', null, token);
+      if (!repo.permissions?.push) throw Object.assign(new Error('sem permissão'), { status: 403 });
+      localStorage.setItem(CHAVE_TOKEN, token);
+      erroNuvem = '';
+    }
+    const entrou = !!token;
+    localStorage.setItem(CHAVE_NOME, nome);
+    $('dlgEntrar').close();
+    renderPagina();
+    atualizarModo();
+    toast(entrou ? `Pronto, ${nome.split(' ')[0]}. Tudo o que você mudar é salvo sozinho.` : 'Nome atualizado.');
+    if (sujas.has(idDe(state))) salvarNaNuvem();
   } catch (err) {
-    $('dlgErro').textContent = err.status === 401 ? 'O GitHub não reconheceu essa chave. Confira se ela foi copiada inteira.'
+    erroEntrar(err.status === 401 ? 'O GitHub não reconheceu essa chave. Confira se ela foi copiada inteira.'
       : err.status === 403 || err.status === 404 ? `Essa chave não tem permissão para gravar em ${github().repositorio}.`
-        : 'Não consegui falar com o GitHub. Verifique a internet.';
-    $('dlgErro').hidden = false;
+        : 'Não consegui falar com o GitHub. Verifique a internet.');
   } finally {
     $('dlgSalvar').disabled = false;
   }
 });
-$('dlgCancelar').onclick = () => $('dlgGithub').close();
-$('dlgDesconectar').onclick = () => {
+$('dlgCancelar').onclick = () => $('dlgEntrar').close();
+$('dlgSair').onclick = async () => {
+  await salvarNaNuvem();
   try { localStorage.removeItem(CHAVE_TOKEN); } catch (e) { /* ok */ }
-  $('dlgGithub').close();
-  toast('Este navegador foi desconectado do GitHub.');
+  $('dlgEntrar').close();
+  fecharHistorico();
+  fecharMensagens();
+  zerarDesfazer();
+  renderPagina();
+  atualizarModo();
+  toast('Você saiu. Este navegador agora só mostra o informativo.');
 };
+$('btnEntrar').onclick = () => abrirEntrar();
+$('btnQuem').onclick = () => abrirEntrar();
+
+// Janela de confirmação da própria página (a confirmação nativa do navegador pode vir bloqueada).
+function perguntar({ titulo, texto, botoes }) {
+  const d = $('dlgPergunta');
+  $('pergTitulo').textContent = titulo;
+  $('pergTexto').textContent = texto;
+  $('pergBotoes').innerHTML = '<span class="bar-spacer"></span>' + botoes.map(b =>
+    `<button class="btn${b.primario ? ' btn-primary' : ''}${b.perigo ? ' btn-perigo' : ''}" value="${esc(b.valor)}">${esc(b.rotulo)}</button>`).join('');
+  d.returnValue = '';
+  d.showModal();
+  (d.querySelector('.btn-primary, .btn-perigo') || d.querySelector('button')).focus();
+  return new Promise(ok => d.addEventListener('close', () => ok(d.returnValue || null), { once: true }));
+}
+const confirmar = async (titulo, texto, rotulo, perigo = false) =>
+  (await perguntar({ titulo, texto, botoes: [{ rotulo: 'Cancelar', valor: 'nao' }, { rotulo, valor: 'sim', primario: !perigo, perigo }] })) === 'sim';
+
+// ---------- histórico de versões (cada salvamento é um commit no GitHub) ----------
+
+let previa = null; // enquanto uma versão antiga está na tela: { atual, sha, data, autor }
+const quando = d => d.toLocaleString('pt-BR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+const autorDe = msg => { const i = msg.indexOf(' — '); return i < 0 ? '' : msg.slice(i + 3).split('\n')[0].trim(); };
+
+async function carregarHistorico() {
+  const lista = $('histLista'), id = idDe(previa ? previa.atual : state);
+  $('histSub').textContent = nomeDe(id);
+  if (!remotas.has(id)) {
+    lista.innerHTML = '<li class="hist-vazio">Esta edição ainda não foi salva no GitHub.</li>';
+    return;
+  }
+  if (lista.dataset.id !== id) lista.innerHTML = '<li class="hist-vazio">Carregando…</li>';
+  lista.dataset.id = id;
+  try {
+    const commits = await api('GET', `/commits?sha=${encodeURIComponent(github().ramo)}&path=${encodeURIComponent(`edicoes/${id}.json`)}&per_page=100`);
+    let dia = '';
+    lista.innerHTML = commits.map((c, i) => {
+      const data = new Date(c.commit.author.date);
+      const d = data.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+      const cabecalho = d !== dia ? `<li class="hist-dia">${esc(d)}</li>` : '';
+      dia = d;
+      return cabecalho + `<li><button type="button" class="hist-item" data-versao="${c.sha}" data-data="${data.toISOString()}" data-atual="${i === 0}">` +
+        `<span class="hist-hora">${data.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>` +
+        `<span class="hist-autor">${esc(autorDe(c.commit.message) || 'versão inicial')}</span>` +
+        (i === 0 ? '<span class="hist-tag">Versão atual</span>' : '') + '</button></li>';
+    }).join('') || '<li class="hist-vazio">Nenhuma versão ainda.</li>';
+    marcarVersaoNaLista();
+  } catch (e) {
+    lista.innerHTML = '<li class="hist-vazio">Não consegui carregar o histórico. Verifique a internet.</li>';
+  }
+}
+function marcarVersaoNaLista() {
+  $('histLista').querySelectorAll('[data-versao]').forEach(b =>
+    b.toggleAttribute('aria-current', previa ? b.dataset.versao === previa.sha : b.dataset.atual === 'true'));
+}
+
+async function abrirPrevia(sha, data, autor) {
+  const atual = previa ? previa.atual : state, id = idDe(atual);
+  document.activeElement?.blur?.();
+  if (!previa) await salvarAgora();
+  try {
+    const f = await api('GET', `/contents/edicoes/${id}.json?ref=${sha}`);
+    const dados = JSON.parse(new TextDecoder().decode(deBase64(f.content)));
+    const caminho = typeof dados.imagem === 'string' && /^imagens\/[\w.-]+$/.test(dados.imagem) ? dados.imagem : null;
+    const imagem = caminho ? await baixarImagemPublicada(caminho) : null;
+    previa = { atual, sha, data, autor };
+    state = normalizar({ ...dados, imagem, aniversariantes: atual.aniversariantes });
+  } catch (e) {
+    return toast('Não consegui abrir essa versão. Verifique a internet.');
+  }
+  renderPagina();
+  atualizarModo();
+  marcarVersaoNaLista();
+}
+function sairPrevia() {
+  if (!previa) return;
+  state = previa.atual;
+  previa = null;
+  renderPagina();
+  atualizarModo();
+  marcarVersaoNaLista();
+}
+$('btnSairPrevia').onclick = sairPrevia;
+$('btnRestaurarVersao').onclick = () => {
+  if (!previa) return;
+  const escolhida = state, data = previa.data;
+  state = previa.atual;
+  previa = null;
+  marcarDesfazer();
+  state = normalizar({ ...copia(escolhida), aniversariantes: state.aniversariantes });
+  motivoSalvamento = `restaurou a versão de ${quando(data)}`;
+  renderPagina();
+  atualizarModo();
+  toast('Versão restaurada. Se mudar de ideia, use ⌘Z.');
+};
+$('histLista').addEventListener('click', e => {
+  const b = e.target.closest('[data-versao]');
+  if (!b) return;
+  if (b.dataset.atual === 'true') return sairPrevia();
+  abrirPrevia(b.dataset.versao, new Date(b.dataset.data), b.querySelector('.hist-autor').textContent);
+});
+function abrirHistorico() {
+  fecharMensagens();
+  $('hist').hidden = false;
+  $('btnHistorico').setAttribute('aria-pressed', 'true');
+  carregarHistorico();
+}
+function fecharHistorico() {
+  sairPrevia();
+  $('hist').hidden = true;
+  $('btnHistorico').setAttribute('aria-pressed', 'false');
+}
+$('btnHistorico').onclick = () => ($('hist').hidden ? abrirHistorico() : fecharHistorico());
+$('histFechar').onclick = fecharHistorico;
+
+// ---------- desfazer / refazer (⌘Z, ⌘⇧Z) ----------
+
+const pilhaDesfazer = [], pilhaRefazer = [];
+let grupo = { campo: null, timer: null };
+const retrato = () => ({ dados: JSON.stringify({ ...state, imagem: null }), imagem: state.imagem });
+
+// Guarda como a página estava antes de uma mudança. Digitação seguida no mesmo campo vira um passo só.
+function marcarDesfazer(campoAtual = null) {
+  if (!editando()) return;
+  soPadrao = false;
+  const continua = campoAtual && grupo.campo === campoAtual && grupo.timer;
+  clearTimeout(grupo.timer);
+  if (!continua) {
+    const r = retrato(), topo = pilhaDesfazer[pilhaDesfazer.length - 1];
+    if (!topo || topo.dados !== r.dados || topo.imagem !== r.imagem) {
+      pilhaDesfazer.push(r);
+      if (pilhaDesfazer.length > 200) pilhaDesfazer.shift();
+      pilhaRefazer.length = 0;
+    }
+  }
+  grupo = campoAtual ? { campo: campoAtual, timer: setTimeout(() => { grupo.timer = null; }, 1200) } : { campo: null, timer: null };
+  atualizarBotoesDesfazer();
+}
+function zerarDesfazer() {
+  pilhaDesfazer.length = 0;
+  pilhaRefazer.length = 0;
+  clearTimeout(grupo.timer);
+  grupo = { campo: null, timer: null };
+  atualizarBotoesDesfazer();
+}
+function atualizarBotoesDesfazer() {
+  $('btnDesfazer').disabled = !pilhaDesfazer.length;
+  $('btnRefazer').disabled = !pilhaRefazer.length;
+}
+function aplicarRetrato(r) {
+  const foco = document.activeElement?.dataset?.f;
+  state = normalizar({ ...JSON.parse(r.dados), imagem: r.imagem });
+  renderPagina();
+  const el = foco && pgEl.querySelector(`[data-f="${foco}"][contenteditable]`);
+  if (el) {
+    el.focus();
+    getSelection().selectAllChildren(el);
+    getSelection().collapseToEnd();
+  }
+}
+function desfazerAgora() {
+  if (!editando() || !pilhaDesfazer.length) return;
+  clearTimeout(grupo.timer);
+  grupo = { campo: null, timer: null };
+  pilhaRefazer.push(retrato());
+  aplicarRetrato(pilhaDesfazer.pop());
+  atualizarBotoesDesfazer();
+}
+function refazerAgora() {
+  if (!editando() || !pilhaRefazer.length) return;
+  pilhaDesfazer.push(retrato());
+  aplicarRetrato(pilhaRefazer.pop());
+  atualizarBotoesDesfazer();
+}
+$('btnDesfazer').onclick = desfazerAgora;
+$('btnRefazer').onclick = refazerAgora;
+document.addEventListener('keydown', e => {
+  if (!(e.metaKey || e.ctrlKey) || e.altKey || e.target.closest?.('input, textarea, select, dialog')) return;
+  const k = e.key.toLowerCase();
+  if (k === 'z' && !e.shiftKey) { e.preventDefault(); desfazerAgora(); }
+  else if ((k === 'z' && e.shiftKey) || k === 'y') { e.preventDefault(); refazerAgora(); }
+}, true);
+
+// ---------- mensagens prontas para o WhatsApp ----------
+
+const MODELOS = {
+  aula: (data, url) => `Boa noite, irmãos!\nEssa será a aula da escola dominical do próximo domingo ${data}:\n\n${url}`,
+  discurso: (data, url) => `E esse será o discurso tema do nosso debate do segundo horário do próximo domingo ${data}:\n\n${url}`,
+};
+const linkDe = html => parseHtml(html).querySelector('a[href]')?.getAttribute('href') || '';
+const dataCurta = (dia, s) => `${String(dia).padStart(2, '0')}/${String(s.mes + 1).padStart(2, '0')}`;
+
+let chaveMensagens = '';
+function atualizarMensagens(forcar = false) {
+  if ($('msgs').hidden) return;
+  const s = state;
+  const chave = JSON.stringify([s.mes, s.ano, ...['vemSegueMe', 'discursos'].map(l => s[l].map(it => [it.dia, it.texto]))]);
+  if (!forcar && chave === chaveMensagens) return;
+  chaveMensagens = chave;
+  $('msgsSub').textContent = nomeDe(idDe(s));
+  const dias = [...new Set([...s.vemSegueMe, ...s.discursos].map(it => parseInt(it.dia, 10)).filter(d => d >= 1 && d <= 31))].sort((a, b) => a - b);
+  const hoje = new Date();
+  hoje.setHours(0, 0, 0, 0);
+  const proximo = dias.find(d => new Date(s.ano, s.mes, d) >= hoje);
+  const bloco = (tipo, lista, dia, rotulo) => {
+    const i = s[lista].findIndex(it => parseInt(it.dia, 10) === dia);
+    if (i < 0) return '';
+    const url = linkDe(s[lista][i].texto), titulo = textoDe(s[lista][i].texto).trim();
+    return `<div class="msg-bloco"><span class="msg-rotulo">${rotulo}${titulo ? ` · ${esc(titulo)}` : ''}</span>` + (url
+      ? `<textarea class="msg-texto" rows="5" aria-label="${rotulo}">${esc(MODELOS[tipo](dataCurta(dia, s), url))}</textarea>` +
+        '<div class="msg-acoes"><button type="button" class="btn btn-sm" data-copiar>Copiar</button></div>'
+      : `<div class="msg-falta">Falta o link ${tipo === 'aula' ? 'da lição' : 'do discurso'} de ${dataCurta(dia, s)}.` +
+        `<input class="msg-link" data-lista="${lista}" data-i="${i}" inputmode="url" placeholder="Cole o link e aperte Enter" aria-label="Link ${tipo === 'aula' ? 'da lição' : 'do discurso'} de ${dataCurta(dia, s)}"></div>`) +
+      '</div>';
+  };
+  $('msgsLista').innerHTML = dias.map(dia => {
+    const aula = bloco('aula', 'vemSegueMe', dia, 'Escola dominical');
+    const discurso = bloco('discurso', 'discursos', dia, 'Quórum, 2º horário');
+    const juntas = aula.includes('msg-texto') && discurso.includes('msg-texto')
+      ? '<div class="msg-acoes msg-juntas"><button type="button" class="btn btn-sm btn-primary" data-copiar-tudo>Copiar as duas juntas</button></div>' : '';
+    return `<section class="msg-dom"><h3>Domingo, ${dataCurta(dia, s)}${dia === proximo ? '<span class="msg-prox">próximo</span>' : ''}</h3>${aula}${discurso}${juntas}</section>`;
+  }).join('') || '<p class="hist-vazio">Ainda não há domingos com lição ou discurso nesta edição.</p>';
+}
+
+async function copiar(texto) {
+  try {
+    await navigator.clipboard.writeText(texto);
+  } catch (e) {
+    const ta = document.createElement('textarea');
+    ta.value = texto;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    ta.remove();
+  }
+  toast('Mensagem copiada. É só colar no WhatsApp.');
+}
+
+// Coloca o link no texto inteiro da lição ou do discurso (fica clicável também no PDF).
+function porLink(lista, i, valor) {
+  const url = normalizarLink(valor);
+  if (!url) return toast('Esse link não parece válido. Ele deve começar com https://');
+  if (!editando() || !state[lista][i]) return;
+  marcarDesfazer();
+  const it = state[lista][i];
+  it.texto = limparRico(`<a href="${esc(url)}">${it.texto || esc(url)}</a>`);
+  renderPagina();
+  atualizarMensagens(true);
+  toast('Link colocado no informativo.');
+}
+
+$('msgsLista').addEventListener('click', e => {
+  const b = e.target.closest('[data-copiar], [data-copiar-tudo]');
+  if (!b) return;
+  const alvo = b.hasAttribute('data-copiar-tudo') ? b.closest('.msg-dom') : b.closest('.msg-bloco');
+  copiar([...alvo.querySelectorAll('.msg-texto')].map(t => t.value).join('\n\n'));
+});
+$('msgsLista').addEventListener('keydown', e => {
+  const inp = e.target.closest('.msg-link');
+  if (inp && e.key === 'Enter') { e.preventDefault(); porLink(inp.dataset.lista, Number(inp.dataset.i), inp.value); }
+});
+$('msgsLista').addEventListener('paste', e => {
+  const inp = e.target.closest('.msg-link');
+  if (inp) setTimeout(() => porLink(inp.dataset.lista, Number(inp.dataset.i), inp.value), 0);
+});
+function abrirMensagens() {
+  fecharHistorico();
+  $('msgs').hidden = false;
+  $('btnMensagens').setAttribute('aria-pressed', 'true');
+  atualizarMensagens(true);
+  $('msgsLista').querySelector('.msg-prox')?.closest('.msg-dom').scrollIntoView({ block: 'start' });
+}
+function fecharMensagens() {
+  $('msgs').hidden = true;
+  $('btnMensagens').setAttribute('aria-pressed', 'false');
+}
+$('btnMensagens').onclick = () => ($('msgs').hidden ? abrirMensagens() : fecharMensagens());
+$('msgsFechar').onclick = fecharMensagens;
+
+// Mostra ou esconde o que depende de poder editar (entrou, está vendo versão antiga, etc.).
+function atualizarModo() {
+  const g = github(), logado = !!g && !!lerToken(), nome = lerNome();
+  $('grupoEdicao').hidden = !editando();
+  if (!editando() && !previa) fecharMensagens();
+  $('btnHistorico').hidden = !logado;
+  $('btnEntrar').hidden = !g || logado;
+  $('btnQuem').hidden = !logado;
+  $('sepConta').hidden = !g;
+  $('quemNome').textContent = nome || 'Sem nome';
+  $('quemIni').textContent = (nome || '?').charAt(0).toUpperCase();
+  $('previaAviso').hidden = !previa;
+  if (previa) $('previaTexto').textContent = `Você está vendo a versão de ${quando(previa.data)}${previa.autor && previa.autor !== 'versão inicial' ? `, salva por ${previa.autor}` : ''}.`;
+  atualizarBotoesDesfazer();
+  atualizarEdicoes();
+  atualizarStatus();
+}
 
 // ---------- página ----------
 
@@ -810,16 +1295,17 @@ imgEl.draggable = false;
 function campo(tag, cls, path, ph, tipo = 'rico') {
   const v = getPath(state, path) ?? '';
   const rico = tipo.includes('rico');
+  const edita = editando() ? ` contenteditable="true" spellcheck="${rico && !tipo.includes('nome')}"` : '';
   return `<${tag} class="${cls}" data-f="${path}" data-ph="${esc(ph)}"${rico ? ' data-rico' : ''}${tipo.includes('multi') ? ' data-multi' : ''}` +
-    ` contenteditable="true" spellcheck="${rico && !tipo.includes('nome')}">${rico ? v : esc(v)}</${tag}>`;
+    `${edita}>${rico ? v : esc(v)}</${tag}>`;
 }
 
 function card(titulo, nome, corpo, rotulo, cresce = false) {
   return `<div class="pg-card${cresce ? ' cresce' : ''}"><div class="pg-h2row"><h2 class="pg-h2">${titulo}</h2><div class="pg-h2line"></div>` +
-    `<button type="button" class="ctl add" data-acao="add" data-lista="${nome}" tabindex="-1">+ ${rotulo}</button></div>${corpo}</div>`;
+    (editando() ? `<button type="button" class="ctl add" data-acao="add" data-lista="${nome}" tabindex="-1">+ ${rotulo}</button>` : '') + `</div>${corpo}</div>`;
 }
 
-const remover = (nome, i) => `<button type="button" class="ctl rm" data-acao="rm" data-lista="${nome}" data-i="${i}" title="Remover" tabindex="-1">×</button>`;
+const remover = (nome, i) => !editando() ? '' : `<button type="button" class="ctl rm" data-acao="rm" data-lista="${nome}" data-i="${i}" title="Remover" tabindex="-1">×</button>`;
 
 function itens(nome, ph, extra = '') {
   const cfg = LISTAS[nome];
@@ -829,6 +1315,8 @@ function itens(nome, ph, extra = '') {
   ).join('')}</div>`;
 }
 
+const ICONE_CAPELA = '<svg class="pg-icone" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19.75 15v5.75h-5.409v-3.637A2.343 2.343 0 0 0 12 14.772a2.343 2.343 0 0 0-2.341 2.341v3.637H4.25V15h-.056l6.223-3.007c.208-.1.358-.29.407-.516L12 6.045l1.176 5.432a.748.748 0 0 0 .407.516L19.806 15h-.056zm-5.185-4.198l-1.832-8.461c-.171-.788-1.295-.788-1.466 0l-1.832 8.461-7.761 3.75a.75.75 0 1 0 .652 1.351l.424-.205V21.5c0 .414.336.75.75.75h17a.75.75 0 0 0 .75-.75v-5.802l.424.205a.75.75 0 1 0 .652-1.351l-7.761-3.75z"/></svg>';
+
 function htmlPagina() {
   const anuncios = `<div class="pg-list">${state.anuncios.map((_, i) =>
     `<div class="pg-ann">${remover('anuncios', i)}${campo('div', 'pg-ann-big', `anuncios.${i}.destaque`, '17h')}` +
@@ -836,7 +1324,7 @@ function htmlPagina() {
   ).join('')}</div>`;
   return `
     <div class="pg-top">
-      <div class="pg-brand">${campo('div', 'pg-mono', 'sigla', 'QE', 'simples')}${campo('div', 'pg-ala', 'ala', 'Nome da ala', 'rico nome')}</div>
+      <div class="pg-brand">${ICONE_CAPELA}${campo('div', 'pg-ala', 'ala', 'Nome da ala', 'rico nome')}</div>
       <div class="pg-date" data-acao="mes" title="Ver as edições">${MESES[state.mes]} · ${esc(state.ano)}</div>
     </div>
     <div class="pg-head">
@@ -852,9 +1340,9 @@ function htmlPagina() {
       </div>
       <div class="pg-col">
         <div class="pg-imgbox">
-          <div class="ctl img-ctl"><span>Arraste para enquadrar</span><div>
+          ${editando() ? `<div class="ctl img-ctl"><span>Arraste para enquadrar</span><div>
             <button type="button" data-acao="trocar">Trocar imagem</button><button type="button" data-acao="original">Original</button>
-          </div></div>
+          </div></div>` : ''}
         </div>
         ${card('Aniversariantes', 'aniversariantes', itens('aniversariantes', 'Nome', 'pg-bday'), 'nome')}
       </div>
@@ -870,6 +1358,7 @@ function htmlPagina() {
 }
 
 function renderPagina() {
+  $('page').classList.toggle('leitura', !editando());
   pgEl.style.setProperty('--accent', state.cor);
   pgEl.innerHTML = htmlPagina();
   const src = state.imagem || window.IMAGEM_PADRAO || '';
@@ -906,6 +1395,8 @@ const editavel = e => e.target.closest?.('[contenteditable]');
 function registrar(el) {
   if (el.textContent === '') el.innerHTML = '';
   const v = 'rico' in el.dataset ? lerRico(el) : el.textContent.replace(/\s+/g, ' ').trim();
+  if (v === getPath(state, el.dataset.f)) return;
+  marcarDesfazer(el.dataset.f);
   setPath(state, el.dataset.f, v);
   checarTamanho();
   agendarSalvar();
@@ -932,6 +1423,7 @@ pgEl.addEventListener('beforeinput', e => {
   const el = editavel(e);
   if (!el) return;
   const t = e.inputType;
+  if (t === 'historyUndo' || t === 'historyRedo') { e.preventDefault(); return t === 'historyUndo' ? desfazerAgora() : refazerAgora(); }
   if ((t.startsWith('format') || t === 'insertLink') && !('rico' in el.dataset)) return e.preventDefault();
   if (t === 'insertFromDrop') return e.preventDefault();
   if (t === 'insertText' && e.data?.includes('"')) {
@@ -1086,10 +1578,9 @@ function aplicarCor(comando, valor, marca, marcaRgb, prop) {
 }
 
 function aplicarLink() {
-  let url = $('fmtLink').value.trim();
-  if (!url) return removerLink();
-  if (!/^[a-z][a-z0-9+.-]*:/i.test(url)) url = (/^[^\s@/]+@[^\s@]+\.[^\s@]+$/.test(url) ? 'mailto:' : 'https://') + url;
-  if (!LINK_OK.test(url)) return toast('Use um link que comece com https://');
+  if (!$('fmtLink').value.trim()) return removerLink();
+  const url = normalizarLink($('fmtLink').value);
+  if (!url) return toast('Use um link que comece com https://');
   prepararSelecao(false);
   const a = linkAtual();
   if (a && getSelection().isCollapsed) return a.setAttribute('href', url);
@@ -1111,6 +1602,7 @@ function removerLink() {
 function executar(cmd, valor) {
   const el = campoAtivo;
   if (!el) return;
+  marcarDesfazer(); // cada formatação é um passo do ⌘Z
   switch (cmd) {
     case 'bold': case 'italic': case 'underline':
       prepararSelecao(false);
@@ -1200,6 +1692,7 @@ pgEl.addEventListener('click', e => {
   const nome = b.dataset.lista;
   switch (b.dataset.acao) {
     case 'add': {
+      marcarDesfazer();
       const novo = { ...LISTAS[nome].novo };
       if (nome === 'discursos' || nome === 'vemSegueMe') novo.dia = proximoDomingo(nome);
       state[nome].push(novo);
@@ -1212,6 +1705,7 @@ pgEl.addEventListener('click', e => {
       break;
     }
     case 'rm':
+      marcarDesfazer();
       state[nome].splice(Number(b.dataset.i), 1);
       renderPagina();
       break;
@@ -1219,6 +1713,7 @@ pgEl.addEventListener('click', e => {
       $('arquivoImagem').click();
       break;
     case 'original':
+      marcarDesfazer();
       state.imagem = null;
       state.imagemX = 50;
       state.imagemY = 0;
@@ -1234,8 +1729,9 @@ pgEl.addEventListener('click', e => {
 let puxando = null;
 pgEl.addEventListener('pointerdown', e => {
   const box = e.target.closest('.pg-imgbox');
-  if (!box || e.button !== 0 || e.target.closest('button')) return;
+  if (!box || e.button !== 0 || e.target.closest('button') || !editando()) return;
   e.preventDefault();
+  marcarDesfazer();
   box.setPointerCapture(e.pointerId);
   const bw = box.offsetWidth, bh = box.offsetHeight;
   const nw = imgEl.naturalWidth || bw, nh = imgEl.naturalHeight || bh;
@@ -1275,6 +1771,7 @@ function carregarImg(src) {
 }
 
 async function lerImagem(arquivo) {
+  if (!editando()) return;
   if (!arquivo || !arquivo.type.startsWith('image/')) return toast('Esse arquivo não é uma imagem.');
   const url = URL.createObjectURL(arquivo);
   try {
@@ -1288,6 +1785,7 @@ async function lerImagem(arquivo) {
     ctx.fillStyle = '#F6F2EA';
     ctx.fillRect(0, 0, c.width, c.height);
     ctx.drawImage(img, 0, 0, c.width, c.height);
+    marcarDesfazer();
     state.imagem = c.toDataURL('image/jpeg', 0.9);
     state.imagemX = 50;
     state.imagemY = 50;
@@ -1319,6 +1817,7 @@ window.addEventListener('drop', e => {
   document.body.classList.remove('arrastando');
   const arq = e.dataTransfer.files[0];
   if (!arq) return;
+  if (!editando()) return;
   if (/\.json$/i.test(arq.name)) restaurarBackup(arq);
   else lerImagem(arq);
 });
@@ -1333,6 +1832,8 @@ function marcarCor() {
   $('corLivre').value = /^#[0-9a-f]{6}$/i.test(state.cor) ? state.cor : '#8A6A3E';
 }
 function mudarCor(c) {
+  if (!editando() || c === state.cor) return;
+  marcarDesfazer('cor');
   state.cor = c;
   pgEl.style.setProperty('--accent', c);
   marcarCor();
@@ -1343,6 +1844,7 @@ $('corLivre').oninput = e => mudarCor(e.target.value);
 
 // Cria o mês seguinte à edição mais recente, copiando dela o que se repete.
 $('btnNovoMes').onclick = async () => {
+  if (!editando()) return;
   await salvarAgora();
   const ultimo = edicoes[edicoes.length - 1] || idDe(state);
   let base = state;
@@ -1350,24 +1852,27 @@ $('btnNovoMes').onclick = async () => {
     try { base = await carregarEdicao(ultimo); } catch (e) { return toast('Não consegui abrir a edição mais recente. Verifique a internet.'); }
   }
   const mes = (base.mes + 1) % 12, ano = base.ano + (base.mes === 11 ? 1 : 0);
-  const ok = confirm(`Criar a edição de ${MESES[mes]} · ${ano}?\n\n` +
-    `Ela começa como cópia de ${MESES[base.mes]} · ${base.ano}, com os domingos do mês preenchidos. ` +
-    'Discursos, Vem, e Segue-me e Aniversariantes começam vazios; anúncios, mensagem e imagem continuam.\n\n' +
-    `${MESES[base.mes]} · ${base.ano} continua salva no menu das edições.`);
+  const ok = await confirmar(`Criar a edição de ${MESES[mes]} · ${ano}?`,
+    `Ela começa como cópia de ${MESES[base.mes]} · ${base.ano}, com todos os domingos do mês em Discursos e em Vem, e Segue-me. ` +
+    'Esses quadros e os Aniversariantes começam vazios; anúncios, mensagem e imagem continuam.\n\n' +
+    `${MESES[base.mes]} · ${base.ano} continua salva no menu das edições.`, 'Criar edição');
   if (!ok) return;
+  salvarNaNuvem();
   const novo = copia(base);
   const dom = domingos(ano, mes).map(String);
   novo.mes = mes;
   novo.ano = ano;
-  // O 1º domingo costuma ser a reunião de jejum e testemunho, sem discursos.
-  novo.discursos = dom.slice(1).map(dia => ({ dia, texto: '' }));
+  novo.discursos = dom.map(dia => ({ dia, texto: '' }));
   novo.vemSegueMe = dom.map(dia => ({ dia, texto: '' }));
   novo.aniversariantes = [{ dia: '', nome: '' }];
   state = normalizar(novo);
+  soPadrao = false;
+  zerarDesfazer();
   await salvarAgora();
   lembrarAberta();
   renderPagina();
-  toast(`Edição de ${MESES[mes]} · ${ano} criada.${github() ? ' Publique quando estiver pronta.' : ''}`);
+  if (!$('hist').hidden) carregarHistorico();
+  toast(`Edição de ${MESES[mes]} · ${ano} criada.`);
 };
 
 const ICONE_LIXO = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="m19 6-1 14H6L5 6"/></svg>';
@@ -1382,17 +1887,16 @@ function atualizarEdicoes() {
   $('edLista').innerHTML = [...lista].reverse().map(id => {
     const tags = [];
     if (id === atual) tags.push('<span class="ed-tag">aberta</span>');
-    if (g && sujas.has(id)) tags.push(`<span class="ed-tag alerta">${remotas.has(id) ? 'com alterações' : 'não publicada'}</span>`);
+    if (g && lerToken() && sujas.has(id) && id !== atual) tags.push('<span class="ed-tag alerta">não salva no GitHub</span>');
     return `<li><button type="button" class="ed-item" data-abrir="${id}"${id === atual ? ' aria-current="true"' : ''}>${nomeDe(id)}${tags.join('')}</button>` +
       (lista.length > 1 ? `<button type="button" class="ed-apagar" data-apagar="${id}" title="Excluir ${nomeDe(id)}" aria-label="Excluir ${nomeDe(id)}">${ICONE_LIXO}</button>` : '') +
       '</li>';
   }).join('');
-  $('btnDescartar').hidden = !(g && sujas.has(atual) && remotas.has(atual));
-  $('btnConexao').hidden = !g;
-  $('sepGithub').hidden = !g;
-  $('edDica').textContent = g
-    ? 'Publicar grava a edição no GitHub, e quem abrir o site vê essa versão. Os aniversariantes ficam só neste navegador.'
-    : 'Tudo fica salvo neste navegador. De vez em quando, salve um backup e guarde o arquivo junto com os PDFs.';
+  $('btnDescartar').hidden = !(g && sujas.has(atual) && remotas.has(atual) && (semConexao || erroNuvem));
+  $('edAcoes').hidden = !editando();
+  $('edDica').textContent = !g ? 'Tudo fica salvo neste navegador. De vez em quando, salve um backup e guarde o arquivo junto com os PDFs.'
+    : !lerToken() ? 'Para editar, clique em “Entrar para editar”.'
+      : 'O que você muda é salvo sozinho no GitHub, com o seu nome. Os aniversariantes ficam só neste navegador.';
 }
 
 function abrirPainelEdicoes() {
@@ -1407,21 +1911,24 @@ function fecharPainelEdicoes() {
 $('edAtual').onclick = () => ($('edPainel').hidden ? abrirPainelEdicoes() : fecharPainelEdicoes());
 document.addEventListener('pointerdown', e => { if (!$('edPainel').hidden && !$('edicao').contains(e.target)) fecharPainelEdicoes(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('edPainel').hidden) fecharPainelEdicoes(); });
-$('btnConexao').onclick = () => abrirConexao();
 
 async function abrirEdicaoId(id) {
   fecharPainelEdicoes();
+  if (previa) sairPrevia();
   if (id === idDe(state)) return;
-  await salvarAgora();
+  await salvarAgora({ nuvem: false });
+  salvarNaNuvem();
   try {
     state = await carregarEdicao(id);
   } catch (e) {
     return toast('Não consegui abrir essa edição. Verifique a internet.');
   }
+  zerarDesfazer();
   lembrarAberta();
   renderPagina();
   atualizarEdicoes();
   atualizarStatus();
+  if (!$('hist').hidden) carregarHistorico();
 }
 $('edAnterior').onclick = () => { const i = edicoes.indexOf(idDe(state)); if (i > 0) abrirEdicaoId(edicoes[i - 1]); };
 $('edProxima').onclick = () => { const i = edicoes.indexOf(idDe(state)); if (i >= 0 && i < edicoes.length - 1) abrirEdicaoId(edicoes[i + 1]); };
@@ -1429,10 +1936,11 @@ $('edProxima').onclick = () => { const i = edicoes.indexOf(idDe(state)); if (i >
 async function excluirEdicao(id) {
   if (edicoes.length <= 1) return;
   const publicada = github() && remotas.has(id);
-  if (publicada && !lerToken()) return abrirConexao('Para excluir uma edição publicada, conecte este navegador ao GitHub.');
-  if (!confirm(`Excluir a edição de ${nomeDe(id)}?\n\n` + (publicada
-    ? 'Ela será apagada deste navegador e do GitHub (o histórico do repositório ainda guarda uma cópia).'
-    : 'Isso não pode ser desfeito. Se quiser guardar antes, cancele e use “Salvar backup”.'))) return;
+  if (publicada && !lerToken()) return abrirEntrar('Para excluir uma edição, entre primeiro.');
+  fecharPainelEdicoes();
+  if (!await confirmar(`Excluir a edição de ${nomeDe(id)}?`, publicada
+    ? 'Ela será apagada para todos. O histórico do repositório no GitHub ainda guarda uma cópia.'
+    : 'Isso não pode ser desfeito. Se quiser guardar antes, cancele e use “Salvar backup”.', 'Excluir', true)) return;
   clearTimeout(timerSalvar);
   await salvando;
   if (publicada) {
@@ -1449,6 +1957,7 @@ async function excluirEdicao(id) {
   edicoes = edicoes.filter(x => x !== id);
   if (id === idDe(state)) {
     try { state = await carregarEdicao(edicoes[edicoes.length - 1]); } catch (e) { state = normalizar({}); }
+    zerarDesfazer();
     lembrarAberta();
     renderPagina();
   }
@@ -1466,7 +1975,7 @@ $('edLista').addEventListener('click', e => {
 $('btnDescartar').onclick = async () => {
   const id = idDe(state);
   fecharPainelEdicoes();
-  if (!confirm(`Descartar as alterações não publicadas de ${nomeDe(id)} e voltar para a versão publicada?`)) return;
+  if (!await confirmar('Descartar as alterações não salvas?', `As mudanças em ${nomeDe(id)} que ainda não foram para o GitHub serão perdidas, e a página volta para a última versão salva.`, 'Descartar', true)) return;
   clearTimeout(timerSalvar);
   await salvando;
   try {
@@ -1474,10 +1983,11 @@ $('btnDescartar').onclick = async () => {
   } catch (e) {
     return toast('Não consegui buscar a versão publicada. Verifique a internet.');
   }
+  zerarDesfazer();
   renderPagina();
   atualizarEdicoes();
   atualizarStatus();
-  toast('Voltou para a versão publicada.');
+  toast('Voltou para a última versão salva.');
 };
 
 const nomeArquivo = ext => `informativo-${state.ano}-${String(state.mes + 1).padStart(2, '0')}.${ext}`;
@@ -1508,7 +2018,8 @@ document.addEventListener('keydown', e => {
   if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's') {
     e.preventDefault();
     salvarAgora();
-    toast(github() ? 'Já fica salvo neste navegador. Para todos verem, clique em “Publicar”.' : 'Já fica salvo automaticamente. Para ter um arquivo, use “Salvar backup” no menu das edições.');
+    salvarNaNuvem();
+    toast('Já fica salvo automaticamente. Para ter um arquivo, use “Salvar backup” no menu das edições.');
   }
 });
 
@@ -1524,9 +2035,9 @@ async function restaurarBackup(arquivo) {
   });
   if (!novas.length) return toast('Esse arquivo não é um backup do informativo.');
   const repetidas = novas.filter(ed => edicoes.includes(ed.id));
-  if (repetidas.length && !confirm(`O arquivo tem ${plural(novas.length, 'edição', 'edições')}. ` +
+  if (repetidas.length && !await confirmar('Substituir edições?', `O arquivo tem ${plural(novas.length, 'edição', 'edições')}. ` +
     `${repetidas.length === 1 ? 'Esta já existe aqui e vai ser substituída' : 'Estas já existem aqui e vão ser substituídas'}: ` +
-    `${repetidas.map(ed => nomeDe(ed.id)).join(', ')}.\n\nContinuar?`)) return;
+    `${repetidas.map(ed => nomeDe(ed.id)).join(', ')}.`, 'Substituir')) return;
   await salvarAgora();
   try {
     for (const ed of novas) {
@@ -1540,6 +2051,7 @@ async function restaurarBackup(arquivo) {
   } catch (e) {
     return toast('Não consegui restaurar o backup.');
   }
+  zerarDesfazer();
   lembrarAberta();
   renderPagina();
   atualizarEdicoes();
@@ -1650,11 +2162,10 @@ async function iniciar() {
   const id = edicoes.includes(aberta) ? aberta : edicoes[edicoes.length - 1];
   if (id) {
     try { state = await carregarEdicao(id); } catch (e) { toast('Não consegui abrir a edição mais recente. Verifique a internet.'); }
-  }
+  } else soPadrao = true;
   lembrarAberta();
   renderPagina();
-  atualizarEdicoes();
-  atualizarStatus();
+  atualizarModo();
   ajustarEscala();
   document.fonts.ready.then(checarTamanho);
 }
