@@ -38,11 +38,10 @@ Se aparecer o aviso vermelho, o conteúdo não coube na página: encurte um text
 - **⌘Z / Ctrl+Z** desfaz e **⌘⇧Z** refaz (ou use as setas curvas na barra).
 - **Histórico** mostra cada versão salva, com a hora e o nome de quem salvou. Clique numa versão para ver como estava e, se quiser, **Restaurar esta versão**.
 - Se duas pessoas mexerem na mesma edição ao mesmo tempo, o site pergunta qual versão fica valendo.
-- **Os aniversariantes não são salvos no GitHub.** São dados pessoais e o repositório é público: eles ficam só no navegador de quem preenche e saem normalmente no PNG e no PDF.
 
 ## Backup
 
-No menu do mês, **Salvar backup de todas as edições** baixa um arquivo `.json` com tudo o que está no navegador, inclusive os aniversariantes. **Restaurar backup…** (ou arrastar o arquivo para a janela) traz de volta.
+No menu do mês, **Salvar backup de todas as edições** baixa um arquivo `.json` com tudo o que está no navegador. **Restaurar backup…** (ou arrastar o arquivo para a janela) traz de volta.
 
 ## Como está organizado
 
