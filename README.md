@@ -27,7 +27,10 @@ O site guarda a chave no repositório **criptografada com a senha** (arquivo `ac
 
 1. Clique em **Novo mês**. É criada a edição do mês seguinte à mais recente, como cópia dela, com todos os domingos em Discursos e em Vem, e Segue-me. Esses quadros e os Aniversariantes começam vazios.
 2. Clique em qualquer texto da página e digite. **Enter** termina a edição. Acima do texto aparece uma barra para mudar fonte, tamanho, negrito, itálico, sublinhado, cor, destaque e link, ou para limpar a formatação. Atalhos: ⌘B, ⌘I, ⌘U e ⌘K (link).
-3. Passe o mouse sobre um quadro para ver os botões **+** (adicionar) e **×** (remover). Itens vazios não saem no informativo.
+3. Passe o mouse sobre um item para ver os controles dele:
+   - **⋮⋮** à esquerda: arraste para mudar a ordem (ou use **Alt+↑/↓** enquanto digita no item);
+   - **🔗** à direita: cola o link do item inteiro (discurso, lição ou anúncio). O link funciona no PDF, e os itens que já têm link mostram um ícone discreto na margem, só no editor;
+   - **×** à direita: remove o item. O **+** no título do quadro adiciona um. Itens vazios não saem no informativo.
 4. Para trocar a foto, passe o mouse sobre ela e clique em **Trocar imagem** (ou arraste um arquivo para a janela, ou cole com ⌘V). Arraste a foto para ajustar o enquadramento.
 5. Em **Mensagens** estão os textos prontos para o WhatsApp de cada domingo, com a data e o link da aula da escola dominical e do discurso do 2º horário. Se faltar um link, cole ali mesmo: ele entra também no informativo.
 6. Exporte com **Baixar imagem** (PNG 1600×2240, bom para o WhatsApp) ou **PDF / Imprimir** (escolha "Salvar como PDF"). Os links funcionam no PDF.
