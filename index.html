@@ -33,9 +33,9 @@
 .pg *{box-sizing:border-box}
 .pg-top{display:flex;justify-content:space-between;align-items:center;height:40px;flex-shrink:0}
 .pg-brand{display:flex;align-items:center;gap:10px}
-.pg-icone{display:block;width:30px;height:30px;flex-shrink:0;color:var(--accent)}
-.pg-ala{font-size:13px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#1E2B3C}
-.pg-date{font-size:13px;font-weight:500;letter-spacing:.13em;text-transform:uppercase;color:#5A6474}
+.pg-icone{display:block;width:32px;height:32px;flex-shrink:0;color:var(--accent)}
+.pg-ala{font-size:15px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#1E2B3C}
+.pg-date{font-size:15px;font-weight:500;letter-spacing:.13em;text-transform:uppercase;color:#5A6474}
 .pg-head{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;flex-shrink:0}
 .pg-kicker{font-family:'Alegreya',Georgia,serif;font-style:italic;font-weight:400;font-size:19px;line-height:1;color:#5A6474}
 .pg-title{margin:0;font-family:'Alegreya',Georgia,serif;font-weight:700;font-size:52px;line-height:1.05;letter-spacing:-.012em;color:#1E2B3C}
@@ -51,8 +51,8 @@
 .pg-h2row{position:relative;display:flex;align-items:center;gap:12px}
 .pg-h2{margin:0;font-family:'Alegreya',Georgia,serif;font-weight:700;font-size:21px;line-height:1;color:#1E2B3C}
 .pg-h2line{flex-grow:1;height:1px;background:#E4DBCC}
-.pg-list{display:flex;flex-direction:column;gap:12px}
-.pg-list.sm{gap:8px}
+.pg-list{display:flex;flex-direction:column;gap:8px}
+.pg-list.sm{gap:4px}
 .pg-item{position:relative;display:flex;gap:14px;align-items:baseline}
 .pg-num{width:34px;flex-shrink:0;font-family:'Alegreya',Georgia,serif;font-weight:700;font-size:25px;line-height:1;color:var(--accent)}
 .pg-txt{min-width:0;flex-grow:1;font-size:15.5px;line-height:1.38;color:#2A3544;overflow-wrap:anywhere}
@@ -60,7 +60,7 @@
 .pg-bday .pg-txt{line-height:1.3}
 .pg-imgbox{position:relative;flex:1 1 0;min-height:120px;border-radius:14px;overflow:hidden;background:#E4DBCC}
 .pg-img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;user-select:none}
-.pg-anns{display:grid;grid-template-columns:max-content minmax(0,1fr);column-gap:14px;row-gap:12px}
+.pg-anns{display:grid;grid-template-columns:max-content minmax(0,1fr);column-gap:14px;row-gap:8px}
 .pg-ann{position:relative;display:grid;grid-column:1/-1;grid-template-columns:subgrid;align-items:baseline}
 .pg-ann .pg-txt{grid-column:2}
 .pg-ann-big{flex-shrink:0;min-width:34px;font-family:'Alegreya',Georgia,serif;font-weight:700;font-size:25px;line-height:1;color:var(--accent)}
@@ -221,6 +221,9 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .fmt .fmt-ok{flex-direction:row;padding:0 10px;background:var(--ink);color:#F6F2EA;font-weight:600}
 .fmt .fmt-ok:hover{background:#2C3D54}
 .fmt .fmt-link button:not(.fmt-ok){flex-direction:row;padding:0 8px;font-weight:600}
+.lk-pop{position:fixed;z-index:47;display:flex;gap:6px;align-items:center;width:min(380px,calc(100vw - 16px));padding:8px;background:var(--panel);border:1px solid var(--line2);border-radius:10px;box-shadow:0 8px 24px rgba(30,43,60,.18)}
+.lk-pop input{flex:1;min-width:0;height:32px;padding:0 8px;border:1px solid var(--line2);border-radius:6px;background:#fff;color:var(--ink);font-size:13px}
+.lk-pop input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(138,106,62,.18)}
 .toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));transform:translate(-50%,8px);background:var(--ink);color:#F6F2EA;padding:10px 16px;border-radius:10px;font-size:13.5px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:60;max-width:calc(100% - 32px)}
 .toast.on{opacity:1;transform:translate(-50%,0)}
 .drop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(30,43,60,.6);color:#fff;font-size:19px;font-weight:600;z-index:50;pointer-events:none;text-align:center;padding:24px}
@@ -242,9 +245,18 @@ body.arrastando .drop{display:flex}
   #page:not(.leitura) .pg-imgbox{cursor:grab;touch-action:none}
   #page .pg-imgbox.puxando{cursor:grabbing}
   #page .ctl{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;transition:opacity .15s}
-  #page .rm{position:absolute;left:-21px;top:1px;width:18px;height:18px;border-radius:50%;border:0;padding:0;background:#E9DFD0;color:#5A6474;font-size:13px;line-height:18px;cursor:pointer;opacity:0}
-  #page .pg-item:hover>.rm,#page .pg-ann:hover>.rm,#page .pg-item:focus-within>.rm,#page .pg-ann:focus-within>.rm{opacity:1}
-  #page .rm:hover{background:var(--danger);color:#fff}
+  #page .mv{position:absolute;left:-21px;top:0;width:18px;height:24px;border:0;padding:0;background:none;color:#A39B8D;cursor:grab;opacity:0;touch-action:none;display:flex;align-items:center;justify-content:center}
+  #page .mv:hover{color:#5A6474}
+  #page .acoes{position:absolute;right:-10px;top:-3px;display:flex;gap:2px;padding:2px;border-radius:8px;background:#FFFDF9;box-shadow:0 1px 2px rgba(30,43,60,.12),0 4px 12px rgba(30,43,60,.14);opacity:0;pointer-events:none}
+  #page .acoes button{width:24px;height:24px;border:0;padding:0;border-radius:6px;background:none;color:#5A6474;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;line-height:1}
+  #page .acoes button:hover{background:#F3EADB;color:#1E2B3C}
+  #page .acoes .rm:hover{background:#F4E4E0;color:var(--danger)}
+  #page .acoes .lk.tem{color:#8A6A3E}
+  #page :is(.pg-item,.pg-ann):is(:hover,:focus-within)>:is(.mv,.acoes){opacity:1;pointer-events:auto}
+  #page .lk-ind{position:absolute;right:-17px;top:5px;width:12px;height:12px;color:#8A6A3E;opacity:.55;pointer-events:none}
+  #page :is(.pg-item,.pg-ann):is(:hover,:focus-within)>.lk-ind{opacity:0}
+  #page :is(.pg-item,.pg-ann).movendo{z-index:3;background:#FFFDF9;border-radius:8px;box-shadow:0 0 0 6px #FFFDF9,0 8px 22px rgba(30,43,60,.2)}
+  #page :is(.pg-item,.pg-ann).movendo .mv{cursor:grabbing}
   #page .add{position:absolute;right:0;top:50%;transform:translateY(-50%);height:24px;padding:0 10px;border-radius:12px;border:1px solid #D6CAB5;background:#FFFDF9;color:#8A6A3E;font-size:12px;font-weight:600;cursor:pointer;opacity:0}
   #page .pg-card:hover .add,#page .pg-card:focus-within .add{opacity:1}
   #page .add:hover{background:#F3EADB}
@@ -272,11 +284,11 @@ body.arrastando .drop{display:flex}
 /* Toque: sem hover, os botões de editar a página ficam sempre à mostra. */
 @media (hover:none){
   #page .add,#page .img-ctl{opacity:1}
-  #page .rm{opacity:.75}
+  #page .mv{opacity:.5}
 }
 /* O iPhone dá zoom sozinho em campos com letra menor que 16 px. */
 @media (pointer:coarse){
-  .dlg-campo input,.fmt-tam,.fmt-link input,.msg-link,.msg-texto,.fmt-fonte{font-size:16px}
+  .dlg-campo input,.fmt-tam,.fmt-link input,.msg-link,.msg-texto,.fmt-fonte,.lk-pop input{font-size:16px}
 }
 
 @page{size:800px 1120px;margin:0}
@@ -439,6 +451,11 @@ body.arrastando .drop{display:flex}
     <div class="dlg-acoes" id="pergBotoes"></div>
   </form>
 </dialog>
+<div class="lk-pop" id="lkPop" hidden>
+  <input id="lkUrl" type="url" autocomplete="off" placeholder="Cole o link (https://…)" aria-label="Link do item">
+  <button type="button" class="btn btn-sm btn-primary" id="lkOk">Aplicar</button>
+  <button type="button" class="btn btn-sm" id="lkRm">Remover</button>
+</div>
 <div class="toast" id="toast" role="status"></div>
 
 <script>
@@ -1334,18 +1351,61 @@ async function copiar(texto) {
   toast('Mensagem copiada. É só colar no WhatsApp.');
 }
 
-// Coloca o link no texto inteiro da lição ou do discurso (fica clicável também no PDF).
+// Põe (ou tira, com url vazia) o link no texto inteiro do item; fica clicável também no PDF.
+function definirLink(lista, i, url) {
+  const it = state[lista]?.[i];
+  if (!it || !editando()) return;
+  const corpo = parseHtml(it.texto);
+  corpo.querySelectorAll('a').forEach(a => a.replaceWith(...a.childNodes));
+  marcarDesfazer();
+  it.texto = url ? limparRico(`<a href="${esc(url)}">${corpo.innerHTML || esc(url)}</a>`) : lerRico(corpo);
+  renderPagina();
+  atualizarMensagens(true);
+}
 function porLink(lista, i, valor) {
   const url = normalizarLink(valor);
   if (!url) return toast('Esse link não parece válido. Ele deve começar com https://');
-  if (!editando() || !state[lista][i]) return;
-  marcarDesfazer();
-  const it = state[lista][i];
-  it.texto = limparRico(`<a href="${esc(url)}">${it.texto || esc(url)}</a>`);
-  renderPagina();
-  atualizarMensagens(true);
+  definirLink(lista, i, url);
   toast('Link colocado no informativo.');
 }
+
+// Janelinha do botão de link à direita de cada item.
+let linkAlvo = null;
+function abrirLinkItem(botao) {
+  linkAlvo = { lista: botao.dataset.lista, i: Number(botao.dataset.i) };
+  const atual = linkDe(state[linkAlvo.lista][linkAlvo.i].texto), pop = $('lkPop'), r = botao.getBoundingClientRect();
+  $('lkUrl').value = atual;
+  $('lkRm').hidden = !atual;
+  pop.hidden = false;
+  pop.style.left = `${Math.max(8, Math.min(r.right - pop.offsetWidth, innerWidth - pop.offsetWidth - 8))}px`;
+  pop.style.top = `${r.bottom + 6 + pop.offsetHeight > innerHeight ? r.top - pop.offsetHeight - 6 : r.bottom + 6}px`;
+  $('lkUrl').focus();
+  $('lkUrl').select();
+}
+function fecharLinkItem() {
+  $('lkPop').hidden = true;
+  linkAlvo = null;
+}
+function aplicarLinkItem() {
+  if (!linkAlvo) return;
+  const { lista, i } = linkAlvo;
+  if (!$('lkUrl').value.trim()) { fecharLinkItem(); definirLink(lista, i, ''); return toast('Link removido.'); }
+  const url = normalizarLink($('lkUrl').value);
+  if (!url) return toast('Esse link não parece válido. Ele deve começar com https://');
+  fecharLinkItem();
+  definirLink(lista, i, url);
+  toast('Link colocado.');
+}
+$('lkOk').onclick = aplicarLinkItem;
+$('lkRm').onclick = () => { if (!linkAlvo) return; const { lista, i } = linkAlvo; fecharLinkItem(); definirLink(lista, i, ''); toast('Link removido.'); };
+$('lkUrl').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); aplicarLinkItem(); }
+  else if (e.key === 'Escape') fecharLinkItem();
+});
+document.addEventListener('pointerdown', e => {
+  if (!$('lkPop').hidden && !$('lkPop').contains(e.target) && !e.target.closest?.('[data-acao="link"]')) fecharLinkItem();
+});
+
 
 $('msgsLista').addEventListener('click', e => {
   const b = e.target.closest('[data-copiar], [data-copiar-tudo]');
@@ -1418,13 +1478,25 @@ function card(titulo, nome, corpo, rotulo, cresce = false) {
     (editando() ? `<button type="button" class="ctl add" data-acao="add" data-lista="${nome}" tabindex="-1">+ ${rotulo}</button>` : '') + `</div>${corpo}</div>`;
 }
 
-const remover = (nome, i) => !editando() ? '' : `<button type="button" class="ctl rm" data-acao="rm" data-lista="${nome}" data-i="${i}" title="Remover" tabindex="-1">×</button>`;
+const ICONE_ALCA = '<svg width="10" height="16" viewBox="0 0 10 16" fill="currentColor" aria-hidden="true"><circle cx="3" cy="3" r="1.5"/><circle cx="7" cy="3" r="1.5"/><circle cx="3" cy="8" r="1.5"/><circle cx="7" cy="8" r="1.5"/><circle cx="3" cy="13" r="1.5"/><circle cx="7" cy="13" r="1.5"/></svg>';
+const ICONE_LINK = '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>';
+// Alça para arrastar (esquerda) e, à direita, link e remover. Nada disso vai para o PNG/PDF.
+function controles(nome, i) {
+  if (!editando()) return '';
+  const comLink = nome !== 'aniversariantes', link = comLink && linkDe(state[nome][i].texto);
+  const dados = `data-lista="${nome}" data-i="${i}" tabindex="-1"`;
+  return `<button type="button" class="ctl mv" data-acao="mover" ${dados} title="Arraste para mudar a ordem (ou Alt+↑/↓)" aria-label="Mudar a ordem">${ICONE_ALCA}</button>` +
+    (link ? `<svg class="ctl lk-ind" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONE_LINK}</svg>` : '') +
+    '<span class="ctl acoes">' +
+    (comLink ? `<button type="button" class="lk${link ? ' tem' : ''}" data-acao="link" ${dados} title="${link ? 'Mudar ou tirar o link' : 'Colocar link'}" aria-label="Link"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONE_LINK}</svg></button>` : '') +
+    `<button type="button" class="rm" data-acao="rm" ${dados} title="Remover" aria-label="Remover">×</button></span>`;
+}
 
 function itens(nome, ph, extra = '') {
   const cfg = LISTAS[nome];
   return `<div class="pg-list${extra ? ' sm' : ''}">${state[nome].map((_, i) =>
-    `<div class="pg-item ${extra}">${remover(nome, i)}${campo('div', 'pg-num', `${nome}.${i}.dia`, '00', 'simples')}` +
-    `${campo('div', 'pg-txt', `${nome}.${i}.${cfg.campo}`, ph, cfg.campo === 'nome' ? 'rico nome' : 'rico')}</div>`
+    `<div class="pg-item ${extra}">${campo('div', 'pg-num', `${nome}.${i}.dia`, '00', 'simples')}` +
+    `${campo('div', 'pg-txt', `${nome}.${i}.${cfg.campo}`, ph, cfg.campo === 'nome' ? 'rico nome' : 'rico')}${controles(nome, i)}</div>`
   ).join('')}</div>`;
 }
 
@@ -1432,8 +1504,8 @@ const ICONE_CAPELA = '<svg class="pg-icone" viewBox="0 0 24 24" aria-hidden="tru
 
 function htmlPagina() {
   const anuncios = `<div class="pg-anns">${state.anuncios.map((_, i) =>
-    `<div class="pg-ann">${remover('anuncios', i)}${campo('div', 'pg-ann-big', `anuncios.${i}.destaque`, '17h')}` +
-    `${campo('div', 'pg-txt', `anuncios.${i}.texto`, 'Texto do anúncio', 'rico multi')}</div>`
+    `<div class="pg-ann">${campo('div', 'pg-ann-big', `anuncios.${i}.destaque`, '17h')}` +
+    `${campo('div', 'pg-txt', `anuncios.${i}.texto`, 'Texto do anúncio', 'rico multi')}${controles('anuncios', i)}</div>`
   ).join('')}</div>`;
   return `
     <div class="pg-top">
@@ -1549,6 +1621,13 @@ pgEl.addEventListener('keydown', e => {
   const el = editavel(e);
   if (!el) return;
   if (e.key === 'Escape') return el.blur();
+  if (e.altKey && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
+    const [nome, i, campoFoco] = el.dataset.f.split('.');
+    if (LISTAS[nome]) {
+      e.preventDefault();
+      return moverItem(nome, Number(i), e.key === 'ArrowUp' ? -1 : 1, campoFoco);
+    }
+  }
   if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k' && el === campoAtivo) {
     e.preventDefault();
     return abrirPainel('link');
@@ -1816,6 +1895,9 @@ pgEl.addEventListener('click', e => {
       alvo.focus();
       break;
     }
+    case 'link':
+      abrirLinkItem(b);
+      break;
     case 'rm':
       marcarDesfazer();
       state[nome].splice(Number(b.dataset.i), 1);
@@ -1870,6 +1952,53 @@ function soltar() {
 }
 pgEl.addEventListener('pointerup', soltar);
 pgEl.addEventListener('pointercancel', soltar);
+
+// ---------- mudar a ordem dos itens (arrastar pela alça, ou Alt+↑/↓) ----------
+let movendo = null;
+pgEl.addEventListener('pointerdown', e => {
+  const alca = e.target.closest('.mv');
+  if (!alca || !editando() || e.button !== 0) return;
+  e.preventDefault();
+  alca.setPointerCapture(e.pointerId);
+  const item = alca.parentElement;
+  movendo = { id: e.pointerId, item, lista: item.parentElement, nome: alca.dataset.lista };
+  item.classList.add('movendo');
+});
+pgEl.addEventListener('pointermove', e => {
+  const m = movendo;
+  if (!m || e.pointerId !== m.id) return;
+  const outros = [...m.lista.children].filter(el => el !== m.item && getComputedStyle(el).display !== 'none');
+  const depois = outros.find(el => { const r = el.getBoundingClientRect(); return e.clientY < r.top + r.height / 2; });
+  if (depois) { if (m.item.nextElementSibling !== depois) m.lista.insertBefore(m.item, depois); }
+  else if (m.lista.lastElementChild !== m.item) m.lista.appendChild(m.item);
+});
+function soltarItem() {
+  const m = movendo;
+  if (!m) return;
+  movendo = null;
+  m.item.classList.remove('movendo');
+  const ordem = [...m.lista.children].map(el => Number(el.querySelector('.mv')?.dataset.i)).filter(n => !isNaN(n));
+  if (ordem.every((v, i) => v === i)) return;
+  marcarDesfazer();
+  state[m.nome] = ordem.map(i => state[m.nome][i]);
+  renderPagina();
+}
+pgEl.addEventListener('pointerup', soltarItem);
+pgEl.addEventListener('pointercancel', soltarItem);
+
+function moverItem(nome, i, delta, campoFoco) {
+  const lista = state[nome], j = i + delta;
+  if (!lista || j < 0 || j >= lista.length) return;
+  marcarDesfazer();
+  [lista[i], lista[j]] = [lista[j], lista[i]];
+  renderPagina();
+  const el = pgEl.querySelector(`[data-f="${nome}.${j}.${campoFoco}"][contenteditable]`);
+  if (el) {
+    el.focus();
+    getSelection().selectAllChildren(el);
+    getSelection().collapseToEnd();
+  }
+}
 
 // ---------- imagem ----------
 
