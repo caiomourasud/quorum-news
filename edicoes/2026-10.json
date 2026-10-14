@@ -50,6 +50,10 @@
     {
       "destaque": "<span style=\"font-size:26px\">10</span>",
       "texto": "<span style=\"font-size:14px\">Sessão de Sábado da Conferência da Estaca Iguaçú</span>"
+    },
+    {
+      "destaque": "",
+      "texto": "Noite de Integração"
     }
   ],
   "aniversariantes": [
