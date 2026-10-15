@@ -1,0 +1,87 @@
+{
+  "mes": 10,
+  "ano": 2026,
+  "ala": "Ala Ecoville",
+  "sigla": "QE",
+  "subtitulo": "Informativo do",
+  "titulo": "Quórum de Élderes",
+  "lema": "“Sede um”",
+  "lemaRef": "D&amp;C 38:27",
+  "cor": "#8A6A3E",
+  "imagemX": 100,
+  "imagemY": 50,
+  "discursos": [
+    {
+      "dia": "1",
+      "texto": ""
+    },
+    {
+      "dia": "8",
+      "texto": ""
+    },
+    {
+      "dia": "15",
+      "texto": ""
+    },
+    {
+      "dia": "22",
+      "texto": ""
+    },
+    {
+      "dia": "29",
+      "texto": ""
+    }
+  ],
+  "vemSegueMe": [
+    {
+      "dia": "1",
+      "texto": ""
+    },
+    {
+      "dia": "8",
+      "texto": ""
+    },
+    {
+      "dia": "15",
+      "texto": ""
+    },
+    {
+      "dia": "22",
+      "texto": ""
+    },
+    {
+      "dia": "29",
+      "texto": ""
+    }
+  ],
+  "anuncios": [
+    {
+      "destaque": "<span style=\"font-size:26px\">3</span>",
+      "texto": "Sessão de Sábado da Conferência Geral"
+    },
+    {
+      "destaque": "<span style=\"font-size:26px\">4</span>",
+      "texto": "Sessão de Domingo da Conferência Geral"
+    },
+    {
+      "destaque": "<span style=\"font-size:26px\">10</span>",
+      "texto": "<span style=\"font-size:14px\">Sessão de Sábado da Conferência da Estaca Iguaçú</span>"
+    },
+    {
+      "destaque": "30",
+      "texto": "Noite de Integração"
+    }
+  ],
+  "aniversariantes": [
+    {
+      "dia": "",
+      "nome": ""
+    }
+  ],
+  "mensagem": {
+    "texto": "Se obedecermos à voz do Salvador e guardarmos nossos convênios ﻿— mesmo que por meio de sacrifícios pequenos e silenciosos a cada dia ﻿— sentiremos o amor Dele mais profundamente.”",
+    "autor": "Élder Alan R. Walker",
+    "cargo": "Dos Setenta"
+  },
+  "imagem": "imagens/12d39b974d6273338d9c.jpg"
+}
