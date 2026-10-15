@@ -26,10 +26,6 @@
     {
       "dia": "22",
       "texto": ""
-    },
-    {
-      "dia": "29",
-      "texto": ""
     }
   ],
   "vemSegueMe": [
@@ -54,24 +50,7 @@
       "texto": ""
     }
   ],
-  "anuncios": [
-    {
-      "destaque": "<span style=\"font-size:26px\">3</span>",
-      "texto": "Sessão de Sábado da Conferência Geral"
-    },
-    {
-      "destaque": "<span style=\"font-size:26px\">4</span>",
-      "texto": "Sessão de Domingo da Conferência Geral"
-    },
-    {
-      "destaque": "<span style=\"font-size:26px\">10</span>",
-      "texto": "<span style=\"font-size:14px\">Sessão de Sábado da Conferência da Estaca Iguaçú</span>"
-    },
-    {
-      "destaque": "30",
-      "texto": "Noite de Integração"
-    }
-  ],
+  "anuncios": [],
   "aniversariantes": [
     {
       "dia": "",
