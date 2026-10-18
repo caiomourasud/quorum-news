@@ -37,6 +37,12 @@ O site guarda a chave no repositório **criptografada com a senha** (arquivo `ac
 
 Se aparecer o aviso vermelho, o conteúdo não coube na página: encurte um texto ou remova um item.
 
+## Discursos da Conferência Geral
+
+A cada Conferência Geral, importe a lista dos discursos uma vez: no menu do mês, clique em **Importar discursos da Conferência Geral…**, cole o link da conferência no site da Igreja (por exemplo `https://www.churchofjesuschrist.org/study/general-conference/2026/10?lang=por`) e clique em **Importar**. Leva alguns segundos. Cada discurso fica com o título, o nome de quem discursou e o link.
+
+A lista fica salva no branch `dados` (`listas/conferencia-AAAA-MM.json`), então aparece para todos que editam. Importar de novo a mesma conferência só atualiza a lista.
+
 ## Salvamento, histórico e desfazer
 
 - **Tudo é salvo sozinho**, alguns segundos depois que você para de digitar. O status ao lado do mês mostra "Salvando…" e depois "Salvo às…". Quem abrir o site já vê a versão nova.
@@ -55,4 +61,5 @@ No menu do mês, **Salvar backup de todas as edições** baixa um arquivo `.json
 - `assets/fontes.js`: as fontes (Alegreya e Alegreya Sans), embutidas.
 - `assets/imagem-padrao.js`: a imagem original, usada em "Original".
 - `assets/icones/`, `manifest.webmanifest` e `sw.js`: ícone, instalação como app e modo sem internet.
-- As edições ficam no branch **`dados`** (`edicoes/AAAA-MM.json`, `imagens/` e `acesso.json`). Cada salvamento é um commit lá, então o site no `main` não precisa ser reconstruído a cada mudança.
+- As edições ficam no branch **`dados`** (`edicoes/AAAA-MM.json`, `imagens/`, `listas/` e `acesso.json`). Cada salvamento é um commit lá, então o site no `main` não precisa ser reconstruído a cada mudança.
+- Os discursos são lidos direto do navegador, na mesma API JSON que o site da Igreja usa (`/study/api/v3/language-pages/type/content`). Ela aceita chamadas de outros sites, mas o cache dela guarda a resposta com o site de quem pediu primeiro; por isso cada pedido escreve algumas letras do endereço como `%xx`. Se a Igreja mudar essa API, a importação para de funcionar, mas as listas já importadas continuam no branch `dados`.

@@ -319,6 +319,7 @@ body.arrastando .drop{display:flex}
       <div class="ed-sep"></div>
       <div id="edAcoes">
         <button class="ed-acao" id="btnDescartar" hidden>Descartar alterações não salvas</button>
+        <button class="ed-acao" id="btnImportarDiscursos">Importar discursos da Conferência Geral…</button>
         <button class="ed-acao" id="btnBackup">Salvar backup de todas as edições</button>
         <button class="ed-acao" id="btnRestaurar">Restaurar backup…</button>
       </div>
@@ -449,6 +450,20 @@ body.arrastando .drop{display:flex}
     <h2 id="pergTitulo"></h2>
     <p class="dlg-texto" id="pergTexto"></p>
     <div class="dlg-acoes" id="pergBotoes"></div>
+  </form>
+</dialog>
+<dialog class="dlg" id="dlgImportar" aria-labelledby="impTitulo">
+  <form class="dlg-corpo" id="formImportar">
+    <h2 id="impTitulo"></h2>
+    <p id="impTexto"></p>
+    <label class="dlg-campo">Link no site da Igreja<input id="impLink" type="url" inputmode="url" autocomplete="off" spellcheck="false"></label>
+    <p class="dlg-nota" id="impJa"></p>
+    <p class="dlg-erro" id="impErro" hidden></p>
+    <div class="dlg-acoes">
+      <span class="bar-spacer"></span>
+      <button type="button" class="btn" id="impCancelar">Cancelar</button>
+      <button type="submit" class="btn btn-primary" id="impOk">Importar</button>
+    </div>
   </form>
 </dialog>
 <div class="lk-pop" id="lkPop" hidden>
@@ -1435,6 +1450,142 @@ function fecharMensagens() {
 $('btnMensagens').onclick = () => ($('msgs').hidden ? abrirMensagens() : fecharMensagens());
 $('msgsFechar').onclick = fecharMensagens;
 
+// ---------- listas importadas do site da Igreja ----------
+// Os discursos de uma Conferência Geral são buscados uma vez no site da Igreja e guardados no branch de dados
+// (listas/conferencia-AAAA-MM.json), para todos que editam. Este navegador guarda uma cópia para abrir sem esperar.
+
+const IGREJA = 'https://www.churchofjesuschrist.org';
+const CHAVE_LISTAS = 'informativo-qe:listas';
+let listas = {}; // nome do arquivo -> { sha, dados }
+try { listas = JSON.parse(localStorage.getItem(CHAVE_LISTAS)) || {}; } catch (e) { /* ok */ }
+const guardarListas = () => { try { localStorage.setItem(CHAVE_LISTAS, JSON.stringify(listas)); } catch (e) { /* ok */ } };
+const limpo = s => String(s ?? '').replace(/\s+/g, ' ').trim();
+
+const conferencias = () => Object.values(listas).map(l => l.dados).filter(d => d?.tipo === 'conferencia').sort((a, b) => a.id.localeCompare(b.id));
+const conferenciaAtual = () => conferencias().pop() || null;
+
+// Traz do GitHub as listas novas ou mudadas. Só quem edita usa as listas, então só quem edita as busca.
+let listasCarregando = null;
+function carregarListas() {
+  if (!github()) return Promise.resolve();
+  return listasCarregando || (listasCarregando = (async () => {
+    try {
+      const arquivos = (await lerArquivo('listas')).filter(f => /\.json$/.test(f.name));
+      for (const nome of Object.keys(listas)) if (listas[nome].sha && !arquivos.some(f => f.name === nome)) delete listas[nome];
+      for (const f of arquivos) {
+        if (listas[f.name]?.sha === f.sha) continue;
+        const c = await lerArquivo(`listas/${f.name}`);
+        listas[f.name] = { sha: f.sha, dados: JSON.parse(new TextDecoder().decode(deBase64(c.content))) };
+      }
+      guardarListas();
+    } catch (e) {
+      if (e.status !== 404) listasCarregando = null; // sem internet: tenta de novo na próxima vez
+    }
+  })());
+}
+
+async function salvarLista(nome, dados, mensagem) {
+  listas[nome] = { sha: listas[nome]?.sha || null, dados };
+  guardarListas();
+  if (!github() || !lerToken()) return;
+  const atual = await lerArquivo(`listas/${nome}`).catch(e => { if (e.status === 404) return null; throw e; });
+  const conteudo = paraBase64(new TextEncoder().encode(JSON.stringify(dados, null, 2) + '\n'));
+  const r = await gravarArquivo(`listas/${nome}`, `${mensagem} — ${lerNome() || 'sem nome'}`, conteudo, atual?.sha);
+  listas[nome].sha = r.content.sha;
+  guardarListas();
+}
+
+// A API do site da Igreja aceita chamadas de outros sites (CORS), mas o cache dela guarda a resposta com o endereço
+// do site que pediu primeiro, e aí o navegador recusa. Cada pedido escreve algumas letras do caminho como %xx: a
+// Igreja lê o mesmo caminho e o cache vê um endereço novo. Parâmetros extras não servem: a API responde 400.
+const variar = caminho => caminho.replace(/[a-z]/gi, c => (Math.random() < 0.3 ? `%${c.charCodeAt(0).toString(16).toUpperCase()}` : c));
+async function lerIgreja(caminho) {
+  const r = await fetch(`${IGREJA}/study/api/v3/language-pages/type/content?lang=por&uri=${variar(caminho)}`, { cache: 'no-store' });
+  if (!r.ok) throw Object.assign(new Error(`O site da Igreja respondeu ${r.status}`), { status: r.status });
+  const d = await r.json();
+  return { titulo: limpo(d.meta?.title), corpo: parseHtml(d.content?.body || '') };
+}
+
+// Faz fn em cada item, poucos de cada vez, para não pedir dezenas de páginas ao mesmo tempo.
+async function emParalelo(itens, fn, progresso, n = 6) {
+  const out = [];
+  let prox = 0, feitos = 0;
+  await Promise.all(Array.from({ length: Math.min(n, itens.length) }, async () => {
+    while (prox < itens.length) {
+      const i = prox++;
+      out[i] = await fn(itens[i]);
+      progresso?.(++feitos, itens.length);
+    }
+  }));
+  return out;
+}
+
+async function importarConferencia(ano, mes, progresso) {
+  const { titulo, corpo } = await lerIgreja(`/general-conference/${ano}/${mes}`);
+  const vistos = new Set();
+  const tiles = [...corpo.querySelectorAll('li[data-content-type="general-conference-talk"] a[href]')]
+    .filter(a => !vistos.has(a.getAttribute('href')) && vistos.add(a.getAttribute('href')));
+  if (!tiles.length) throw Object.assign(new Error('nenhum discurso'), { status: 404 });
+  const discursos = await emParalelo(tiles, async a => {
+    const link = new URL(a.getAttribute('href'), IGREJA).href;
+    let autor = limpo(a.querySelector('.primaryMeta')?.textContent);
+    // A lista traz só o nome; com "Élder", "Presidente" ou "Irmã" ele está na página do discurso.
+    try {
+      const p = await lerIgreja(new URL(link).pathname.replace(/^\/study/, ''));
+      const nome = limpo(p.corpo.querySelector('.author-name')?.textContent).replace(/^(por|pel[oa])\s+/i, '');
+      if (nome) autor = nome.charAt(0).toUpperCase() + nome.slice(1);
+    } catch (e) { /* fica o nome da lista */ }
+    return { titulo: limpo(a.querySelector('.title')?.textContent), autor, link };
+  }, progresso);
+  const id = `${ano}-${mes}`;
+  await salvarLista(`conferencia-${id}.json`, {
+    tipo: 'conferencia', id, titulo: titulo || `Conferência Geral ${id}`,
+    origem: `${IGREJA}/study/general-conference/${ano}/${mes}?lang=por`, importadaEm: new Date().toISOString(), discursos,
+  }, `Discursos da ${titulo || `Conferência Geral ${id}`}`);
+  return { titulo, total: discursos.length };
+}
+
+function abrirImportar() {
+  fecharPainelEdicoes();
+  $('impTitulo').textContent = 'Importar discursos';
+  $('impTexto').textContent = 'Cole o link da Conferência Geral no site da Igreja. Os discursos ficam guardados para todos que editam e aparecem quando você escreve num discurso do informativo.';
+  $('impLink').placeholder = `${IGREJA}/study/general-conference/2026/10?lang=por`;
+  const ja = conferencias().reverse();
+  $('impJa').textContent = ja.length ? `Já importadas: ${ja.map(c => `${c.titulo.replace(/^Conferência Geral de /, '')} (${plural(c.discursos.length, 'discurso', 'discursos')})`).join(', ')}. A busca usa a mais recente.` : '';
+  $('impLink').value = '';
+  $('impErro').hidden = true;
+  $('dlgImportar').showModal();
+  $('impLink').focus();
+}
+function erroImportar(texto) {
+  $('impErro').textContent = texto;
+  $('impErro').hidden = false;
+}
+$('formImportar').addEventListener('submit', async e => {
+  e.preventDefault();
+  const caminho = (() => { try { return new URL(normalizarLink($('impLink').value)).pathname; } catch (err) { return ''; } })();
+  const conf = /\/general-conference\/(\d{4})\/(\d{2})(\/|$)/.exec(caminho);
+  if (!conf) return erroImportar(`Esse link não é de uma Conferência Geral. Ele deve ser parecido com ${IGREJA}/study/general-conference/2026/10?lang=por`);
+  const botao = $('impOk');
+  botao.disabled = true;
+  botao.textContent = 'Buscando…';
+  $('impErro').hidden = true;
+  try {
+    const r = await importarConferencia(conf[1], conf[2], (n, total) => { botao.textContent = `Buscando… ${n} de ${total}`; });
+    $('dlgImportar').close();
+    toast(`${plural(r.total, 'discurso importado', 'discursos importados')} da ${r.titulo}.`);
+  } catch (err) {
+    erroImportar(err.status === 404 ? 'Não achei discursos nesse link. Confira se é a página da conferência inteira.'
+      : /GitHub/.test(err.message) ? 'Os discursos foram buscados, mas não consegui salvar no GitHub. Tente de novo.'
+        : 'Não consegui buscar no site da Igreja. Verifique a internet e tente de novo.');
+  } finally {
+    botao.disabled = false;
+    botao.textContent = 'Importar';
+  }
+});
+$('impCancelar').onclick = () => $('dlgImportar').close();
+$('btnImportarDiscursos').onclick = abrirImportar;
+
 // Mostra ou esconde o que depende de poder editar (entrou, está vendo versão antiga, etc.).
 function atualizarModo() {
   const g = github(), logado = !!g && !!lerToken(), nome = lerNome();
@@ -1450,6 +1601,7 @@ function atualizarModo() {
   $('quemIni').textContent = (nome || '?').charAt(0).toUpperCase();
   $('previaAviso').hidden = !previa;
   if (previa) $('previaTexto').textContent = `Você está vendo a versão de ${quando(previa.data)}${previa.autor && previa.autor !== 'versão inicial' ? `, salva por ${previa.autor}` : ''}.`;
+  if (editando()) carregarListas();
   atualizarBotoesDesfazer();
   atualizarEdicoes();
   atualizarStatus();
