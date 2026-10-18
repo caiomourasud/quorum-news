@@ -1,0 +1,373 @@
+{
+  "tipo": "vemSegueMe",
+  "id": "2026",
+  "titulo": "Vem, e Segue-Me — Para Uso em Casa e na Igreja: Velho Testamento 2026",
+  "origem": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026?lang=por",
+  "importadaEm": "2026-10-18T16:35:05.862Z",
+  "aulas": [
+    {
+      "nome": "O primeiro testamento de Jesus Cristo",
+      "escrituras": "Introdução ao Velho Testamento",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/01?lang=por",
+      "inicio": "2025-12-29",
+      "fim": "2026-01-04"
+    },
+    {
+      "nome": "“Esta é minha obra e minha glória”",
+      "escrituras": "Moisés 1; Abraão 3",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/02?lang=por",
+      "inicio": "2026-01-05",
+      "fim": "2026-01-11"
+    },
+    {
+      "nome": "“No princípio, Deus criou os céus e a terra”",
+      "escrituras": "Gênesis 1–2; Moisés 2–3; Abraão 4–5",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/03?lang=por",
+      "inicio": "2026-01-12",
+      "fim": "2026-01-18"
+    },
+    {
+      "nome": "A Queda de Adão e Eva",
+      "escrituras": "Gênesis 3–4; Moisés 4–5",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/04?lang=por",
+      "inicio": "2026-01-19",
+      "fim": "2026-01-25"
+    },
+    {
+      "nome": "“[Ensina] estas coisas liberalmente a teus filhos”",
+      "escrituras": "Gênesis 5; Moisés 6",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/05?lang=por",
+      "inicio": "2026-01-26",
+      "fim": "2026-02-01"
+    },
+    {
+      "nome": "“O Senhor chamou Seu povo Sião”",
+      "escrituras": "Moisés 7",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/06?lang=por",
+      "inicio": "2026-02-02",
+      "fim": "2026-02-08"
+    },
+    {
+      "nome": "“Noé encontrou graça aos olhos do Senhor”",
+      "escrituras": "Gênesis 6–11; Moisés 8",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/07?lang=por",
+      "inicio": "2026-02-09",
+      "fim": "2026-02-15"
+    },
+    {
+      "nome": "“Ser maior seguidor da retidão”",
+      "escrituras": "Gênesis 12–17; Abraão 1–2",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/08?lang=por",
+      "inicio": "2026-02-16",
+      "fim": "2026-02-22"
+    },
+    {
+      "nome": "“Haveria coisa alguma difícil ao Senhor?”",
+      "escrituras": "Gênesis 18–23",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/09?lang=por",
+      "inicio": "2026-02-23",
+      "fim": "2026-03-01"
+    },
+    {
+      "nome": "“Permita que Deus prevaleça”",
+      "escrituras": "Gênesis 24–33",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/10?lang=por",
+      "inicio": "2026-03-02",
+      "fim": "2026-03-08"
+    },
+    {
+      "nome": "“O Senhor estava com José”",
+      "escrituras": "Gênesis 37–41",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/11?lang=por",
+      "inicio": "2026-03-09",
+      "fim": "2026-03-15"
+    },
+    {
+      "nome": "“Deus o intentou para bem”",
+      "escrituras": "Gênesis 42–50",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/12?lang=por",
+      "inicio": "2026-03-16",
+      "fim": "2026-03-22"
+    },
+    {
+      "nome": "“E me lembrei do meu convênio”",
+      "escrituras": "Êxodo 1–6",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/13?lang=por",
+      "inicio": "2026-03-23",
+      "fim": "2026-03-29"
+    },
+    {
+      "nome": "“[Ele] tragará a morte na vitória”",
+      "escrituras": "Páscoa",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/14?lang=por",
+      "inicio": "2026-03-30",
+      "fim": "2026-04-05"
+    },
+    {
+      "nome": "“Lembrai-vos deste dia, em que saístes do Egito”",
+      "escrituras": "Êxodo 7–13",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/15?lang=por",
+      "inicio": "2026-04-06",
+      "fim": "2026-04-12"
+    },
+    {
+      "nome": "“Estai quietos, e vede o livramento do Senhor”",
+      "escrituras": "Êxodo 14–18",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/16?lang=por",
+      "inicio": "2026-04-13",
+      "fim": "2026-04-19"
+    },
+    {
+      "nome": "“Tudo o que o Senhor falou faremos”",
+      "escrituras": "Êxodo 19–20; 24; 31–34",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/17?lang=por",
+      "inicio": "2026-04-20",
+      "fim": "2026-04-26"
+    },
+    {
+      "nome": "“Santidade ao Senhor”",
+      "escrituras": "Êxodo 35–40; Levítico 1; 4; 16; 19",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/18?lang=por",
+      "inicio": "2026-04-27",
+      "fim": "2026-05-03"
+    },
+    {
+      "nome": "“Não sejais rebeldes contra o Senhor, e não temais”",
+      "escrituras": "Números 11–14; 20–24; 27",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/19?lang=por",
+      "inicio": "2026-05-04",
+      "fim": "2026-05-10"
+    },
+    {
+      "nome": "“Guarda-te, que não te esqueças do Senhor”",
+      "escrituras": "Deuteronômio 6–8; 15; 18; 29–30; 34",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/20?lang=por",
+      "inicio": "2026-05-11",
+      "fim": "2026-05-17"
+    },
+    {
+      "nome": "“Sê forte e corajoso”",
+      "escrituras": "Josué 1–8; 23–24",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/21?lang=por",
+      "inicio": "2026-05-18",
+      "fim": "2026-05-24"
+    },
+    {
+      "nome": "“O Senhor lhes levantou um libertador”",
+      "escrituras": "Juízes 2–4; 6–8; 13–16",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/22?lang=por",
+      "inicio": "2026-05-25",
+      "fim": "2026-05-31"
+    },
+    {
+      "nome": "“O meu coração exulta ao Senhor”",
+      "escrituras": "Rute; 1 Samuel 1–7",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/23?lang=por",
+      "inicio": "2026-06-01",
+      "fim": "2026-06-07"
+    },
+    {
+      "nome": "“O Senhor olha para o coração”",
+      "escrituras": "1 Samuel 8–10; 13; 15–16",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/24?lang=por",
+      "inicio": "2026-06-08",
+      "fim": "2026-06-14"
+    },
+    {
+      "nome": "“Do Senhor é a guerra”",
+      "escrituras": "1 Samuel 17–18; 24–26; 2 Samuel 5–7",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/25?lang=por",
+      "inicio": "2026-06-15",
+      "fim": "2026-06-21"
+    },
+    {
+      "nome": "“Ouve então nos céus a sua oração”",
+      "escrituras": "2 Samuel 11–12; 1 Reis 3; 6–9; 11",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/26?lang=por",
+      "inicio": "2026-06-22",
+      "fim": "2026-06-28"
+    },
+    {
+      "nome": "“Se o Senhor é Deus, segui-O”",
+      "escrituras": "1 Reis 12–13; 17–22",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/27?lang=por",
+      "inicio": "2026-06-29",
+      "fim": "2026-07-05"
+    },
+    {
+      "nome": "“Há profeta em Israel”",
+      "escrituras": "2 Reis 2–7",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/28?lang=por",
+      "inicio": "2026-07-06",
+      "fim": "2026-07-12"
+    },
+    {
+      "nome": "“No Senhor Deus de Israel confiou”",
+      "escrituras": "2 Reis 16–25",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/29?lang=por",
+      "inicio": "2026-07-13",
+      "fim": "2026-07-19"
+    },
+    {
+      "nome": "“Nossos olhos estão postos em ti”",
+      "escrituras": "2 Crônicas 14–20; 26; 30",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/30?lang=por",
+      "inicio": "2026-07-20",
+      "fim": "2026-07-26"
+    },
+    {
+      "nome": "“Faço uma grande obra”",
+      "escrituras": "Esdras 1; 3–7; Neemias 2; 4–6; 8",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/31?lang=por",
+      "inicio": "2026-07-27",
+      "fim": "2026-08-02"
+    },
+    {
+      "nome": "“Para tal tempo como este chegaste”",
+      "escrituras": "Ester",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/32?lang=por",
+      "inicio": "2026-08-03",
+      "fim": "2026-08-09"
+    },
+    {
+      "nome": "“Nele esperarei”",
+      "escrituras": "Jó 1–3; 12–14; 19; 21–24; 38–40; 42",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/33?lang=por",
+      "inicio": "2026-08-10",
+      "fim": "2026-08-16"
+    },
+    {
+      "nome": "“O Senhor é meu pastor”",
+      "escrituras": "Salmos 1–2; 8; 19–33; 40; 46",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/34?lang=por",
+      "inicio": "2026-08-17",
+      "fim": "2026-08-23"
+    },
+    {
+      "nome": "“Eu contarei o que ele tem feito à minha alma”",
+      "escrituras": "Salmos 49–51; 61–66; 69–72; 77–78; 85–86",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/35?lang=por",
+      "inicio": "2026-08-24",
+      "fim": "2026-08-30"
+    },
+    {
+      "nome": "“Tudo quanto tem fôlego louve ao Senhor”",
+      "escrituras": "Salmos 102–103; 110; 116–119; 127–128; 135–139; 146–150",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/36?lang=por",
+      "inicio": "2026-08-31",
+      "fim": "2026-09-06"
+    },
+    {
+      "nome": "“Ele endireitará as tuas veredas”",
+      "escrituras": "Provérbios 1–4; 15–16; 22; 31; Eclesiastes 1–3; 11–12",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/37?lang=por",
+      "inicio": "2026-09-07",
+      "fim": "2026-09-13"
+    },
+    {
+      "nome": "“Deus é a minha salvação”",
+      "escrituras": "Isaías 1–12",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/38?lang=por",
+      "inicio": "2026-09-14",
+      "fim": "2026-09-20"
+    },
+    {
+      "nome": "“Uma obra maravilhosa e um assombro”",
+      "escrituras": "Isaías 13–14; 22; 24–30; 35",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/39?lang=por",
+      "inicio": "2026-09-21",
+      "fim": "2026-09-27"
+    },
+    {
+      "nome": "“Consolai o meu povo”",
+      "escrituras": "Isaías 40–49",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/40?lang=por",
+      "inicio": "2026-09-28",
+      "fim": "2026-10-04"
+    },
+    {
+      "nome": "“Ele tomou sobre si as nossas enfermidades, e as nossas dores levou sobre si”",
+      "escrituras": "Isaías 50–57",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/41?lang=por",
+      "inicio": "2026-10-05",
+      "fim": "2026-10-11"
+    },
+    {
+      "nome": "Isaías 58–66",
+      "escrituras": "Isaías 58–66",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/42?lang=por",
+      "inicio": "2026-10-12",
+      "fim": "2026-10-18"
+    },
+    {
+      "nome": "“Antes que te formasse no ventre, te conheci”",
+      "escrituras": "Jeremias 1–3; 7; 16–18; 20",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/43?lang=por",
+      "inicio": "2026-10-19",
+      "fim": "2026-10-25"
+    },
+    {
+      "nome": "“Tornarei o seu pranto em alegria”",
+      "escrituras": "Jeremias 31–33; 36–39; Lamentações 1; 3",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/44?lang=por",
+      "inicio": "2026-10-26",
+      "fim": "2026-11-01"
+    },
+    {
+      "nome": "“Porei dentro de vós um espírito novo”",
+      "escrituras": "Ezequiel 1–3; 33–34; 36–37; 47",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/45?lang=por",
+      "inicio": "2026-11-02",
+      "fim": "2026-11-08"
+    },
+    {
+      "nome": "“Não há outro Deus que possa livrar”",
+      "escrituras": "Daniel 1–7",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/46?lang=por",
+      "inicio": "2026-11-09",
+      "fim": "2026-11-15"
+    },
+    {
+      "nome": "“Eu voluntariamente os amarei”",
+      "escrituras": "Oseias 1–6; 10–14; Joel",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/47?lang=por",
+      "inicio": "2026-11-16",
+      "fim": "2026-11-22"
+    },
+    {
+      "nome": "“Buscai ao Senhor, e vivei”",
+      "escrituras": "Amós; Obadias; Jonas",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/48?lang=por",
+      "inicio": "2026-11-23",
+      "fim": "2026-11-29"
+    },
+    {
+      "nome": "“[Ele] tem prazer na benignidade”",
+      "escrituras": "Miqueias; Naum; Habacuque; Sofonias",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/49?lang=por",
+      "inicio": "2026-11-30",
+      "fim": "2026-12-06"
+    },
+    {
+      "nome": "“Santidade ao Senhor”",
+      "escrituras": "Ageu 1–2; Zacarias 1–4; 7–14",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/50?lang=por",
+      "inicio": "2026-12-07",
+      "fim": "2026-12-13"
+    },
+    {
+      "nome": "“Eu vos amei, diz o Senhor”",
+      "escrituras": "Malaquias",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/51?lang=por",
+      "inicio": "2026-12-14",
+      "fim": "2026-12-20"
+    },
+    {
+      "nome": "“Eis que este é o nosso Deus, a quem aguardávamos, e ele nos salvará”",
+      "escrituras": "Natal",
+      "link": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/52?lang=por",
+      "inicio": "2026-12-21",
+      "fim": "2026-12-27"
+    }
+  ]
+}
