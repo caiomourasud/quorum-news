@@ -1,6 +1,6 @@
 // Service worker do informativo: busca sempre a versão nova (rede primeiro) e só usa a cópia guardada sem internet.
 // As chamadas ao GitHub (outro domínio) passam direto, sem cache.
-const CACHE = 'informativo-v1';
+const CACHE = 'informativo-v2';
 const BASICOS = ['./', 'index.html', 'manifest.webmanifest', 'assets/config.js', 'assets/fontes.js', 'assets/imagem-padrao.js', 'assets/icones/icone.svg', 'assets/icones/icone-192.png'];
 
 self.addEventListener('install', e => {

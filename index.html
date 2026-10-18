@@ -237,6 +237,9 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .busca-vazio{padding:10px 12px;font-size:12.5px;line-height:1.45;color:var(--muted)}
 .toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));transform:translate(-50%,8px);background:var(--ink);color:#F6F2EA;padding:10px 16px;border-radius:10px;font-size:13.5px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:60;max-width:calc(100% - 32px)}
 .toast.on{opacity:1;transform:translate(-50%,0)}
+/* Faixa que o iOS 27 amostra como cor da status bar do app instalado, para ele parar de borrar o topo (ver o script
+   no fim da página). Sem texto dentro, o background-clip:text não pinta nada: a cor está lá só para ser lida. */
+.status-strip{position:fixed;top:0;left:0;right:0;height:11px;z-index:2147483647;pointer-events:none;-webkit-background-clip:text;background-clip:text}
 .drop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(30,43,60,.6);color:#fff;font-size:19px;font-weight:600;z-index:50;pointer-events:none;text-align:center;padding:24px}
 .drop span{border:2px dashed rgba(255,255,255,.7);border-radius:16px;padding:28px 36px;line-height:1.5}
 body.arrastando .drop{display:flex}
@@ -306,7 +309,7 @@ body.arrastando .drop{display:flex}
 @media print{
   html,body{height:auto;background:#F6F2EA}
   body{display:block}
-  .bar,.area-head,.aviso,.toast,.drop,.ctl,.fmt,.hist,.previa-aviso,.busca{display:none!important}
+  .bar,.area-head,.aviso,.toast,.drop,.ctl,.fmt,.hist,.previa-aviso,.busca,.status-strip{display:none!important}
   .corpo{display:block}
   .area{height:auto;overflow:visible;padding:0}
   .stage{width:auto!important;height:auto!important;box-shadow:none}
@@ -2826,6 +2829,18 @@ async function iniciar() {
   document.fonts.ready.then(checarTamanho);
 }
 iniciar();
+
+// iOS 27: no app instalado na tela de início, o sistema desenha um vidro borrado sobre o topo da página. A saída
+// relatada em r/PWA (e usada no Tucan): uma faixa fixa de 11 px no topo, com a cor do theme-color, que o WebKit lê
+// como a cor da status bar, e aí ele deixa de borrar. Só no app instalado; no Safari a barra é do próprio navegador.
+// Quando a Apple corrigir, é só apagar este trecho e a regra .status-strip.
+if (matchMedia('(display-mode: standalone)').matches || navigator.standalone === true) {
+  const faixa = document.createElement('div');
+  faixa.className = 'status-strip';
+  faixa.setAttribute('aria-hidden', 'true');
+  faixa.style.backgroundColor = document.querySelector('meta[name="theme-color"]')?.content || '#FFFDF9';
+  document.body.appendChild(faixa);
+}
 if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => { /* segue sem modo offline */ });
 </script>
 </body>

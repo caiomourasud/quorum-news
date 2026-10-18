@@ -64,6 +64,7 @@ No menu do mês, **Salvar backup de todas as edições** baixa um arquivo `.json
 - `assets/config.js`: o repositório e o branch onde as edições são salvas.
 - `assets/fontes.js`: as fontes (Alegreya e Alegreya Sans), embutidas.
 - `assets/imagem-padrao.js`: a imagem original, usada em "Original".
-- `assets/icones/`, `manifest.webmanifest` e `sw.js`: ícone, instalação como app e modo sem internet.
+- `assets/icones/`, `manifest.webmanifest` e `sw.js`: ícone, instalação como app e modo sem internet. Ao publicar uma mudança no site, suba a versão do cache em `sw.js` (`informativo-vN`).
+- iOS 27: no app instalado no iPhone, o sistema borrava o topo da tela. O `index.html` põe no topo uma faixa invisível de 11 px com a cor do `theme-color` (a mesma solução do Tucan), que o iOS usa como cor da status bar. Quando a Apple corrigir, apague o trecho do script e a regra `.status-strip`. Quem instalou o app antes pode precisar removê-lo e adicionar de novo à Tela de Início.
 - As edições ficam no branch **`dados`** (`edicoes/AAAA-MM.json`, `imagens/`, `listas/` e `acesso.json`). Cada salvamento é um commit lá, então o site no `main` não precisa ser reconstruído a cada mudança.
 - Os discursos e as aulas são lidos direto do navegador, na mesma API JSON que o site da Igreja usa (`/study/api/v3/language-pages/type/content`). Ela aceita chamadas de outros sites, mas o cache dela guarda a resposta com o site de quem pediu primeiro; por isso cada pedido escreve algumas letras do endereço como `%xx`. Se a Igreja mudar essa API, a importação para de funcionar, mas as listas já importadas continuam no branch `dados`.
