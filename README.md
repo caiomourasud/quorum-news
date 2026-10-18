@@ -25,7 +25,7 @@ O site guarda a chave no repositório **criptografada com a senha** (arquivo `ac
 
 ## Todo mês
 
-1. Clique em **Novo mês**. É criada a edição do mês seguinte à mais recente, como cópia dela, com todos os domingos em Discursos e em Vem, e Segue-me. Esses quadros e os Aniversariantes começam vazios.
+1. Clique em **Novo mês**. É criada a edição do mês seguinte à mais recente, como cópia dela, com todos os domingos em Discursos e em Vem, e Segue-me. Discursos e Aniversariantes começam vazios; o Vem, e Segue-me já vem com o nome e o link da aula de cada domingo (veja abaixo como importar as aulas).
 2. Clique em qualquer texto da página e digite. **Enter** termina a edição. Acima do texto aparece uma barra para mudar fonte, tamanho, negrito, itálico, sublinhado, cor, destaque e link, ou para limpar a formatação. Atalhos: ⌘B, ⌘I, ⌘U e ⌘K (link).
 3. Passe o mouse sobre um item para ver os controles dele:
    - **⋮⋮** à esquerda: arraste para mudar a ordem (ou use **Alt+↑/↓** enquanto digita no item);
@@ -45,7 +45,7 @@ A lista fica salva no branch `dados` (`listas/conferencia-AAAA-MM.json`), então
 
 **Busca nos Discursos.** Ao clicar num discurso do informativo, abre embaixo a lista da conferência mais recente importada. Digite parte do título ou do nome para filtrar e clique no discurso (ou use **↑/↓** e **Enter**): o item fica com o título em negrito, o nome de quem discursou e o link. Os discursos que já saíram em alguma edição aparecem com a data do domingo e a edição (por exemplo, "Usado em 08/11 (Novembro · 2026)"); o que está no próprio item aparece como "Escolhido aqui". Para escrever outra coisa, é só digitar e apertar **Enter** sem escolher nada da lista (**Esc** fecha a lista).
 
-**Aulas do Vem, e Segue-me.** Uma vez por ano, no menu do mês, clique em **Importar aulas do Vem, e Segue-me…** e cole o link do manual do ano (por exemplo `https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026?lang=por`). Cada aula fica com o nome, as escrituras, o link e a semana (de segunda a domingo). A lista vai para `listas/vem-e-segue-me-AAAA.json` no branch `dados`.
+**Aulas do Vem, e Segue-me.** Uma vez por ano, no menu do mês, clique em **Importar aulas do Vem, e Segue-me…** e cole o link do manual do ano (por exemplo `https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026?lang=por`). Cada aula fica com o nome, as escrituras, o link e a semana (de segunda a domingo). A lista vai para `listas/vem-e-segue-me-AAAA.json` no branch `dados`. Com as aulas importadas, o **Novo mês** já preenche o Vem, e Segue-me com a aula da semana de cada domingo, e uma edição que já existe com esse quadro vazio é preenchida ao ser aberta. Depois de preenchido, cada item continua editável como qualquer texto; ⌘Z desfaz o preenchimento. Para dezembro e janeiro, importe também o manual do ano seguinte quando ele sair.
 
 ## Salvamento, histórico e desfazer
 

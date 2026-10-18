@@ -1585,6 +1585,37 @@ async function importarVemSegueMe(manual, progresso) {
   return { id, total: aulas.length };
 }
 
+// A aula da semana de um domingo, pelas listas importadas (cada aula vai de segunda a domingo).
+function aulaDoDomingo(ano, mes, dia) {
+  const d = `${ano}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+  for (const m of manuais()) {
+    const a = m.aulas.find(x => x.inicio <= d && d <= x.fim);
+    if (a) return a;
+  }
+  return null;
+}
+const aulasDosDias = (ano, mes, dias) => dias.map(dia => {
+  const a = aulaDoDomingo(ano, mes, parseInt(dia, 10));
+  return { dia: String(dia), texto: a ? limparRico(`<a href="${esc(a.link)}">${esc(a.nome)}</a>`) : '' };
+});
+
+// Uma edição com o quadro Vem, e Segue-me vazio recebe a aula de cada domingo. Cada edição é conferida uma vez
+// ao abrir: se alguém esvaziar o quadro de propósito, ele não volta a ser preenchido enquanto a página estiver aberta.
+const aulasConferidas = new Set();
+function preencherAulasVazias({ forcar = false } = {}) {
+  const id = idDe(state);
+  if (!editando() || previa || soPadrao || !manuais().length || (!forcar && aulasConferidas.has(id))) return;
+  aulasConferidas.add(id);
+  if (state.vemSegueMe.some(it => textoDe(it.texto).trim())) return;
+  const dias = state.vemSegueMe.map(it => it.dia).filter(Boolean);
+  const novas = aulasDosDias(state.ano, state.mes, dias.length ? dias : domingos(state.ano, state.mes));
+  if (!novas.some(it => it.texto)) return;
+  marcarDesfazer();
+  state.vemSegueMe = novas;
+  renderPagina();
+  toast('As aulas do Vem, e Segue-me de cada domingo foram preenchidas. Dá para mudar qualquer uma.');
+}
+
 function abrirImportar(tipo) {
   fecharPainelEdicoes();
   const aulas = tipo === 'aulas';
@@ -1628,6 +1659,7 @@ $('formImportar').addEventListener('submit', async e => {
       const r = await importarVemSegueMe(manual[1], progresso);
       $('dlgImportar').close();
       toast(`${plural(r.total, 'aula importada', 'aulas importadas')} do Vem, e Segue-me ${r.id}.`);
+      preencherAulasVazias({ forcar: true });
     }
   } catch (err) {
     erroImportar(err.status === 404 ? `Não achei ${conf ? 'discursos' : 'aulas com as datas da semana'} nesse link. Confira se é a página ${conf ? 'da conferência' : 'do manual'} inteira.`
@@ -1657,7 +1689,7 @@ function atualizarModo() {
   $('quemIni').textContent = (nome || '?').charAt(0).toUpperCase();
   $('previaAviso').hidden = !previa;
   if (previa) $('previaTexto').textContent = `Você está vendo a versão de ${quando(previa.data)}${previa.autor && previa.autor !== 'versão inicial' ? `, salva por ${previa.autor}` : ''}.`;
-  if (editando()) carregarListas();
+  if (editando()) carregarListas().then(() => preencherAulasVazias());
   atualizarBotoesDesfazer();
   atualizarEdicoes();
   atualizarStatus();
@@ -2437,7 +2469,7 @@ $('btnNovoMes').onclick = async () => {
   const mes = (base.mes + 1) % 12, ano = base.ano + (base.mes === 11 ? 1 : 0);
   const ok = await confirmar(`Criar a edição de ${MESES[mes]} · ${ano}?`,
     `Ela começa como cópia de ${MESES[base.mes]} · ${base.ano}, com todos os domingos do mês em Discursos e em Vem, e Segue-me. ` +
-    'Esses quadros e os Aniversariantes começam vazios; anúncios, mensagem e imagem continuam.\n\n' +
+    'Discursos e Aniversariantes começam vazios; o Vem, e Segue-me já vem com a aula de cada domingo. Anúncios, mensagem e imagem continuam.\n\n' +
     `${MESES[base.mes]} · ${base.ano} continua salva no menu das edições.`, 'Criar edição');
   if (!ok) return;
   salvarNaNuvem();
@@ -2446,10 +2478,11 @@ $('btnNovoMes').onclick = async () => {
   novo.mes = mes;
   novo.ano = ano;
   novo.discursos = dom.map(dia => ({ dia, texto: '' }));
-  novo.vemSegueMe = dom.map(dia => ({ dia, texto: '' }));
+  novo.vemSegueMe = aulasDosDias(ano, mes, dom);
   novo.aniversariantes = [{ dia: '', nome: '' }];
   state = normalizar(novo);
   soPadrao = false;
+  aulasConferidas.add(idDe(state));
   zerarDesfazer();
   await salvarAgora();
   lembrarAberta();
@@ -2514,6 +2547,7 @@ async function abrirEdicaoId(id) {
   atualizarEdicoes();
   atualizarStatus();
   if (!$('hist').hidden) carregarHistorico();
+  preencherAulasVazias();
 }
 $('edAnterior').onclick = () => { const i = edicoes.indexOf(idDe(state)); if (i > 0) abrirEdicaoId(edicoes[i - 1]); };
 $('edProxima').onclick = () => { const i = edicoes.indexOf(idDe(state)); if (i >= 0 && i < edicoes.length - 1) abrirEdicaoId(edicoes[i + 1]); };
