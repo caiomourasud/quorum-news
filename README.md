@@ -43,6 +43,8 @@ A cada Conferência Geral, importe a lista dos discursos uma vez: no menu do mê
 
 A lista fica salva no branch `dados` (`listas/conferencia-AAAA-MM.json`), então aparece para todos que editam. Importar de novo a mesma conferência só atualiza a lista.
 
+**Busca nos Discursos.** Ao clicar num discurso do informativo, abre embaixo a lista da conferência mais recente importada. Digite parte do título ou do nome para filtrar e clique no discurso (ou use **↑/↓** e **Enter**): o item fica com o título em negrito, o nome de quem discursou e o link. Os discursos que já saíram em alguma edição aparecem com a data do domingo e a edição (por exemplo, "Usado em 08/11 (Novembro · 2026)"); o que está no próprio item aparece como "Escolhido aqui". Para escrever outra coisa, é só digitar e apertar **Enter** sem escolher nada da lista (**Esc** fecha a lista).
+
 ## Salvamento, histórico e desfazer
 
 - **Tudo é salvo sozinho**, alguns segundos depois que você para de digitar. O status ao lado do mês mostra "Salvando…" e depois "Salvo às…". Quem abrir o site já vê a versão nova.
