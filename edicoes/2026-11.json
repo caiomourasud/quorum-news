@@ -50,7 +50,12 @@
       "texto": "<a href=\"https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/48?lang=por\">“Buscai ao Senhor, e vivei”</a>"
     }
   ],
-  "anuncios": [],
+  "anuncios": [
+    {
+      "destaque": "13",
+      "texto": ""
+    }
+  ],
   "aniversariantes": [
     {
       "dia": "08",
