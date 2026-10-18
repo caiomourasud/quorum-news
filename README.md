@@ -37,13 +37,15 @@ O site guarda a chave no repositório **criptografada com a senha** (arquivo `ac
 
 Se aparecer o aviso vermelho, o conteúdo não coube na página: encurte um texto ou remova um item.
 
-## Discursos da Conferência Geral
+## Discursos da Conferência Geral e aulas do Vem, e Segue-me
 
 A cada Conferência Geral, importe a lista dos discursos uma vez: no menu do mês, clique em **Importar discursos da Conferência Geral…**, cole o link da conferência no site da Igreja (por exemplo `https://www.churchofjesuschrist.org/study/general-conference/2026/10?lang=por`) e clique em **Importar**. Leva alguns segundos. Cada discurso fica com o título, o nome de quem discursou e o link.
 
 A lista fica salva no branch `dados` (`listas/conferencia-AAAA-MM.json`), então aparece para todos que editam. Importar de novo a mesma conferência só atualiza a lista.
 
 **Busca nos Discursos.** Ao clicar num discurso do informativo, abre embaixo a lista da conferência mais recente importada. Digite parte do título ou do nome para filtrar e clique no discurso (ou use **↑/↓** e **Enter**): o item fica com o título em negrito, o nome de quem discursou e o link. Os discursos que já saíram em alguma edição aparecem com a data do domingo e a edição (por exemplo, "Usado em 08/11 (Novembro · 2026)"); o que está no próprio item aparece como "Escolhido aqui". Para escrever outra coisa, é só digitar e apertar **Enter** sem escolher nada da lista (**Esc** fecha a lista).
+
+**Aulas do Vem, e Segue-me.** Uma vez por ano, no menu do mês, clique em **Importar aulas do Vem, e Segue-me…** e cole o link do manual do ano (por exemplo `https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026?lang=por`). Cada aula fica com o nome, as escrituras, o link e a semana (de segunda a domingo). A lista vai para `listas/vem-e-segue-me-AAAA.json` no branch `dados`.
 
 ## Salvamento, histórico e desfazer
 
@@ -64,4 +66,4 @@ No menu do mês, **Salvar backup de todas as edições** baixa um arquivo `.json
 - `assets/imagem-padrao.js`: a imagem original, usada em "Original".
 - `assets/icones/`, `manifest.webmanifest` e `sw.js`: ícone, instalação como app e modo sem internet.
 - As edições ficam no branch **`dados`** (`edicoes/AAAA-MM.json`, `imagens/`, `listas/` e `acesso.json`). Cada salvamento é um commit lá, então o site no `main` não precisa ser reconstruído a cada mudança.
-- Os discursos são lidos direto do navegador, na mesma API JSON que o site da Igreja usa (`/study/api/v3/language-pages/type/content`). Ela aceita chamadas de outros sites, mas o cache dela guarda a resposta com o site de quem pediu primeiro; por isso cada pedido escreve algumas letras do endereço como `%xx`. Se a Igreja mudar essa API, a importação para de funcionar, mas as listas já importadas continuam no branch `dados`.
+- Os discursos e as aulas são lidos direto do navegador, na mesma API JSON que o site da Igreja usa (`/study/api/v3/language-pages/type/content`). Ela aceita chamadas de outros sites, mas o cache dela guarda a resposta com o site de quem pediu primeiro; por isso cada pedido escreve algumas letras do endereço como `%xx`. Se a Igreja mudar essa API, a importação para de funcionar, mas as listas já importadas continuam no branch `dados`.

@@ -331,6 +331,7 @@ body.arrastando .drop{display:flex}
       <div id="edAcoes">
         <button class="ed-acao" id="btnDescartar" hidden>Descartar alterações não salvas</button>
         <button class="ed-acao" id="btnImportarDiscursos">Importar discursos da Conferência Geral…</button>
+        <button class="ed-acao" id="btnImportarAulas">Importar aulas do Vem, e Segue-me…</button>
         <button class="ed-acao" id="btnBackup">Salvar backup de todas as edições</button>
         <button class="ed-acao" id="btnRestaurar">Restaurar backup…</button>
       </div>
@@ -1463,8 +1464,9 @@ $('btnMensagens').onclick = () => ($('msgs').hidden ? abrirMensagens() : fecharM
 $('msgsFechar').onclick = fecharMensagens;
 
 // ---------- listas importadas do site da Igreja ----------
-// Os discursos de uma Conferência Geral são buscados uma vez no site da Igreja e guardados no branch de dados
-// (listas/conferencia-AAAA-MM.json), para todos que editam. Este navegador guarda uma cópia para abrir sem esperar.
+// Os discursos de uma Conferência Geral e as aulas do Vem, e Segue-me do ano são buscados uma vez no site da Igreja
+// e guardados no branch de dados (listas/conferencia-AAAA-MM.json e listas/vem-e-segue-me-AAAA.json), para todos
+// que editam. Este navegador guarda uma cópia para abrir sem esperar.
 
 const IGREJA = 'https://www.churchofjesuschrist.org';
 const CHAVE_LISTAS = 'informativo-qe:listas';
@@ -1475,6 +1477,7 @@ const limpo = s => String(s ?? '').replace(/\s+/g, ' ').trim();
 
 const conferencias = () => Object.values(listas).map(l => l.dados).filter(d => d?.tipo === 'conferencia').sort((a, b) => a.id.localeCompare(b.id));
 const conferenciaAtual = () => conferencias().pop() || null;
+const manuais = () => Object.values(listas).map(l => l.dados).filter(d => d?.tipo === 'vemSegueMe').sort((a, b) => a.id.localeCompare(b.id));
 
 // Traz do GitHub as listas novas ou mudadas. Só quem edita usa as listas, então só quem edita as busca.
 let listasCarregando = null;
@@ -1557,13 +1560,43 @@ async function importarConferencia(ano, mes, progresso) {
   return { titulo, total: discursos.length };
 }
 
-function abrirImportar() {
+// As aulas vêm do índice do manual (datas da semana e escrituras) e o nome de cada uma, da página da aula.
+async function importarVemSegueMe(manual, progresso) {
+  const { titulo, corpo } = await lerIgreja(`/manual/${manual}`);
+  const tiles = [...corpo.querySelectorAll('li[data-date-start][data-date-end]')].map(li => ({ li, a: li.querySelector('a[href]') })).filter(t => t.a);
+  if (!tiles.length) throw Object.assign(new Error('nenhuma aula'), { status: 404 });
+  const aulas = await emParalelo(tiles, async ({ li, a }) => {
+    const link = new URL(a.getAttribute('href'), IGREJA).href;
+    const escrituras = limpo(a.querySelector('.title')?.textContent);
+    let nome = '';
+    try {
+      const p = await lerIgreja(new URL(link).pathname.replace(/^\/study/, ''));
+      // "26 de outubro a 1º de novembro: “Tornarei o seu pranto em alegria”" (às vezes sem os dois-pontos)
+      const t = limpo(p.corpo.querySelector('.title-number')?.textContent), datas = limpo(a.querySelector('.primaryMeta')?.textContent);
+      nome = (datas && t.startsWith(datas) ? t.slice(datas.length) : t.slice(t.indexOf(': ') + 1)).replace(/^[\s:.,–—-]+/, '');
+    } catch (e) { /* fica com as escrituras */ }
+    return { nome: nome || escrituras, escrituras, link, inicio: li.dataset.dateStart, fim: li.dataset.dateEnd };
+  }, progresso);
+  const id = /-(\d{4})$/.exec(manual)?.[1] || aulas[aulas.length - 1].fim.slice(0, 4);
+  await salvarLista(`vem-e-segue-me-${id}.json`, {
+    tipo: 'vemSegueMe', id, titulo: titulo || `Vem, e Segue-me ${id}`,
+    origem: `${IGREJA}/study/manual/${manual}?lang=por`, importadaEm: new Date().toISOString(), aulas,
+  }, `Aulas do Vem, e Segue-me ${id}`);
+  return { id, total: aulas.length };
+}
+
+function abrirImportar(tipo) {
   fecharPainelEdicoes();
-  $('impTitulo').textContent = 'Importar discursos';
-  $('impTexto').textContent = 'Cole o link da Conferência Geral no site da Igreja. Os discursos ficam guardados para todos que editam e aparecem quando você escreve num discurso do informativo.';
-  $('impLink').placeholder = `${IGREJA}/study/general-conference/2026/10?lang=por`;
-  const ja = conferencias().reverse();
-  $('impJa').textContent = ja.length ? `Já importadas: ${ja.map(c => `${c.titulo.replace(/^Conferência Geral de /, '')} (${plural(c.discursos.length, 'discurso', 'discursos')})`).join(', ')}. A busca usa a mais recente.` : '';
+  const aulas = tipo === 'aulas';
+  $('impTitulo').textContent = aulas ? 'Importar aulas' : 'Importar discursos';
+  $('impTexto').textContent = aulas
+    ? 'Cole o link do Vem, e Segue-me do ano no site da Igreja. As aulas ficam guardadas para todos que editam, cada uma com a semana dela.'
+    : 'Cole o link da Conferência Geral no site da Igreja. Os discursos ficam guardados para todos que editam e aparecem quando você escreve num discurso do informativo.';
+  $('impLink').placeholder = aulas ? `${IGREJA}/study/manual/come-follow-me-for-home-and-church-old-testament-2026?lang=por` : `${IGREJA}/study/general-conference/2026/10?lang=por`;
+  const ja = aulas ? manuais().reverse() : conferencias().reverse();
+  $('impJa').textContent = !ja.length ? ''
+    : aulas ? `Já importados: ${ja.map(m => `${m.id} (${plural(m.aulas.length, 'aula', 'aulas')})`).join(', ')}.`
+      : `Já importadas: ${ja.map(c => `${c.titulo.replace(/^Conferência Geral de /, '')} (${plural(c.discursos.length, 'discurso', 'discursos')})`).join(', ')}. A busca usa a mais recente.`;
   $('impLink').value = '';
   $('impErro').hidden = true;
   $('dlgImportar').showModal();
@@ -1577,18 +1610,28 @@ $('formImportar').addEventListener('submit', async e => {
   e.preventDefault();
   const caminho = (() => { try { return new URL(normalizarLink($('impLink').value)).pathname; } catch (err) { return ''; } })();
   const conf = /\/general-conference\/(\d{4})\/(\d{2})(\/|$)/.exec(caminho);
-  if (!conf) return erroImportar(`Esse link não é de uma Conferência Geral. Ele deve ser parecido com ${IGREJA}/study/general-conference/2026/10?lang=por`);
+  const manual = /\/manual\/([\w-]+)/.exec(caminho);
+  if (!conf && !manual) {
+    return erroImportar(`Esse link não é de uma Conferência Geral nem do Vem, e Segue-me. Ele deve ser parecido com ${$('impLink').placeholder}`);
+  }
   const botao = $('impOk');
   botao.disabled = true;
   botao.textContent = 'Buscando…';
   $('impErro').hidden = true;
   try {
-    const r = await importarConferencia(conf[1], conf[2], (n, total) => { botao.textContent = `Buscando… ${n} de ${total}`; });
-    $('dlgImportar').close();
-    toast(`${plural(r.total, 'discurso importado', 'discursos importados')} da ${r.titulo}.`);
+    const progresso = (n, total) => { botao.textContent = `Buscando… ${n} de ${total}`; };
+    if (conf) {
+      const r = await importarConferencia(conf[1], conf[2], progresso);
+      $('dlgImportar').close();
+      toast(`${plural(r.total, 'discurso importado', 'discursos importados')} da ${r.titulo}.`);
+    } else {
+      const r = await importarVemSegueMe(manual[1], progresso);
+      $('dlgImportar').close();
+      toast(`${plural(r.total, 'aula importada', 'aulas importadas')} do Vem, e Segue-me ${r.id}.`);
+    }
   } catch (err) {
-    erroImportar(err.status === 404 ? 'Não achei discursos nesse link. Confira se é a página da conferência inteira.'
-      : /GitHub/.test(err.message) ? 'Os discursos foram buscados, mas não consegui salvar no GitHub. Tente de novo.'
+    erroImportar(err.status === 404 ? `Não achei ${conf ? 'discursos' : 'aulas com as datas da semana'} nesse link. Confira se é a página ${conf ? 'da conferência' : 'do manual'} inteira.`
+      : /GitHub/.test(err.message) ? `${conf ? 'Os discursos foram buscados' : 'As aulas foram buscadas'}, mas não consegui salvar no GitHub. Tente de novo.`
         : 'Não consegui buscar no site da Igreja. Verifique a internet e tente de novo.');
   } finally {
     botao.disabled = false;
@@ -1596,7 +1639,8 @@ $('formImportar').addEventListener('submit', async e => {
   }
 });
 $('impCancelar').onclick = () => $('dlgImportar').close();
-$('btnImportarDiscursos').onclick = abrirImportar;
+$('btnImportarDiscursos').onclick = () => abrirImportar('discursos');
+$('btnImportarAulas').onclick = () => abrirImportar('aulas');
 
 // Mostra ou esconde o que depende de poder editar (entrou, está vendo versão antiga, etc.).
 function atualizarModo() {
