@@ -9,6 +9,8 @@ Quem abre o site vê o informativo e pode baixar o PNG ou o PDF. Para editar, cl
 
 **No celular, dá para instalar como app:** no iPhone, abra o site no Safari → botão Compartilhar → **Adicionar à Tela de Início**; no Android, no Chrome → menu ⋮ → **Instalar app**. No app, "Baixar imagem" abre o compartilhar (WhatsApp, Salvar em Fotos…). No iPhone, o app instalado guarda os dados à parte do Safari: é preciso entrar com nome e senha uma vez nele.
 
+No celular, a página aparece inteira e pequena. Para ler ou editar com letra maior, abra dois dedos sobre ela ou toque na **lupa** no canto de baixo (toque de novo para voltar). Enquanto você edita um item, aparecem embaixo dele os botões **↑/↓** (mudar a ordem), **🔗** (link) e **×** (remover).
+
 ## Entrar para editar
 
 Quem edita clica em **Entrar para editar** e digita **o nome** (aparece no histórico ao lado do que a pessoa mudar) e **a senha do quórum**. Ninguém precisa de conta no GitHub. Maiúsculas e acentos na senha não fazem diferença. Para trocar o nome ou sair, clique no seu nome na barra de cima.

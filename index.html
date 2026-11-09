@@ -2,7 +2,9 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- maximum-scale: o iPhone não dá zoom sozinho ao tocar num texto da página (a prévia tem letra pequena). A página
+     continua ampliável com dois dedos, pela pinça da própria prévia. -->
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="description" content="Editor do informativo mensal do Quórum de Élderes.">
 <meta name="theme-color" content="#FFFDF9">
 <meta name="mobile-web-app-capable" content="yes">
@@ -157,7 +159,8 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .btn-sm{height:28px;font-size:12.5px;padding:0 10px}
 
 .corpo{display:flex;flex:1;min-height:0}
-.area{flex:1;min-width:0;overflow:auto;padding:0 max(24px,env(safe-area-inset-right)) calc(40px + env(safe-area-inset-bottom)) max(24px,env(safe-area-inset-left))}
+/* touch-action: a pinça com dois dedos amplia só a prévia (ver "zoom da prévia"), não a página toda com a barra. */
+.area{flex:1;min-width:0;overflow:auto;touch-action:pan-x pan-y;padding:0 max(24px,env(safe-area-inset-right)) calc(40px + env(safe-area-inset-bottom)) max(24px,env(safe-area-inset-left))}
 .hist{width:320px;flex-shrink:0;display:flex;flex-direction:column;min-height:0;background:var(--panel);border-left:1px solid var(--line)}
 .hist-topo{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;padding:16px 12px 10px 18px;border-bottom:1px solid var(--line)}
 .hist-topo h2{margin:0;font-family:'Alegreya',Georgia,serif;font-size:21px;line-height:1.1}
@@ -194,6 +197,11 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .area-head{display:flex;align-items:center;justify-content:flex-end;min-height:48px;margin:0 auto}
 .stage{margin:0 auto;box-shadow:0 1px 2px rgba(30,43,60,.08),0 14px 36px rgba(30,43,60,.16)}
 #page{width:800px;height:1120px;transform-origin:0 0}
+/* Até abrir a edição, nada de página vazia nem de botões de quem edita piscando na tela. */
+body.carregando :is(.stage,.area-head,.edicao){visibility:hidden}
+body.carregando .area::before{content:'Carregando…';display:block;margin-top:28vh;text-align:center;color:var(--muted);font-size:15px}
+/* Os botões de editar ficam fora da conta de "passou do tamanho da página" (no toque eles são maiores). */
+#page.medindo .ctl{display:none!important}
 .aviso{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));transform:translateX(-50%);max-width:calc(100% - 32px);background:#FBEDE9;color:var(--danger);border:1px solid #EBC7BE;padding:9px 14px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:0 6px 20px rgba(30,43,60,.12);z-index:40}
 .fmt{position:fixed;top:0;left:0;z-index:45;display:flex;align-items:center;gap:2px;padding:4px 6px;background:#FFFDF9;border:1px solid var(--line2);border-radius:10px;box-shadow:0 8px 24px rgba(30,43,60,.18);color:var(--ink);font-size:13px}
 .fmt[hidden],.fmt-pop[hidden]{display:none}
@@ -247,44 +255,57 @@ body.arrastando .drop{display:flex}
 /* Edição direto na página. Sem o mouse em cima, a página fica igual à exportada. */
 @media screen{
   #page [contenteditable]{outline:none;border-radius:3px;cursor:text}
-  #page [contenteditable]:hover{outline:1px dashed rgba(138,106,62,.75);outline-offset:3px}
   #page [contenteditable]:focus{outline:2px solid #B08A55;outline-offset:3px}
-  #page:not(.medindo):not(.leitura) :is(.pg-top,.pg-head,.pg-card,.pg-msg):hover [contenteditable]:empty::after,
   #page:not(.medindo):not(.leitura) [contenteditable]:focus:empty::after{content:attr(data-ph);opacity:.38}
-  #page:not(.medindo):not(.leitura) :is(.pg-head,.pg-msg):is(:hover,:focus-within) :is(.pg-motto-ref,.pg-msg-cargo):empty{display:inline}
-  #page:not(.medindo):not(.leitura) .pg-card:is(:hover,:focus-within) .pg-ann-big:empty{display:block}
-  #page:not(.medindo):not(.leitura) .pg-card:is(:hover,:focus-within) .pg-item,#page:not(.medindo):not(.leitura) .pg-item.novo{display:flex}
-  #page:not(.medindo):not(.leitura) .pg-card:is(:hover,:focus-within) .pg-ann,#page:not(.medindo):not(.leitura) .pg-ann.novo{display:grid}
+  #page:not(.medindo):not(.leitura) :is(.pg-head,.pg-msg):focus-within :is(.pg-motto-ref,.pg-msg-cargo):empty{display:inline}
+  #page:not(.medindo):not(.leitura) .pg-card:focus-within .pg-ann-big:empty{display:block}
+  #page:not(.medindo):not(.leitura) .pg-card:focus-within .pg-item,#page:not(.medindo):not(.leitura) .pg-item.novo{display:flex}
+  #page:not(.medindo):not(.leitura) .pg-card:focus-within .pg-ann,#page:not(.medindo):not(.leitura) .pg-ann.novo{display:grid}
   #page .pg-date{cursor:pointer}
   #page:not(.leitura) .pg-imgbox{cursor:grab;touch-action:none}
   #page .pg-imgbox.puxando{cursor:grabbing}
   #page .ctl{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;transition:opacity .15s}
   #page .mv{position:absolute;left:-21px;top:0;width:18px;height:24px;border:0;padding:0;background:none;color:#A39B8D;cursor:grab;opacity:0;touch-action:none;display:flex;align-items:center;justify-content:center}
-  #page .mv:hover{color:#5A6474}
   #page .acoes{position:absolute;right:-10px;top:-3px;display:flex;gap:2px;padding:2px;border-radius:8px;background:#FFFDF9;box-shadow:0 1px 2px rgba(30,43,60,.12),0 4px 12px rgba(30,43,60,.14);opacity:0;pointer-events:none}
   #page .acoes button{width:24px;height:24px;border:0;padding:0;border-radius:6px;background:none;color:#5A6474;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;line-height:1}
-  #page .acoes button:hover{background:#F3EADB;color:#1E2B3C}
-  #page .acoes .rm:hover{background:#F4E4E0;color:var(--danger)}
   #page .acoes .lk.tem{color:#8A6A3E}
-  #page :is(.pg-item,.pg-ann):is(:hover,:focus-within)>:is(.mv,.acoes){opacity:1;pointer-events:auto}
+  #page .acoes :is(.sobe,.desce){display:none}
+  #page :is(.pg-item,.pg-ann):focus-within>:is(.mv,.acoes){opacity:1;pointer-events:auto}
   #page .lk-ind{position:absolute;right:-17px;top:5px;width:12px;height:12px;color:#8A6A3E;opacity:.55;pointer-events:none}
-  #page :is(.pg-item,.pg-ann):is(:hover,:focus-within)>.lk-ind{opacity:0}
+  #page :is(.pg-item,.pg-ann):focus-within>.lk-ind{opacity:0}
   #page :is(.pg-item,.pg-ann).movendo{z-index:3;background:#FFFDF9;border-radius:8px;box-shadow:0 0 0 6px #FFFDF9,0 8px 22px rgba(30,43,60,.2)}
   #page :is(.pg-item,.pg-ann).movendo .mv{cursor:grabbing}
   #page .add{position:absolute;right:0;top:50%;transform:translateY(-50%);height:24px;padding:0 10px;border-radius:12px;border:1px solid #D6CAB5;background:#FFFDF9;color:#8A6A3E;font-size:12px;font-weight:600;cursor:pointer;opacity:0}
-  #page .pg-card:hover .add,#page .pg-card:focus-within .add{opacity:1}
-  #page .add:hover{background:#F3EADB}
+  #page .pg-card:focus-within .add{opacity:1}
   #page .img-ctl{position:absolute;inset:12px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;pointer-events:none;opacity:0}
-  #page .pg-imgbox:hover .img-ctl,#page .pg-imgbox.puxando .img-ctl{opacity:1}
+  #page .pg-imgbox.puxando .img-ctl{opacity:1}
   #page .img-ctl span{padding:5px 10px;border-radius:12px;background:rgba(30,43,60,.72);color:#F6F2EA;font-size:12px;font-weight:600}
   #page .img-ctl div{display:flex;gap:6px}
   #page .img-ctl button{pointer-events:auto;height:30px;padding:0 12px;border-radius:8px;border:0;background:rgba(30,43,60,.88);color:#F6F2EA;font-size:12.5px;font-weight:600;cursor:pointer}
+}
+/* Só com mouse. No iPhone, uma regra :hover que mostra ou esconde algo faz o primeiro toque virar "passar o mouse"
+   e só o segundo toque edita. */
+@media screen and (hover:hover){
+  #page [contenteditable]:hover{outline:1px dashed rgba(138,106,62,.75);outline-offset:3px}
+  #page:not(.medindo):not(.leitura) :is(.pg-top,.pg-head,.pg-card,.pg-msg):hover [contenteditable]:empty::after{content:attr(data-ph);opacity:.38}
+  #page:not(.medindo):not(.leitura) :is(.pg-head,.pg-msg):hover :is(.pg-motto-ref,.pg-msg-cargo):empty{display:inline}
+  #page:not(.medindo):not(.leitura) .pg-card:hover .pg-ann-big:empty{display:block}
+  #page:not(.medindo):not(.leitura) .pg-card:hover .pg-item{display:flex}
+  #page:not(.medindo):not(.leitura) .pg-card:hover .pg-ann{display:grid}
+  #page .mv:hover{color:#5A6474}
+  #page .acoes button:hover{background:#F3EADB;color:#1E2B3C}
+  #page .acoes .rm:hover{background:#F4E4E0;color:var(--danger)}
+  #page :is(.pg-item,.pg-ann):hover>:is(.mv,.acoes){opacity:1;pointer-events:auto}
+  #page :is(.pg-item,.pg-ann):hover>.lk-ind{opacity:0}
+  #page .pg-card:hover .add{opacity:1}
+  #page .add:hover{background:#F3EADB}
+  #page .pg-imgbox:hover .img-ctl{opacity:1}
   #page .img-ctl button:hover{background:#1E2B3C}
 }
 
 /* Celular: quem edita vê o mês e o status numa linha e os ícones na de baixo; painéis sobem de baixo. */
 @media (max-width:760px){
-  .bar{gap:6px}
+  .bar{gap:6px;padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right))}
   .bar-title,.sep{display:none}
   .ed-atual{min-width:0;padding:0 8px}
   .bar-status:empty{display:none}
@@ -294,11 +315,34 @@ body.arrastando .drop{display:flex}
   .area{padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right))}
   .hist{position:fixed;left:0;right:0;bottom:0;z-index:46;width:auto;height:min(78dvh,680px);border-left:0;border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -12px 32px rgba(30,43,60,.2);padding:0 env(safe-area-inset-right) 0 env(safe-area-inset-left)}
   .fmt{flex-wrap:wrap;max-width:calc(100vw - 16px)}
+  .fmt-sep{display:none}
+  /* O botão de ampliar flutua no canto: com a página ampliada, ele continua à mão para voltar. */
+  .area-head{min-height:12px}
+  #btnZoom{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:calc(16px + env(safe-area-inset-bottom));z-index:30;width:46px;height:46px;border-radius:23px;box-shadow:0 6px 18px rgba(30,43,60,.18)}
+  body:has(.hist:not([hidden]), #page :focus) #btnZoom{display:none}
 }
-/* Toque: sem hover, os botões de editar a página ficam sempre à mostra. */
+/* Toque: sem hover, os botões de editar a página ficam sempre à mostra. Eles ficam dentro da prévia, que no celular
+   aparece reduzida: --inv (o inverso da escala da prévia) devolve a eles um tamanho bom para o dedo. */
 @media (hover:none){
-  #page .add,#page .img-ctl{opacity:1}
-  #page .mv{opacity:.5}
+  #page .add{opacity:1;transform:translateY(-50%) scale(min(var(--inv,1),1.5));transform-origin:100% 50%}
+  #page .img-ctl{opacity:1}
+  #page .img-ctl>*{transform:scale(min(var(--inv,1),1.25))}
+  #page .img-ctl>span{transform-origin:50% 0}
+  #page .img-ctl>div{transform-origin:50% 100%}
+  #page .mv{display:none}
+  #page .acoes{top:calc(100% + 4px);right:-6px;z-index:4;transform:scale(var(--inv,1));transform-origin:100% 0} /* embaixo: em cima fica a barra de formatação */
+  #page .acoes button{width:30px;height:30px;font-size:19px}
+  #page .acoes :is(.sobe,.desce){display:flex}
+  /* No iPhone o :hover gruda no botão depois do toque; sem mouse, o botão volta à cor normal. */
+  .btn:hover{background:var(--panel)}
+  .btn-primary:hover{background:var(--ink)}
+  .btn-perigo:hover{background:var(--danger)}
+}
+/* Dedo: botões da barra um pouco maiores. */
+@media (pointer:coarse){
+  .btn:not(.btn-sm){height:38px}
+  .btn-icone{width:38px}
+  .fmt button,.fmt-fonte{height:36px;min-width:36px}
 }
 /* O iPhone dá zoom sozinho em campos com letra menor que 16 px. */
 @media (pointer:coarse){
@@ -318,7 +362,7 @@ body.arrastando .drop{display:flex}
 }
 </style>
 </head>
-<body>
+<body class="carregando">
 
 <header class="bar">
   <div class="bar-title">Informativo</div>
@@ -343,7 +387,7 @@ body.arrastando .drop{display:flex}
   </div>
   <div class="bar-status" id="status" role="status"></div>
   <div class="bar-spacer"></div>
-  <div class="grupo" id="grupoEdicao">
+  <div class="grupo" id="grupoEdicao" hidden>
     <button class="btn btn-icone" id="btnDesfazer" title="Desfazer (⌘Z)" aria-label="Desfazer" disabled><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg></button>
     <button class="btn btn-icone" id="btnRefazer" title="Refazer (⌘⇧Z)" aria-label="Refazer" disabled><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 14 5-5-5-5"/><path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13"/></svg></button>
     <div class="sep"></div>
@@ -1404,14 +1448,22 @@ function porLink(lista, i, valor) {
 let linkAlvo = null;
 function abrirLinkItem(botao) {
   linkAlvo = { lista: botao.dataset.lista, i: Number(botao.dataset.i) };
-  const atual = linkDe(state[linkAlvo.lista][linkAlvo.i].texto), pop = $('lkPop'), r = botao.getBoundingClientRect();
+  const atual = linkDe(state[linkAlvo.lista][linkAlvo.i].texto);
   $('lkUrl').value = atual;
   $('lkRm').hidden = !atual;
-  pop.hidden = false;
-  pop.style.left = `${Math.max(8, Math.min(r.right - pop.offsetWidth, innerWidth - pop.offsetWidth - 8))}px`;
-  pop.style.top = `${r.bottom + 6 + pop.offsetHeight > innerHeight ? r.top - pop.offsetHeight - 6 : r.bottom + 6}px`;
+  $('lkPop').hidden = false;
+  posicionarLinkItem();
   $('lkUrl').focus();
   $('lkUrl').select();
+}
+// Embaixo do item; em cima quando não cabe na parte visível (o teclado ocupa a de baixo).
+function posicionarLinkItem() {
+  if (!linkAlvo) return;
+  const pop = $('lkPop'), item = pgEl.querySelector(`[data-f^="${linkAlvo.lista}.${linkAlvo.i}."]`)?.closest('.pg-item, .pg-ann');
+  if (!item) return;
+  const r = item.getBoundingClientRect(), v = areaVisivel(), h = pop.offsetHeight;
+  pop.style.left = `${Math.max(8, Math.min(r.right - pop.offsetWidth, innerWidth - pop.offsetWidth - 8))}px`;
+  pop.style.top = `${(r.bottom + 6 + h > v.bottom ? Math.max(v.top + 6, r.top - h - 6) : r.bottom + 6) - v.desvio}px`;
 }
 function fecharLinkItem() {
   $('lkPop').hidden = true;
@@ -1723,7 +1775,9 @@ function card(titulo, nome, corpo, rotulo, cresce = false) {
 
 const ICONE_ALCA = '<svg width="10" height="16" viewBox="0 0 10 16" fill="currentColor" aria-hidden="true"><circle cx="3" cy="3" r="1.5"/><circle cx="7" cy="3" r="1.5"/><circle cx="3" cy="8" r="1.5"/><circle cx="7" cy="8" r="1.5"/><circle cx="3" cy="13" r="1.5"/><circle cx="7" cy="13" r="1.5"/></svg>';
 const ICONE_LINK = '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>';
-// Alça para arrastar (esquerda) e, à direita, link e remover. Nada disso vai para o PNG/PDF.
+const seta = d => `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
+// Alça para arrastar (esquerda) e, à direita, link e remover. No toque, a alça dá lugar a ↑/↓ junto do link.
+// Nada disso vai para o PNG/PDF.
 function controles(nome, i) {
   if (!editando()) return '';
   const comLink = nome !== 'aniversariantes', link = comLink && linkDe(state[nome][i].texto);
@@ -1731,6 +1785,8 @@ function controles(nome, i) {
   return `<button type="button" class="ctl mv" data-acao="mover" ${dados} title="Arraste para mudar a ordem (ou Alt+↑/↓)" aria-label="Mudar a ordem">${ICONE_ALCA}</button>` +
     (link ? `<svg class="ctl lk-ind" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONE_LINK}</svg>` : '') +
     '<span class="ctl acoes">' +
+    (i > 0 ? `<button type="button" class="sobe" data-acao="subir" ${dados} aria-label="Subir">${seta('m6 15 6-6 6 6')}</button>` : '') +
+    (i < state[nome].length - 1 ? `<button type="button" class="desce" data-acao="descer" ${dados} aria-label="Descer">${seta('m6 9 6 6 6-6')}</button>` : '') +
     (comLink ? `<button type="button" class="lk${link ? ' tem' : ''}" data-acao="link" ${dados} title="${link ? 'Mudar ou tirar o link' : 'Colocar link'}" aria-label="Link"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONE_LINK}</svg></button>` : '') +
     `<button type="button" class="rm" data-acao="rm" ${dados} title="Remover" aria-label="Remover">×</button></span>`;
 }
@@ -1909,14 +1965,27 @@ const paleta = (cmd, cores, vazio) => `<div class="fmt-cores"><button type="butt
 fmtBar.querySelector('[data-painel="cor"]').innerHTML = paleta('cor', CORES_TEXTO, 'Cor padrão');
 fmtBar.querySelector('[data-painel="fundo"]').innerHTML = paleta('fundo', CORES_FUNDO, 'Sem destaque');
 
+// O pedaço da prévia que está à vista. Com o teclado aberto, o iPhone rola a página para mostrar o campo, e aí as
+// medidas (getBoundingClientRect) e a posição dos elementos fixos deixam de usar o mesmo topo: no iOS 27 a diferença é
+// o deslocamento do teclado. A sonda, fixa no topo, mede essa diferença (desvio) em vez de supor como cada navegador faz.
+const sonda = document.createElement('div');
+sonda.style.cssText = 'position:fixed;top:0;left:0;width:0;height:0;visibility:hidden;pointer-events:none';
+document.body.appendChild(sonda);
+function areaVisivel() {
+  const a = $('area').getBoundingClientRect(), vv = window.visualViewport, desvio = sonda.getBoundingClientRect().top;
+  const topo = vv ? desvio + vv.offsetTop : 0, fundo = vv ? topo + vv.height : innerHeight;
+  return { top: Math.max(a.top, topo), bottom: Math.min(a.bottom, fundo), desvio };
+}
+
 function posicionarFmt() {
   if (!campoAtivo) return;
   const r = campoAtivo.getBoundingClientRect();
   const w = fmtBar.offsetWidth, h = fmtBar.offsetHeight;
+  const v = areaVisivel();
   let top = r.top - h - 10;
-  if (top < $('area').getBoundingClientRect().top + 4) top = r.bottom + 10;
+  if (top < v.top + 4) top = r.bottom + 10;
   const left = Math.min(Math.max(8, r.left - 6), innerWidth - w - 8);
-  fmtBar.style.transform = `translate(${Math.round(left)}px, ${Math.round(top)}px)`;
+  fmtBar.style.transform = `translate(${Math.round(left)}px, ${Math.round(top - v.desvio)}px)`;
 }
 
 // O trecho que a barra vai formatar: a seleção atual, ou a última feita no campo (quando o foco está na barra).
@@ -2106,7 +2175,7 @@ document.addEventListener('selectionchange', () => {
   if (sel.rangeCount && campoAtivo.contains(sel.anchorNode)) selSalva = sel.getRangeAt(0).cloneRange();
   marcarFmt();
 });
-$('area').addEventListener('scroll', posicionarFmt, { passive: true });
+$('area').addEventListener('scroll', () => { posicionarFmt(); posicionarLinkItem(); }, { passive: true });
 window.addEventListener('resize', posicionarFmt);
 
 // ---------- busca de discursos (no quadro Discursos) ----------
@@ -2171,20 +2240,21 @@ function desenharBusca() {
   if (!busca.filtro) buscaEl.querySelector('.atual')?.scrollIntoView({ block: 'nearest' });
 }
 
-// Embaixo do campo; em cima quando falta espaço (no celular, o teclado ocupa a parte de baixo).
+// Embaixo do campo; em cima quando falta espaço (no celular, o teclado ocupa a parte de baixo). Nunca por cima do
+// campo nem da barra de formatação: a lista encolhe para caber no que sobra.
 function posicionarBusca() {
   if (!busca) return;
-  const r = busca.el.getBoundingClientRect(), vv = window.visualViewport;
+  const r = busca.el.getBoundingClientRect(), v = areaVisivel();
   const f = fmtBar.hidden ? null : fmtBar.getBoundingClientRect();
   const topo = f && f.bottom <= r.top + 1 ? f.top : r.top; // por cima da barra de formatação, sem cobri-la
-  const w = Math.min(440, innerWidth - 16), fundo = (vv ? vv.offsetTop + vv.height : innerHeight) - 8;
+  const w = Math.min(440, innerWidth - 16);
   const base = f && f.top >= r.bottom - 1 ? f.bottom : r.bottom;
-  const abaixo = fundo - base - 8, acima = topo - $('area').getBoundingClientRect().top - 8;
+  const abaixo = v.bottom - base - 16, acima = topo - v.top - 16;
   const emCima = abaixo < 180 && acima > abaixo;
   buscaEl.style.width = `${w}px`;
   buscaEl.style.left = `${Math.max(8, Math.min(r.left - 6, innerWidth - w - 8))}px`;
-  buscaEl.style.maxHeight = `${Math.max(120, Math.min(340, emCima ? acima : abaixo))}px`;
-  buscaEl.style.top = `${emCima ? topo - 8 - buscaEl.offsetHeight : base + 8}px`;
+  buscaEl.style.maxHeight = `${Math.max(60, Math.min(340, emCima ? acima : abaixo))}px`;
+  buscaEl.style.top = `${(emCima ? topo - 8 - buscaEl.offsetHeight : base + 8) - v.desvio}px`;
 }
 
 function abrirBusca(el) {
@@ -2254,7 +2324,11 @@ buscaEl.addEventListener('pointerdown', e => e.preventDefault());
 buscaEl.addEventListener('click', e => { const b = e.target.closest('[data-k]'); if (b) escolherDiscurso(Number(b.dataset.k)); });
 $('area').addEventListener('scroll', posicionarBusca, { passive: true });
 window.addEventListener('resize', posicionarBusca);
-window.visualViewport?.addEventListener('resize', posicionarBusca);
+// O teclado do iPhone muda o tamanho e a posição da parte visível e ainda rola a página inteira para mostrar o
+// campo: a barra, a lista e a janelinha do link acompanham.
+const reposicionar = () => { posicionarFmt(); posicionarBusca(); posicionarLinkItem(); };
+for (const ev of ['resize', 'scroll']) window.visualViewport?.addEventListener(ev, reposicionar);
+window.addEventListener('scroll', reposicionar, { passive: true });
 
 function domingos(ano, mes) {
   const out = [];
@@ -2270,6 +2344,8 @@ function proximoDomingo(nome) {
   return d ? String(d) : '';
 }
 
+// Tocar nos botões de um item não tira o cursor do texto: no toque, eles só aparecem enquanto o item está em edição.
+pgEl.addEventListener('pointerdown', e => { if (e.target.closest('.acoes button')) e.preventDefault(); });
 pgEl.addEventListener('click', e => {
   const b = e.target.closest('[data-acao]');
   if (!b) return;
@@ -2291,6 +2367,13 @@ pgEl.addEventListener('click', e => {
     case 'link':
       abrirLinkItem(b);
       break;
+    case 'subir':
+    case 'descer': {
+      const f = document.activeElement?.closest?.('[data-f]');
+      const campoFoco = f && b.closest('.pg-item, .pg-ann')?.contains(f) ? f.dataset.f.split('.')[2] : LISTAS[nome].campo;
+      moverItem(nome, Number(b.dataset.i), b.dataset.acao === 'subir' ? -1 : 1, campoFoco);
+      break;
+    }
     case 'rm':
       marcarDesfazer();
       state[nome].splice(Number(b.dataset.i), 1);
@@ -2318,7 +2401,6 @@ pgEl.addEventListener('pointerdown', e => {
   const box = e.target.closest('.pg-imgbox');
   if (!box || e.button !== 0 || e.target.closest('button') || !editando()) return;
   e.preventDefault();
-  marcarDesfazer();
   box.setPointerCapture(e.pointerId);
   const bw = box.offsetWidth, bh = box.offsetHeight;
   const nw = imgEl.naturalWidth || bw, nh = imgEl.naturalHeight || bh;
@@ -2333,6 +2415,7 @@ pgEl.addEventListener('pointermove', e => {
   const p = puxando;
   if (!p || e.pointerId !== p.id) return;
   const lim = v => Math.round(Math.min(100, Math.max(0, v)) * 10) / 10;
+  if (!p.mexeu) { marcarDesfazer(); p.mexeu = true; } // só um toque (ou o começo de uma pinça) não entra no desfazer
   if (p.sobraX > 1) state.imagemX = lim(p.X - (e.clientX - p.x) / p.escala / p.sobraX * 100);
   if (p.sobraY > 1) state.imagemY = lim(p.Y - (e.clientY - p.y) / p.escala / p.sobraY * 100);
   imgEl.style.objectPosition = `${state.imagemX}% ${state.imagemY}%`;
@@ -2340,8 +2423,8 @@ pgEl.addEventListener('pointermove', e => {
 function soltar() {
   if (!puxando) return;
   puxando.box.classList.remove('puxando');
+  if (puxando.mexeu) agendarSalvar();
   puxando = null;
-  agendarSalvar();
 }
 pgEl.addEventListener('pointerup', soltar);
 pgEl.addEventListener('pointercancel', soltar);
@@ -2770,28 +2853,95 @@ $('btnPDF').onclick = () => window.print();
 
 // ---------- zoom da prévia ----------
 
+// No computador, o botão alterna entre a largura da tela e a página inteira. No celular a página aparece reduzida
+// para caber na largura (letra de 7 px): o botão alterna para o tamanho real e a pinça com dois dedos amplia aos poucos.
+
 const area = $('area'), stage = $('stage'), pageBox = $('page');
 let zoom = 'normal';
 try { zoom = localStorage.getItem(CHAVE_ZOOM) || 'normal'; } catch (e) { /* ok */ }
+let escala = 1, livre = null; // livre: a escala escolhida no celular (pinça ou botão); null = cabe na largura
 
+const ICONE_LUPA = d => `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5${d}"/></svg>`;
+function escalas() {
+  const cs = getComputedStyle(area);
+  const w = area.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+  const largura = Math.max(0.3, Math.min(1, w / LARGURA));
+  const h = area.clientHeight - $('areaHead').offsetHeight - 40;
+  return { largura, inteira: Math.max(0.3, Math.min(largura, h / ALTURA)), celular: largura < 0.75 };
+}
 function ajustarEscala() {
-  const w = area.clientWidth - 48, h = area.clientHeight - $('areaHead').offsetHeight - 40;
-  const s = Math.max(0.3, Math.min(1, w / LARGURA, zoom === 'inteira' ? h / ALTURA : 1));
-  stage.style.width = LARGURA * s + 'px';
-  stage.style.height = ALTURA * s + 'px';
-  pageBox.style.transform = `scale(${s})`;
-  $('areaHead').style.maxWidth = LARGURA * s + 'px';
+  const e = escalas();
+  if (!e.celular) livre = null;
+  escala = livre ? Math.min(1.5, Math.max(e.largura, livre)) : zoom === 'inteira' && !e.celular ? e.inteira : e.largura;
+  stage.style.width = LARGURA * escala + 'px';
+  stage.style.height = ALTURA * escala + 'px';
+  pageBox.style.transform = `scale(${escala})`;
+  pageBox.style.setProperty('--inv', Math.min(2.2, 1 / escala).toFixed(3));
+  $('areaHead').style.maxWidth = LARGURA * escala + 'px';
   const bz = $('btnZoom');
-  bz.innerHTML = zoom === 'inteira' ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5M11 8v6M8 11h6"/></svg>' : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>';
-  bz.title = zoom === 'inteira' ? 'Tamanho real' : 'Ver página inteira';
+  if (e.celular) {
+    const ampliada = escala > e.largura + 0.01;
+    bz.innerHTML = ICONE_LUPA(ampliada ? 'M8 11h6' : 'M11 8v6M8 11h6');
+    bz.title = ampliada ? 'Ajustar à tela' : 'Ampliar (ou abra dois dedos sobre a página)';
+  } else {
+    bz.innerHTML = zoom === 'inteira' ? ICONE_LUPA('M11 8v6M8 11h6') : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>';
+    bz.title = zoom === 'inteira' ? 'Tamanho real' : 'Ver página inteira';
+  }
   bz.setAttribute('aria-label', bz.title);
+  posicionarFmt();
+  posicionarBusca();
+  posicionarLinkItem();
+}
+// Muda a escala sem tirar do lugar o ponto (px, py) da página, que fica sob (mx, my) na tela.
+function escalarEm(nova, mx, my, px, py) {
+  livre = nova;
+  ajustarEscala();
+  const r = stage.getBoundingClientRect();
+  area.scrollLeft += r.left + px * escala - mx;
+  area.scrollTop += r.top + py * escala - my;
 }
 $('btnZoom').onclick = () => {
+  if (escalas().celular) {
+    const a = area.getBoundingClientRect(), r = stage.getBoundingClientRect();
+    const mx = a.left + a.width / 2, my = a.top + a.height / 3;
+    return escalarEm(livre ? null : 1, mx, my, (mx - r.left) / escala, (my - r.top) / escala);
+  }
   zoom = zoom === 'inteira' ? 'normal' : 'inteira';
   try { localStorage.setItem(CHAVE_ZOOM, zoom); } catch (e) { /* ok */ }
   ajustarEscala();
 };
 new ResizeObserver(ajustarEscala).observe(area);
+
+// Pinça: dois dedos sobre a prévia ampliam só a página (a barra do topo fica como está).
+let pinca = null;
+const distancia = t => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+const meio = t => [(t[0].clientX + t[1].clientX) / 2, (t[0].clientY + t[1].clientY) / 2];
+area.addEventListener('touchstart', e => {
+  if (e.touches.length !== 2 || !escalas().celular) return;
+  if (puxando) { // o primeiro dedo tinha começado a arrastar a foto
+    state.imagemX = puxando.X;
+    state.imagemY = puxando.Y;
+    imgEl.style.objectPosition = `${state.imagemX}% ${state.imagemY}%`;
+    soltar();
+  }
+  const [mx, my] = meio(e.touches), r = stage.getBoundingClientRect();
+  pinca = { d: distancia(e.touches), s: escala, px: (mx - r.left) / escala, py: (my - r.top) / escala };
+}, { passive: true });
+area.addEventListener('touchmove', e => {
+  if (!pinca || e.touches.length !== 2) return;
+  e.preventDefault();
+  const [mx, my] = meio(e.touches);
+  escalarEm(pinca.s * distancia(e.touches) / pinca.d, mx, my, pinca.px, pinca.py);
+}, { passive: false });
+function soltarPinca() {
+  if (!pinca) return;
+  pinca = null;
+  if (livre && livre <= escalas().largura * 1.03) { livre = null; ajustarEscala(); } // quase do tamanho da tela: encaixa
+}
+area.addEventListener('touchend', e => { if (e.touches.length < 2) soltarPinca(); });
+area.addEventListener('touchcancel', soltarPinca);
+// No iPhone, a pinça fora da prévia ampliaria a página toda, com a barra; o app fica parado como um app.
+document.addEventListener('gesturestart', e => e.preventDefault());
 
 let timerToast = null;
 function toast(msg) {
@@ -2828,7 +2978,7 @@ async function iniciar() {
   ajustarEscala();
   document.fonts.ready.then(checarTamanho);
 }
-iniciar();
+iniciar().finally(() => document.body.classList.remove('carregando'));
 
 // iOS 27: no app instalado na tela de início, o sistema desenha um vidro borrado sobre o topo da página. A saída
 // relatada em r/PWA (e usada no Tucan): uma faixa fixa de 11 px no topo, com a cor do theme-color, que o WebKit lê
